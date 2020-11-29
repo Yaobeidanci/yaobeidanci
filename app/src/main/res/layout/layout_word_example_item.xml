@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10sp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5sp"
+        android:text="example text"
+        android:textColor="@color/colorWordWhite" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="点击上方标题，查看例句上下文"
+        android:textColor="@color/colorWordWhite"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/english"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50sp"
+        android:layout_weight="1"
+        android:text="123"
+        android:textColor="@color/colorWordWhite"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/chinese"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="TextView"
+        android:textColor="@color/colorWordWhite" />
+
+</LinearLayout>
