@@ -1,4 +1,4 @@
-package yaobeidanci.view.learnpages;
+package yaobeidanci.view.learn;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -45,7 +45,7 @@ public class VerticalButtonViewPager extends VerticalViewPager {
             // the menu in main view, and the menu in left and right view
             switch (position){
                 case 0:
-                    view = View.inflate(context, R.layout.layout_menu_1, null);
+                    view = View.inflate(context, R.layout.layout_learn_menu_1, null);
                     Button button1 = view.findViewById(R.id.bt1);
                     Button button2 = view.findViewById(R.id.bt2);
                     button1.setOnClickListener(new OnClickListener() {
@@ -65,7 +65,7 @@ public class VerticalButtonViewPager extends VerticalViewPager {
                     break;
                 case 1:
                     Log.d("ind", "instantiateItem: ");
-                    view = View.inflate(context, R.layout.layout_menu_2, null);
+                    view = View.inflate(context, R.layout.layout_learn_menu_2, null);
                     ImageButton backBt = view.findViewById(R.id.backBt);
                     ImageButton editBt = view.findViewById(R.id.editBt);
                     ImageButton chatBt = view.findViewById(R.id.chatBt);
@@ -108,7 +108,7 @@ public class VerticalButtonViewPager extends VerticalViewPager {
                     });
                     break;
                 case 2:
-                    view = View.inflate(context, R.layout.layout_menu_3, null);
+                    view = View.inflate(context, R.layout.layout_learn_menu_3, null);
                     Button button3 = view.findViewById(R.id.bt1);
                     Button button4 = view.findViewById(R.id.bt2);
                     button3.setOnClickListener(new OnClickListener() {

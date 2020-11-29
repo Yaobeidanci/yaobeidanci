@@ -3,6 +3,9 @@ package yaobeidanci.bean;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A simple word-learning bean
+ */
 public class WordBean {
     public String word;
     public String pronunciation;

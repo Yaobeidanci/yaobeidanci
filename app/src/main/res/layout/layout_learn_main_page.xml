@@ -5,13 +5,13 @@
     android:background="@color/colorWordDetailBackground"
     android:orientation="vertical">
 
-    <yaobeidanci.view.learnpages.OuterViewPager
+    <yaobeidanci.view.learn.OuterViewPager
         android:id="@+id/outerPageView"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp" />
 
-    <yaobeidanci.view.learnpages.VerticalButtonViewPager
+    <yaobeidanci.view.learn.VerticalButtonViewPager
         android:id="@+id/verticalPageView"
         android:layout_width="match_parent"
         android:layout_height="140dp" />

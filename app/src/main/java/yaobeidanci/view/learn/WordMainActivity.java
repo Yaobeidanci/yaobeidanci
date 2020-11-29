@@ -1,4 +1,4 @@
-package yaobeidanci.view.learnpages;
+package yaobeidanci.view.learn;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -64,7 +64,7 @@ public class WordMainActivity extends AppCompatActivity {
         /* ********************* *
          * Main
          * ********************* */
-        setContentView(R.layout.layout_main_learn_page);
+        setContentView(R.layout.layout_learn_main_page);
 
         OuterViewPager outerViewPager = findViewById(R.id.outerPageView);
         VerticalButtonViewPager verticalButtonViewPager = findViewById(R.id.verticalPageView);

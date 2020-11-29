@@ -1,4 +1,4 @@
-package yaobeidanci.view.learnpages;
+package yaobeidanci.view.learn;
 
 import android.content.Context;
 import android.util.AttributeSet;

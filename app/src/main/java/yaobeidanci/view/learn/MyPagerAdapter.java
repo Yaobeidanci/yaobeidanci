@@ -1,4 +1,4 @@
-package yaobeidanci.view.learnpages;
+package yaobeidanci.view.learn;
 
 import android.content.Context;
 import android.view.View;
@@ -80,7 +80,7 @@ public class MyPagerAdapter extends PagerAdapter {
             switch (position) {
                 // left view, load the card view pager with type 0 and word detail data
                 case 0:
-                    viewItem = View.inflate(mContext, R.layout.layout_word_aside_page, null);
+                    viewItem = View.inflate(mContext, R.layout.layout_learn_word_aside_page, null);
                     viewPager = viewItem.findViewById(R.id.asideCardContainer);
                     cardViewPagerAdapter = new CardViewPagerAdapter(mContext, viewPager, CardViewPagerAdapter.TYPE.LEFT);
                     viewPager.setAdapter(cardViewPagerAdapter);
@@ -88,7 +88,7 @@ public class MyPagerAdapter extends PagerAdapter {
                     break;
                 // right view, load the card view pager with type 1 and example sentences data
                 case 2:
-                    viewItem = View.inflate(mContext, R.layout.layout_word_aside_page, null);
+                    viewItem = View.inflate(mContext, R.layout.layout_learn_word_aside_page, null);
                     viewPager = viewItem.findViewById(R.id.asideCardContainer);
                     cardViewPagerAdapter = new CardViewPagerAdapter(mContext, viewPager, CardViewPagerAdapter.TYPE.RIGHT);
                     viewPager.setAdapter(cardViewPagerAdapter);
@@ -96,7 +96,7 @@ public class MyPagerAdapter extends PagerAdapter {
                     break;
                 // main view, load the word and options data
                 case 1:
-                    viewItem = View.inflate(mContext, R.layout.layout_word_main_page, null);
+                    viewItem = View.inflate(mContext, R.layout.layout_learn_word_main_page, null);
                     TextView word = viewItem.findViewById(R.id.word);
                     word.setText(wordBean.word);
                     TextView pronunciation = viewItem.findViewById(R.id.pronunciation);
@@ -169,7 +169,7 @@ public class MyPagerAdapter extends PagerAdapter {
             View view = null;
             // for the left cards
             if (this.type == TYPE.LEFT) {
-                view = View.inflate(mContext, R.layout.layout_word_card_left, null);
+                view = View.inflate(mContext, R.layout.layout_learn_word_card_left, null);
                 // word root
                 if (detail instanceof WordBean.RootDetail) {
                     WordBean.RootDetail rootDetail = (WordBean.RootDetail) detail;
@@ -182,7 +182,7 @@ public class MyPagerAdapter extends PagerAdapter {
                 }
                 // for the right cards, load the example sentences card and the explain
             } else if (this.type == TYPE.RIGHT) {
-                view = View.inflate(mContext, R.layout.layout_word_card_right, null);
+                view = View.inflate(mContext, R.layout.layout_learn_word_card_right, null);
                 ViewPager viewPager = view.findViewById(R.id.exampleContainer);
                 WordBean.ExampleSentences sentences = (WordBean.ExampleSentences) detail;
                 ExampleViewPagerAdapter exampleViewPagerAdapter = new ExampleViewPagerAdapter(mContext, viewPager);
@@ -225,7 +225,7 @@ public class MyPagerAdapter extends PagerAdapter {
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             View view = null;
-            view = View.inflate(mContext, R.layout.layout_word_example_item, null);
+            view = View.inflate(mContext, R.layout.layout_learn_word_example_item, null);
             TextView title = view.findViewById(R.id.title);
             TextView chinese = view.findViewById(R.id.chinese);
             TextView english = view.findViewById(R.id.english);
