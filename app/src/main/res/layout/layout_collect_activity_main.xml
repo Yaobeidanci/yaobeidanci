@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".collect.CollectMainActivity"
+    android:background="#F0F1F2"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/title1_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#F0F1F2"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="生词本"
+            android:textStyle="bold"
+            android:textColor="#595656"
+            android:textSize="25dp"
+
+            />
+        <TextView
+            android:id="@+id/word_detail_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="共有词"
+            android:textColor="#595656"
+            android:textSize="15dp"
+            android:drawableRight="@drawable/fanhui"
+            android:drawablePadding="5dp"
+            android:paddingLeft="230dp"
+            />
+    </LinearLayout>
+    <HorizontalScrollView
+        android:id="@+id/content1_hs"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:scrollbars="none"
+        android:layout_below="@+id/title1_ll">
+
+        <LinearLayout
+            android:layout_height="180dp"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/word_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:id="@+id/title2_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#F0F1F2"
+
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/content1_hs"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:gravity="center_horizontal|left"
+            android:text="句库"
+            android:textStyle="bold"
+            android:textColor="#595656"
+            android:textSize="25dp"
+
+            />
+        <TextView
+            android:id="@+id/sentence_detail_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:gravity="center_horizontal|right"
+            android:text="共有句"
+            android:textColor="#595656"
+            android:textSize="15dp"
+            android:drawableRight="@drawable/fanhui"
+            android:drawablePadding="5dp"
+            android:paddingRight="20dp"
+            android:paddingLeft="250dp"
+            />
+    </LinearLayout>
+    <HorizontalScrollView
+        android:id="@+id/content2_hs"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:scrollbars="none"
+        android:layout_below="@id/title2_ll">
+
+        <LinearLayout
+            android:layout_height="220dp"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/sentence_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+
+    <SlidingDrawer
+        android:id="@+id/drawer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:handle="@+id/basic_exp"
+        android:content="@+id/all_exp"
+        android:visibility="gone"
+        >
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/basic_exp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="25dp"
+                android:paddingRight="20dp">
+
+                <TextView
+                    android:id="@+id/word_title"
+                    android:text="curious"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="left"
+                    android:textSize="30dp"
+                    android:textColor="#FF5722"
+                    android:textStyle="bold"
+                    android:drawableTop="@drawable/henggang"
+                    android:drawablePadding="20dp"
+                    android:paddingTop="8dp"/>
+
+                <TextView
+                    android:id="@+id/base_exp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="adj.好奇的；稀奇古怪的，不寻常的"
+                    android:gravity="left"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:textColor="#595656"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="30dp"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/all_exp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="4dp">
+            <LinearLayout
+                android:id="@+id/exp_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="25dp"
+                android:paddingRight="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="释义"
+                    android:gravity="left"
+                    android:textSize="22dp"
+                    android:textStyle="bold"
+                    android:textColor="#595656"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="30dp"/>
+
+                <ListView
+                    android:id="@+id/exp_detail_ls"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </SlidingDrawer>
+
+
+</RelativeLayout>
