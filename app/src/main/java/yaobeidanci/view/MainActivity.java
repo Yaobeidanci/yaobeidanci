@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         Button collectBt = findViewById(R.id.startCollectBt);
-        button.setOnClickListener(new View.OnClickListener() {
+        collectBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, CollectMainActivity.class);
