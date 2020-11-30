@@ -10,6 +10,11 @@
         android:layout_height="wrap_content"
         android:text="Learn" />
     <Button
+        android:id="@+id/startCollectBt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Collect" />
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
