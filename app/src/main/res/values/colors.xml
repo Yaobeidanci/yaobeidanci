@@ -9,4 +9,16 @@
     <color name="colorExampleItemBg">#304860</color>
     <color name="colorWordWhite">#ffffff</color>
     <color name="colorOption">#ffffff</color>
+    <color name="colorLightBlack">#333944</color>
+    <color name="colorBgWhite">#FFFFFF</color>
+    <color name="colorLittleWhite">#FBFBFD</color>
+    <color name="colorLightWhite">#F2F3F8</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorLightRed">#FF3A35</color>
+    <color name="colorGrey">#626873</color>
+    <color name="colorLightBlue">#4089ff</color>
+    <color name="colorLittleBlue">#EBF1FD</color>
+    <color name="colorMainBlue">#3675FF</color>
+    <color name="colorLightBlueN">#3E6AB1</color>
+    <color name="colorLittleBlueN">#888C95</color>
 </resources>

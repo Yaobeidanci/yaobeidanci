@@ -9,5 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Learn" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="WELCOME_BOOK"
+        android:textSize="25sp"
+        android:onClick="click_book"/>
 
 </LinearLayout>
