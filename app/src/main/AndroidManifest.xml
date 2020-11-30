@@ -23,6 +23,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".learn.WordMainActivity" />
+        <activity android:name=".collect.CollectMainActivity"/>
+        <activity android:name=".collect.SentenceDetailActivity"
+            android:parentActivityName=".collect.CollectMainActivity"
+            android:label="句库"
+            ></activity>
+        <activity android:name=".collect.WordDetailActivity"
+            android:parentActivityName=".collect.CollectMainActivity"
+            android:label="生词本"
+            />
+
     </application>
 
 </manifest>
