@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +26,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
         ImageView bookimg;
         public MyViewHolder(View itemView) {
             super(itemView);
+            view=itemView;
             bookname= (TextView) itemView.findViewById(R.id.item_text_book_name);
             wordcnt= (TextView) itemView.findViewById(R.id.item_text_book_word_num);
             bookimg= (ImageView) itemView.findViewById(R.id.item_img_book);
@@ -38,6 +40,14 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
         // 实例化展示的view
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_book_book_item, parent, false);
         final MyViewHolder holder = new MyViewHolder(view);
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = holder.getAdapterPosition();
+                final BookItemEntity itemWordBook = mItemWordBookList.get(position);
+                Toast.makeText(MainActivity.getContext(), itemWordBook.getBookId()+":"+itemWordBook.getBookName(), Toast.LENGTH_SHORT).show();
+            }
+        });
         return holder;
     }
     public void onBindViewHolder(MyViewHolder holder, int position) {

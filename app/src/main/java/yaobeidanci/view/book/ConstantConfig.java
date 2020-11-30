@@ -20,7 +20,7 @@ public class ConstantConfig {
                 num = 1128;
                 break;
             case CET6_ALL:
-                num = 2400;
+                num = 2416;
                 break;
             case KAOYAN:
                 num = 3341;
