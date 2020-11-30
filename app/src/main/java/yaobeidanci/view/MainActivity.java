@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import yaobeidanci.view.collect.CollectMainActivity;
 import yaobeidanci.view.learn.WordMainActivity;
 import yaobeidanci.view.welcome.Welcome;
 
@@ -26,6 +27,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, WordMainActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button collectBt = findViewById(R.id.startCollectBt);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CollectMainActivity.class);
                 startActivity(intent);
             }
         });
