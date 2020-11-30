@@ -1,3 +1,4 @@
+//a test
 package yaobeidanci.view.welcome;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
