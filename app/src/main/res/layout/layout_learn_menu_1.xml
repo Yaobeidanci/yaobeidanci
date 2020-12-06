@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <net.lucode.hackware.magicindicator.MagicIndicator
-        android:id="@+id/magic_indicator"
+    <com.viewpagerindicator.TitlePageIndicator
+        android:id="@+id/leftPageIndicator"
         android:layout_width="match_parent"
-        android:layout_height="20dp" />
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"

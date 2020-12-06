@@ -8,8 +8,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.List;
 
@@ -85,6 +88,8 @@ public class MyPagerAdapter extends PagerAdapter {
                     cardViewPagerAdapter = new CardViewPagerAdapter(mContext, viewPager, CardViewPagerAdapter.TYPE.LEFT);
                     viewPager.setAdapter(cardViewPagerAdapter);
                     cardViewPagerAdapter.setWordBean(wordBean);
+                    // bind the indicator with the view pager, it may not be a good choice to use a static variable
+                    VerticalButtonViewPager.leftTitlePageIndicator.setViewPager(viewPager);
                     break;
                 // right view, load the card view pager with type 1 and example sentences data
                 case 2:
@@ -93,6 +98,8 @@ public class MyPagerAdapter extends PagerAdapter {
                     cardViewPagerAdapter = new CardViewPagerAdapter(mContext, viewPager, CardViewPagerAdapter.TYPE.RIGHT);
                     viewPager.setAdapter(cardViewPagerAdapter);
                     cardViewPagerAdapter.setWordBean(wordBean);
+                    // bind the indicator with the view pager, it may not be a good choice to use a static variable
+                    VerticalButtonViewPager.rightTitlePageIndicator.setViewPager(viewPager);
                     break;
                 // main view, load the word and options data
                 case 1:
@@ -139,6 +146,7 @@ public class MyPagerAdapter extends PagerAdapter {
         List<WordBean.WordDetail> list;
 
         enum TYPE {LEFT, RIGHT}
+
         TYPE type;
 
         public CardViewPagerAdapter(Context mContext, ViewPager boundView, TYPE type) {
@@ -159,7 +167,13 @@ public class MyPagerAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
-            return list==null?0:list.size();
+            return list == null ? 0 : list.size();
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "title";
         }
 
         @NonNull
@@ -184,10 +198,12 @@ public class MyPagerAdapter extends PagerAdapter {
             } else if (this.type == TYPE.RIGHT) {
                 view = View.inflate(mContext, R.layout.layout_learn_word_card_right, null);
                 ViewPager viewPager = view.findViewById(R.id.exampleContainer);
+                CirclePageIndicator circlePageIndicator = view.findViewById(R.id.exampleIndicator);
                 WordBean.ExampleSentences sentences = (WordBean.ExampleSentences) detail;
                 ExampleViewPagerAdapter exampleViewPagerAdapter = new ExampleViewPagerAdapter(mContext, viewPager);
                 viewPager.setAdapter(exampleViewPagerAdapter);
                 exampleViewPagerAdapter.setList(sentences.list);
+                circlePageIndicator.setViewPager(viewPager);
 
                 TextView explain = view.findViewById(R.id.exampleExplain);
                 explain.setText(sentences.explain);
@@ -218,7 +234,7 @@ public class MyPagerAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
-            return list==null?0:list.size();
+            return list == null ? 0 : list.size();
         }
 
         @NonNull
