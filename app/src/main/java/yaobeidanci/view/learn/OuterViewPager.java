@@ -38,9 +38,18 @@ public class OuterViewPager extends ViewPager {
         this.setPageTransformer(false, new PageTransformer() {
             private static final float MIN_SCALE = 0.9f;
             public void transformPage(View view, float position) {
+                MyPagerAdapter.OuterViewPagerAdapter adapter = (MyPagerAdapter.OuterViewPagerAdapter) getAdapter();
+                if (view.getVisibility()==INVISIBLE){
+                    view.setVisibility(VISIBLE);
+                }
+                // hide the main page, or the main page is just on the top of the left page and
+                // events of the main page will be emitted when you choose the left page
+                // also makes the scroll difficult in the sub page
+                if ((position<=-1||position>=1)&&view==adapter.mainPage){
+                    view.setVisibility(INVISIBLE);
+                }
                 int pageWidth = view.getWidth();
 
-                MyPagerAdapter.OuterViewPagerAdapter adapter = (MyPagerAdapter.OuterViewPagerAdapter) getAdapter();
                 if (adapter != null) {
                     if (view == adapter.mainPage) {
                         float scaleFactor = MIN_SCALE
