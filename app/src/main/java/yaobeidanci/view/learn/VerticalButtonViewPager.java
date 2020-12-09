@@ -1,6 +1,10 @@
 package yaobeidanci.view.learn;
 
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.Instrumentation;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -12,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityManagerCompat;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.viewpagerindicator.TitlePageIndicator;
@@ -95,13 +100,19 @@ public class VerticalButtonViewPager extends VerticalViewPager {
                         @Override
                         public void onClick(View v) {
                             Toast.makeText(context, "click the back", Toast.LENGTH_SHORT).show();
+                            Activity activity = (Activity) context;
+                            activity.finish();
                         }
                     });
 
                     editBt.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(context, "click the edit", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(context, "click the edit", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(context, WordMainActivity.class);
+                            context.startActivity(intent);
+                            Activity activity = (Activity) context;
+                            activity.finish();
                         }
                     });
 

@@ -1,12 +1,13 @@
 package yaobeidanci.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A simple word-learning bean
  */
-public class WordBean {
+public class WordBean implements Serializable {
     public String word;
     public String pronunciation;
     public String pronunciationPath;
@@ -21,7 +22,7 @@ public class WordBean {
         rightList = new ArrayList<>();
     }
 
-    public static class WordDetail{
+    public static class WordDetail implements Serializable{
         public String word;
         public String pronunciation;
         public String pronunciationPath;
@@ -34,7 +35,7 @@ public class WordBean {
         public String exampleEnglish;
         public String exampleChinese;
     }
-    public static class ExampleItem{
+    public static class ExampleItem implements Serializable{
         public String title;
         public String sentence;
         public String sentenceChinese;
