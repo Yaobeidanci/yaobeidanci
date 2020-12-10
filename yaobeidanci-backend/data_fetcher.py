@@ -25,7 +25,7 @@ def fetch_word(book, num):
         remember_method = content['remMethod'] if 'remMethod' in content else None
         if remember_method is not None:
             remember_method_obj = {
-                'label': remember_method['val'],
+                'label': remember_method['desc'],
                 'val': remember_method['val']
             }
         else:
@@ -101,7 +101,7 @@ def fetch_word(book, num):
             'category': category,
             'sentences': sentence_obj,
             'relate_words': relate_word_obj,
-            'explain_list': explain_list,
+            'explains': explain_list,
             'phrases': phrase_obj,
             'remember_method': remember_method_obj
         })
