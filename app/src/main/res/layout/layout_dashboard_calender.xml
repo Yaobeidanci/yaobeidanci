@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".dashboard.calender.CalenderActivity"
+    android:background="@color/background"
+    app:month_view="com.example.dashboard.calender.MyCalender">
+
+    <RelativeLayout
+        android:id="@+id/linearLayout_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="@color/white">
+
+        <Button
+            android:id="@+id/button_return"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/ic_return"
+            android:layout_marginLeft="20dp" />
+
+        <TextView
+            android:id="@+id/button_reviewing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:textColor="#000"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="15dp"
+            android:layout_centerInParent="true"
+            android:text="日历"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="550dp"
+        android:background="@color/white"
+        android:layout_marginTop="75dp">
+
+        <com.haibin.calendarview.CalendarLayout
+            android:layout_marginTop="50dp"
+            android:layout_width="320dp"
+            android:layout_height="370dp"
+            android:orientation="vertical"
+            android:layout_centerHorizontal="true"
+            android:background="#fff"
+            app:calendar_content_view_id="@+id/linearView">
+
+            <com.haibin.calendarview.CalendarView
+                android:id="@+id/calendarView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#fff"
+                app:current_month_text_color="#333333"
+                app:current_month_lunar_text_color="#CFCFCF"
+                app:min_year="2020"
+                app:min_year_month="11"
+                app:max_year_month="12"
+                app:max_year="2020"
+                app:lunar_text_size="0dp"
+                app:other_month_text_color="#fff"
+                app:scheme_text_color="#333"
+                app:scheme_theme_color="#128c4b"
+                app:selected_lunar_text_color="#fff"
+                app:selected_text_color="#333"
+                app:selected_theme_color="#108cd4"
+                app:week_background="#fff"
+                app:week_text_color="#444" />
+
+            <LinearLayout
+                android:id="@+id/linearView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background"
+                android:clickable="true"
+                android:orientation="vertical"
+                tools:ignore="KeyboardInaccessibleWidget"/>
+        </com.haibin.calendarview.CalendarLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginTop="45dp"
+            android:background="@drawable/frame"/>
+        <RelativeLayout
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="50dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="连续签到"
+                android:textSize="10sp"
+                tools:ignore="SmallSp" />
+
+            <TextView
+                android:id="@+id/textView_days_seq"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20sp"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="29dp"
+                android:text="天"
+                android:textSize="10sp"
+                tools:ignore="SmallSp"
+                android:layout_marginLeft="2dp"
+                android:layout_toRightOf="@id/textView_days_seq" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="200dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="累计签到"
+                android:textSize="10sp"
+                tools:ignore="SmallSp" />
+
+            <TextView
+                android:id="@+id/textView_days_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20sp"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="29dp"
+                android:text="天"
+                android:textSize="10sp"
+                tools:ignore="SmallSp"
+                android:layout_toRightOf="@id/textView_days_total"
+                android:layout_marginLeft="2dp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>
