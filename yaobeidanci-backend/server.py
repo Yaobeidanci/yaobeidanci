@@ -2,18 +2,214 @@ from flask import Flask, request, send_file
 import requests
 import io
 import data_fetcher
+from db import DBTool
+import util
 
 app = Flask(__name__)
+db = DBTool()
+# 注意，这里会清空数据库
+db.reset()
 
 
-@app.route('/api/wordList')
-def word_list():
-    # 请求单词列表，total为单词个数，从文件中读取而不是数据库
+@app.route('/api/login', methods=['POST'])
+def login():
+    # 登录，字段为username和password，返回uid，使用/resource/user路由获取用户信息
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    if util.validate([username, password]):
+        res = db.execute_query("select * from user where username='{}'".format(username))
+        if len(res) == 1:
+            if res[0][1] == password:
+                return {
+                    'status': 200,
+                    'msg': '登陆成功',
+                    'data': {
+                        'uid': res[0][2]
+                    }
+                }
+            else:
+                return {
+                    'status': 404,
+                    'msg': '密码错误'
+                }
+        elif len(res) == 0:
+            return {
+                'status': 404,
+                'msg': '用户名不存在'
+            }
+        else:
+            return {
+                'status': 404,
+                'msg': '未知错误'
+            }
+    else:
+        return {
+            'status': 404,
+            'msg': '字段格式错误'
+        }
+
+
+@app.route('/api/register', methods=['POST'])
+def register():
+    # 注册，字段为username、password、phone
+    username = request.form.get('username')
+    password = request.form.get('password')
+    phone = request.form.get('phone')
+    if util.validate([username, password, phone]):
+        res = db.execute_query("select * from user where username='{}'".format(username))
+        if len(res) == 0:
+            # uid其实就是username的hash
+            res = db.execute("insert into user values ('{}','{}','{}','{}','{}','{}')"
+                             .format(username, password, hash(username), phone, '', ''))
+            if res:
+                return {
+                    'status': 200,
+                    'msg': '注册成功'
+                }
+            else:
+                return {
+                    'status': 404,
+                    'msg': '未知错误'
+                }
+        else:
+            return {
+                'status': 404,
+                'msg': '用户已存在'
+            }
+    else:
+        return {
+            'status': 404,
+            'msg': '字段格式错误'
+        }
+
+
+# TODO 没做
+@app.route('/api/setBook')
+def set_book():
+    # 设置单词书，字段为uid和book_id
+    uid = request.args.get('uid')
+    book_id = request.args.get('book_id')
+    return {
+        'status': 200,
+        'msg': '操作成功'
+    }
+
+
+# TODO 没做
+@app.route('/api/addStarWord')
+def add_star_word():
+    # 设置单词书，字段为uid和
+    uid = request.args.get('uid')
+    return {
+        'status': 200,
+        'msg': '操作成功'
+    }
+
+
+# TODO 没做
+@app.route('/api/addStarSentence')
+def add_star_sentence():
+    # 设置单词书，字段为uid和
+    uid = request.args.get('uid')
+    return {
+        'status': 200,
+        'msg': '操作成功'
+    }
+
+
+@app.route('/resource/user')
+def get_user():
+    # 获取用户信息，字段为uid
+    uid = request.args.get('uid')
+    if util.validate([uid]):
+        res = db.execute_query("select * from user where uid='{}'".format(uid))
+        if len(res) == 1:
+            return {
+                'status': 200,
+                'msg': '查询成功',
+                'data': {
+                    'username': res[0][0],
+                    'phone': res[0][3],
+                    'nickname': res[0][4]
+                }
+            }
+        else:
+            return {
+                'status': 404,
+                'msg': '未知错误'
+            }
+    else:
+        return {
+            'status': 404,
+            'msg': '字段格式错误'
+        }
+
+
+# TODO 目前是假数据
+@app.route('/resource/starWords')
+def get_star_words():
+    # 获取收藏的单词，字段为uid
+    uid = request.args.get('uid')
+    return {
+        'status': 200,
+        'data': data_fetcher.fetch_word(1, 5)
+    }
+
+
+# TODO 目前是假数据
+@app.route('/resource/starSentences')
+def get_star_sentences():
+    # 获取收藏的例句，字段为uid
+    uid = request.args.get('uid')
+    sentences = list()
+    sentences.append({
+        'sentence': 'example sentence',
+        'explain': '例句'
+    })
+    sentences.append({
+        'sentence': 'example sentence',
+        'explain': '例句'
+    })
+    return {
+        'status': 200,
+        'data': sentences
+    }
+
+
+# TODO 目前是假数据
+@app.route('/resource/bookList')
+def get_book_list():
+    # 获取单词书列表
+    books = list()
+    books.append({
+        'book_id': 0,
+        'book_name': '四级',
+        'num_words': 1530,
+        'img': ''
+    })
+    books.append({
+        'book_id': 1,
+        'book_name': '六级',
+        'num_words': 999,
+        'img': ''
+    })
+    return {
+        'status': 200,
+        'data': books
+    }
+
+
+# TODO 目前是从json文件读取
+@app.route('/resource/wordList')
+def get_word_list():
+    # 获取单词列表，total为单词个数，从文件中读取而不是数据库
     try:
+        book_id = request.args.get('book_id')
         total = request.args.get('total')
         return {
             'status': 200,
-            'data': data_fetcher.fetch_word('cet4', int(total))
+            'data': data_fetcher.fetch_word(int(book_id), int(total))
         }
     except:
         return {
@@ -21,8 +217,8 @@ def word_list():
         }
 
 
-@app.route('/api/sound')
-def word_sound():
+@app.route('/resource/voice')
+def get_word_voice():
     # 请求有道单词发音，word为请求的单词，type美音为0，英音为1
     try:
         word_arg = request.args.get('word')
@@ -37,8 +233,9 @@ def word_sound():
         }
 
 
-@app.route('/api/dict')
-def word_dict():
+# TODO 请求待优化
+@app.route('/resource/dict')
+def get_word_dict():
     # 使用网上的非官方有道接口，还需要调整
     # 传入word为需要查的词
     try:

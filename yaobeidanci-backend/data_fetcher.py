@@ -1,14 +1,12 @@
 import json
 
 
-def fetch_word(book, num):
+books = ['CET4luan_1.json', 'CET6luan_1.json', 'KaoYan_2.json']
+
+
+def fetch_word(book_id, num):
     # 从json文件中读取开头num个单词数据并结构化返回
-    if book == 'cet4':
-        # filename = "CET4luan_1.json"
-        filename = 'KaoYan_2.json'
-    else:
-        filename = "CET6luan_1.json"
-    # filename = 'KaoYan_2.json'
+    filename = books[book_id]
 
     data_list = []
     file = open(filename, 'r', encoding='utf-8')
