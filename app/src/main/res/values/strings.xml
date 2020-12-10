@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">yaobeidanci</string>
+    <string name="button_study_record">学习记录</string>
+    <string name="button_overview">概览</string>
+    <string name="button_calender">日历</string>
+    <string-array name="selection">
+        <item>全部单词</item>
+        <item>系统判断</item>
+        <item>自行标记</item>
+    </string-array>
 </resources>

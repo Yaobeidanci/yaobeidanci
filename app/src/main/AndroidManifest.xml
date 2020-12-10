@@ -32,7 +32,9 @@
             android:parentActivityName=".collect.CollectMainActivity"
             android:label="生词本"
             />
-
+        <activity android:name=".dashboard.calender.CalenderActivity"/>
+        <activity android:name=".dashboard.overview.OverviewActivity" />
+        <activity android:name=".dashboard.record.RecordActivity" />
     </application>
 
 </manifest>

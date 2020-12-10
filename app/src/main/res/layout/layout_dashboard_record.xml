@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".dashboard.record.RecordActivity"
+    android:background="@color/background">
+
+    <RelativeLayout
+        android:id="@+id/linearLayout_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="@color/white">
+
+        <Button
+            android:id="@+id/button_return"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/ic_return"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:checkedButton="@id/radioButton_reviewing"
+            android:layout_centerHorizontal="true">
+
+            <RadioButton
+                android:id="@+id/radioButton_reviewing"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:text="复习中"
+                style="@style/RadioButton"/>
+
+            <RadioButton
+                android:id="@+id/radioButton_mastered"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:text="已掌握"
+                style="@style/RadioButton"
+                android:layout_marginLeft="40dp"
+                android:layout_marginStart="40dp" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/button_edit"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/ic_list_edit"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+
+    <FrameLayout
+        android:id="@+id/fragment_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="75dp" />
+</RelativeLayout>

@@ -21,4 +21,6 @@
     <color name="colorMainBlue">#3675FF</color>
     <color name="colorLightBlueN">#3E6AB1</color>
     <color name="colorLittleBlueN">#888C95</color>
+    <color name="background">#eeeeee</color>
+    <color name="white">#fff</color>
 </resources>
