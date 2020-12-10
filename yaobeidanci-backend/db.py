@@ -1,10 +1,20 @@
 import sqlite3
 
 
+# 官方文档中将查询结果以dict的结构返回的方案
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
+
+
 class DBTool:
     # 对sqlite的封装
     def __init__(self):
         self.db = sqlite3.connect('db.sqlite', check_same_thread=False)
+        # 将查询结果用dict替代tuple
+        self.db.row_factory = dict_factory
         self.c = self.db.cursor()
 
     def execute(self, sql):
@@ -26,6 +36,10 @@ class DBTool:
         with open('create.sql') as f:
             self.c.executescript(f.read())
             self.db.commit()
+
+    def close(self):
+        # 关闭数据库
+        self.db.close()
 
 
 if __name__ == '__main__':

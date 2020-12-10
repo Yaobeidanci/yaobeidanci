@@ -1,12 +1,12 @@
 import json
+from db import DBTool
 
-
-books = ['CET4luan_1.json', 'CET6luan_1.json', 'KaoYan_2.json']
+root = 'res/'
 
 
 def fetch_word(book_id, num):
     # 从json文件中读取开头num个单词数据并结构化返回
-    filename = books[book_id]
+    filename = root + book_id + '.json'
 
     data_list = []
     file = open(filename, 'r', encoding='utf-8')
@@ -111,5 +111,18 @@ def fetch_word(book_id, num):
     return data_list
 
 
+def load_book_list():
+    # 初始化book数据库
+    with open(root + 'books.json', encoding='utf-8') as f:
+        obj = json.loads(f.read())
+        db = DBTool()
+        db.reset()
+        for o in obj:
+            db.execute("insert into book values ('{}', '{}', {}, {}, '{}')"
+                       .format(o['id'], o['name'], o['size'], o['num'], 'img_'+o['id'] + '.jpg'))
+        db.close()
+
+
 if __name__ == '__main__':
-    print(fetch_word('cet4', 1))
+    load_book_list()
+    # print(fetch_word('cet4', 1))

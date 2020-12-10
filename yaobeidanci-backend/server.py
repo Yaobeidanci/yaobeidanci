@@ -8,7 +8,8 @@ import util
 app = Flask(__name__)
 db = DBTool()
 # 注意，这里会清空数据库
-db.reset()
+data_fetcher.load_book_list()
+# db.reset()
 
 
 @app.route('/api/login', methods=['POST'])
@@ -20,12 +21,12 @@ def login():
     if util.validate([username, password]):
         res = db.execute_query("select * from user where username='{}'".format(username))
         if len(res) == 1:
-            if res[0][1] == password:
+            if res[0]['password'] == password:
                 return {
                     'status': 200,
                     'msg': '登陆成功',
                     'data': {
-                        'uid': res[0][2]
+                        'uid': res[0]['uid']
                     }
                 }
             else:
@@ -129,9 +130,9 @@ def get_user():
                 'status': 200,
                 'msg': '查询成功',
                 'data': {
-                    'username': res[0][0],
-                    'phone': res[0][3],
-                    'nickname': res[0][4]
+                    'username': res[0]['username'],
+                    'phone': res[0]['phone'],
+                    'nickname': res[0]['nickname']
                 }
             }
         else:
@@ -153,7 +154,7 @@ def get_star_words():
     uid = request.args.get('uid')
     return {
         'status': 200,
-        'data': data_fetcher.fetch_word(1, 5)
+        'data': data_fetcher.fetch_word('CET4luan_2', 5)
     }
 
 
@@ -177,26 +178,13 @@ def get_star_sentences():
     }
 
 
-# TODO 目前是假数据
 @app.route('/resource/bookList')
 def get_book_list():
     # 获取单词书列表
-    books = list()
-    books.append({
-        'book_id': 0,
-        'book_name': '四级',
-        'num_words': 1530,
-        'img': ''
-    })
-    books.append({
-        'book_id': 1,
-        'book_name': '六级',
-        'num_words': 999,
-        'img': ''
-    })
+    res = db.execute_query("select * from book")
     return {
         'status': 200,
-        'data': books
+        'data': res
     }
 
 
@@ -209,7 +197,7 @@ def get_word_list():
         total = request.args.get('total')
         return {
             'status': 200,
-            'data': data_fetcher.fetch_word(int(book_id), int(total))
+            'data': data_fetcher.fetch_word(book_id, int(total))
         }
     except:
         return {
