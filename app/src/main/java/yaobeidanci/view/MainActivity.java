@@ -1,13 +1,18 @@
 package yaobeidanci.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import yaobeidanci.MyUtil;
 import yaobeidanci.view.collect.CollectMainActivity;
 import yaobeidanci.view.learn.WordMainActivity;
 import yaobeidanci.view.welcome.Welcome;
@@ -15,6 +20,7 @@ import yaobeidanci.view.welcome.Welcome;
 public class MainActivity extends AppCompatActivity {
 
     private static Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,11 +43,52 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button button1 = findViewById(R.id.get_bt);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JSONObject object = new JSONObject();
+                try {
+                    object.put("book_id", "CET4luan_2");
+                    object.put("total", 2);
+                    MyUtil.httpGet("http://10.0.2.2:5000/resource/wordList", object, new MyUtil.SuccessCallback() {
+                        @Override
+                        public void onSuccess(Object result) {
+                            Toast.makeText(MainActivity.this, (String) result, Toast.LENGTH_SHORT).show();
+                        }
+                    }, true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        Button button2 = findViewById(R.id.post_bt);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JSONObject object = new JSONObject();
+                try {
+                    object.put("username", "tsluqn");
+                    object.put("password", "123456");
+                    MyUtil.httpPost("http://10.0.2.2:5000/api/login", object, true, new MyUtil.SuccessCallback() {
+                        @Override
+                        public void onSuccess(Object result) {
+                            Toast.makeText(MainActivity.this, (String) result, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
+
     public void click_book(View view) {
-        Intent intent=new Intent(MainActivity.this, Welcome.class);
+        Intent intent = new Intent(MainActivity.this, Welcome.class);
         startActivity(intent);
     }
+
     public static Context getContext() {
         return context;
     }

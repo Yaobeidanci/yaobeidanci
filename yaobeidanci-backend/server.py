@@ -11,6 +11,9 @@ db = DBTool()
 data_fetcher.load_book_list()
 # db.reset()
 
+# 设置响应使用utf-8编码而不是unicode
+app.config['JSON_AS_ASCII'] = False
+
 
 @app.route('/api/login', methods=['POST'])
 def login():
@@ -246,4 +249,4 @@ def get_word_dict():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')

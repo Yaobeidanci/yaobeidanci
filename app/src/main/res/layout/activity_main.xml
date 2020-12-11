@@ -14,12 +14,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Collect" />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:onClick="click_book"
         android:text="WELCOME_BOOK"
-        android:textSize="25sp"
-        android:onClick="click_book"/>
+        android:textSize="25sp" />
+
+    <Button
+        android:id="@+id/get_bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="http get" />
+
+    <Button
+        android:id="@+id/post_bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="http post" />
 
 </LinearLayout>

@@ -4,15 +4,16 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <!--打开usesCleartextTraffic允许okhttp的明文传输，否则只允许https-->
     <application
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".book.ChooseBook"></activity>
+        <activity android:name=".book.ChooseBook"/>
         <activity android:name=".book.StudyPlan" />
         <activity android:name=".welcome.Welcome" />
         <activity android:name=".MainActivity">
@@ -26,12 +27,10 @@
         <activity android:name=".collect.CollectMainActivity"/>
         <activity android:name=".collect.SentenceDetailActivity"
             android:parentActivityName=".collect.CollectMainActivity"
-            android:label="句库"
-            ></activity>
+            android:label="句库" />
         <activity android:name=".collect.WordDetailActivity"
             android:parentActivityName=".collect.CollectMainActivity"
-            android:label="生词本"
-            />
+            android:label="生词本" />
         <activity android:name=".dashboard.calender.CalenderActivity"/>
         <activity android:name=".dashboard.overview.OverviewActivity" />
         <activity android:name=".dashboard.record.RecordActivity" />

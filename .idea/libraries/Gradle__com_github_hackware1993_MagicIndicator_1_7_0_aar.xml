@@ -1,6 +1,7 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.hackware1993:MagicIndicator:1.7.0@aar">
     <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/973317315c8a4573a1fda02fbdf74914/jetified-MagicIndicator-1.7.0/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/973317315c8a4573a1fda02fbdf74914/jetified-MagicIndicator-1.7.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/973317315c8a4573a1fda02fbdf74914/jetified-MagicIndicator-1.7.0/res" />
     </CLASSES>
