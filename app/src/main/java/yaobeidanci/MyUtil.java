@@ -1,5 +1,6 @@
 package yaobeidanci;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -7,6 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -220,5 +224,32 @@ public class MyUtil {
                 return result;
             }
         }.execute();
+    }
+
+    public static void writeFile(Context context, String filename, String data) {
+        try {
+            FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            fos.write(data.getBytes());
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String readFile(Context context, String filename) {
+        byte[] data = new byte[1024*1024*5];
+        String result = null;
+        try {
+            FileInputStream fis = context.openFileInput(filename);
+            int res = fis.read(data);
+            result = new String(data, 0, res);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

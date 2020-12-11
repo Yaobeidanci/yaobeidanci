@@ -38,29 +38,16 @@
                 android:text="TextView"
                 android:textColor="@color/colorWord" />
 
-            <TextView
-                android:id="@+id/prefixText"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
-                android:text="TextView"
-                android:textColor="@color/colorWord" />
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/wordrootText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
-                android:text="TextView"
-                android:textColor="@color/colorWord" />
-
-            <TextView
-                android:id="@+id/methodText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
-                android:text="TextView"
-                android:textColor="@color/colorWord" />
+                <LinearLayout
+                    android:id="@+id/detail_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"></LinearLayout>
+            </ScrollView>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

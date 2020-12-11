@@ -50,4 +50,6 @@ dependencies {
     compile 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
     // http lib
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    // json lib
+    implementation 'com.google.code.gson:gson:2.8.6'
 }

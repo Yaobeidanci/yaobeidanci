@@ -3,6 +3,7 @@ package yaobeidanci.view;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -51,11 +52,20 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject object = new JSONObject();
                 try {
                     object.put("book_id", "CET4luan_2");
-                    object.put("total", 2);
+                    object.put("total", 5);
                     MyUtil.httpGet("http://10.0.2.2:5000/resource/wordList", object, new MyUtil.SuccessCallback() {
                         @Override
                         public void onSuccess(Object result) {
-                            Toast.makeText(MainActivity.this, (String) result, Toast.LENGTH_SHORT).show();
+                            try {
+                                JSONObject jsonObject = new JSONObject((String) result);
+                                String res = jsonObject.getString("data");
+                                MyUtil.writeFile(MainActivity.this, "word.json", res);
+                                Log.d("qwe", "onSuccess: " + res);
+                                Toast.makeText(MainActivity.this, MainActivity.this.getFilesDir().getAbsolutePath(), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(MainActivity.this, res, Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }, true);
                 } catch (JSONException e) {

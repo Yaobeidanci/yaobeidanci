@@ -39,12 +39,16 @@
                 android:padding="20sp">
 
                 <TextView
-                    android:id="@+id/exampleExplain"
+                    android:id="@+id/explain_c"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10sp"
-                    android:text="root"
                     android:textColor="@color/colorWord" />
+
+                <TextView
+                    android:id="@+id/explain_e"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 

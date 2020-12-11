@@ -9,14 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
-import yaobeidanci.bean.WordBean;
+import yaobeidanci.bean.WordObject;
 
 /**
  * The outer view of the word view
  */
 public class OuterViewPager extends ViewPager {
     Context context;
-    WordBean wordBean;
+    WordObject wordObject;
     VerticalButtonViewPager connected;
     MyPagerAdapter.OuterViewPagerAdapter outerViewPagerAdapter;
 
@@ -106,12 +106,8 @@ public class OuterViewPager extends ViewPager {
         }
     }
 
-    /**
-     * Receive the word data
-     * @param wordBean
-     */
-    public void setWordBean(WordBean wordBean) {
-        this.wordBean = wordBean;
-        this.outerViewPagerAdapter.setWordBean(wordBean);
+    public void setWordObject(WordObject wordObject) {
+        this.wordObject = wordObject;
+        this.outerViewPagerAdapter.setWordObject(wordObject);
     }
 }
