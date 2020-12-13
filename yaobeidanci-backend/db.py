@@ -17,18 +17,20 @@ class DBTool:
         self.db.row_factory = dict_factory
         self.c = self.db.cursor()
 
-    def execute(self, sql):
+    def execute(self, sql, args, commit=True):
         # 执行其他sql语句
         try:
-            self.c.execute(sql)
-            self.db.commit()
+            self.c.execute(sql, args)
+            if commit:
+                self.db.commit()
             return True
-        except:
+        except Exception as ex:
+            print(ex)
             return False
 
-    def execute_query(self, sql):
+    def execute_query(self, sql, args):
         # 执行select
-        self.c.execute(sql)
+        self.c.execute(sql, args)
         return self.c.fetchall()
 
     def reset(self):
@@ -36,6 +38,10 @@ class DBTool:
         with open('create.sql') as f:
             self.c.executescript(f.read())
             self.db.commit()
+
+    def commit(self):
+        # 手动commit
+        self.db.commit()
 
     def close(self):
         # 关闭数据库

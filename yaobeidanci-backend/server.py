@@ -1,28 +1,25 @@
 from flask import Flask, request, send_file
 import requests
 import io
-import data_fetcher
+import data_manager
 from db import DBTool
 import util
 
 app = Flask(__name__)
 db = DBTool()
-# 注意，这里会清空数据库
-data_fetcher.load_book_list()
-# db.reset()
 
 # 设置响应使用utf-8编码而不是unicode
 app.config['JSON_AS_ASCII'] = False
 
 
+# 登录，字段为username和password，返回uid，使用/resource/user路由获取用户信息
 @app.route('/api/login', methods=['POST'])
 def login():
-    # 登录，字段为username和password，返回uid，使用/resource/user路由获取用户信息
     username = request.form.get('username')
     password = request.form.get('password')
 
     if util.validate([username, password]):
-        res = db.execute_query("select * from user where username='{}'".format(username))
+        res = db.execute_query("select * from user where username=?", (username,))
         if len(res) == 1:
             if res[0]['password'] == password:
                 return {
@@ -54,18 +51,18 @@ def login():
         }
 
 
+# 注册，字段为username、password、phone
 @app.route('/api/register', methods=['POST'])
 def register():
-    # 注册，字段为username、password、phone
     username = request.form.get('username')
     password = request.form.get('password')
     phone = request.form.get('phone')
     if util.validate([username, password, phone]):
-        res = db.execute_query("select * from user where username='{}'".format(username))
+        res = db.execute_query("select * from user where username=?", (username,))
         if len(res) == 0:
             # uid其实就是username的hash
-            res = db.execute("insert into user values ('{}','{}','{}','{}','{}','{}')"
-                             .format(username, password, hash(username), phone, '', ''))
+            res = db.execute("insert into user values (?, ?, ?, ?, ?, ?)",
+                             (username, password, hash(username), phone, '', ''))
             if res:
                 return {
                     'status': 200,
@@ -88,46 +85,67 @@ def register():
         }
 
 
-# TODO 没做
+# 设置单词书，字段为uid和book_id
 @app.route('/api/setBook')
 def set_book():
-    # 设置单词书，字段为uid和book_id
     uid = request.args.get('uid')
     book_id = request.args.get('book_id')
-    return {
-        'status': 200,
-        'msg': '操作成功'
-    }
+    res = db.execute("insert into schedule values (?,?,?,?)", (uid, book_id, "2020-12-13", 0))
+    if res:
+        return {
+            'status': 200,
+            'msg': '操作成功'
+        }
+    else:
+        return {
+            'status': 404,
+            'msg': '操作失败'
+        }
 
 
-# TODO 没做
+# 添加单词收藏，字段为uid、word_id
 @app.route('/api/addStarWord')
 def add_star_word():
-    # 设置单词书，字段为uid和
     uid = request.args.get('uid')
-    return {
-        'status': 200,
-        'msg': '操作成功'
-    }
+    word_id = request.args.get('word_id')
+    category = request.args.get('book_id')
+    res = db.execute("insert into star_word values (?,?,?)", (uid, word_id, category))
+    if res:
+        return {
+            'status': 200,
+            'msg': '操作成功'
+        }
+    else:
+        return {
+            'status': 404,
+            'msg': '操作失败'
+        }
 
 
-# TODO 没做
+# 添加例句收藏，字段为uid和sentence_id
 @app.route('/api/addStarSentence')
 def add_star_sentence():
-    # 设置单词书，字段为uid和
     uid = request.args.get('uid')
-    return {
-        'status': 200,
-        'msg': '操作成功'
-    }
+    sentence_id = request.args.get('sentence_id')
+    res = db.execute("insert into star_sentence values (?,?)", (uid, sentence_id))
+    if res:
+        return {
+            'status': 200,
+            'msg': '操作成功'
+        }
+    else:
+        return {
+            'status': 404,
+            'msg': '操作失败'
+        }
 
 
+# 获取用户信息，字段为uid
 @app.route('/resource/user')
 def get_user():
-    # 获取用户信息，字段为uid
     uid = request.args.get('uid')
     if util.validate([uid]):
-        res = db.execute_query("select * from user where uid='{}'".format(uid))
+        res = db.execute_query("select * from user where uid=?", (uid,))
         if len(res) == 1:
             return {
                 'status': 200,
@@ -150,67 +168,63 @@ def get_user():
         }
 
 
-# TODO 目前是假数据
+# TODO 取得的数据结构需要改
+# 获取收藏的单词，字段为uid
 @app.route('/resource/starWords')
 def get_star_words():
-    # 获取收藏的单词，字段为uid
     uid = request.args.get('uid')
-    return {
-        'status': 200,
-        'data': data_fetcher.fetch_word('CET4luan_2', 5)
-    }
-
-
-# TODO 目前是假数据
-@app.route('/resource/starSentences')
-def get_star_sentences():
-    # 获取收藏的例句，字段为uid
-    uid = request.args.get('uid')
-    sentences = list()
-    sentences.append({
-        'sentence': 'example sentence',
-        'explain': '例句'
-    })
-    sentences.append({
-        'sentence': 'example sentence',
-        'explain': '例句'
-    })
-    return {
-        'status': 200,
-        'data': sentences
-    }
-
-
-@app.route('/resource/bookList')
-def get_book_list():
-    # 获取单词书列表
-    res = db.execute_query("select * from book")
+    res = db.execute_query("select * from star_word where uid=?", (uid,))
     return {
         'status': 200,
         'data': res
     }
 
 
-# TODO 目前是从json文件读取
+# 获取收藏的例句，字段为uid
+@app.route('/resource/starSentences')
+def get_star_sentences():
+    uid = request.args.get('uid')
+    res = db.execute_query(
+        "select * from sentence where sentence_id=(select sentence_id from star_sentence where uid=?)", (uid,))
+    return {
+        'status': 200,
+        'data': res
+    }
+
+
+# 获取单词书列表
+@app.route('/resource/bookList')
+def get_book_list():
+    res = db.execute_query("select * from book", ())
+    return {
+        'status': 200,
+        'data': res
+    }
+
+
+# 获取单词列表，total为单词个数
 @app.route('/resource/wordList')
 def get_word_list():
-    # 获取单词列表，total为单词个数，从文件中读取而不是数据库
     try:
         book_id = request.args.get('book_id')
-        total = request.args.get('total')
+        total = int(request.args.get('total'))
+        res = db.execute_query("select * from word where category=? limit ?", (book_id, total))
+        res = [data_manager.get_word_from_db_form(i, db) for i in res]
+
         return {
             'status': 200,
-            'data': data_fetcher.fetch_word(book_id, int(total))
+            'data': res
         }
-    except:
+    except Exception as ex:
+        print(ex)
         return {
             'status': 404
         }
 
 
+# 请求有道单词发音，word为请求的单词，type美音为0，英音为1
 @app.route('/resource/voice')
 def get_word_voice():
-    # 请求有道单词发音，word为请求的单词，type美音为0，英音为1
     try:
         word_arg = request.args.get('word')
         type_arg = request.args.get('type')
@@ -218,17 +232,18 @@ def get_word_voice():
         return send_file(io.BytesIO(data.content),
                          attachment_filename='logo.mp3',
                          mimetype='audio/mp3')
-    except:
+    except Exception as ex:
+        print(ex)
         return {
             'status': 404
         }
 
 
 # TODO 请求待优化
+# 使用网上的非官方有道接口，还需要调整
+# 传入word为需要查的词
 @app.route('/resource/dict')
 def get_word_dict():
-    # 使用网上的非官方有道接口，还需要调整
-    # 传入word为需要查的词
     try:
         url = 'http://dict.youdao.com/jsonapi?jsonversion=2&client=mobile&q={}&dicts=%7B%22count%22%3A99%2C%22dicts%22%3A%5B%5B%22ec%22%2C%22ce%22%2C%22newcj%22%2C%22newjc%22%2C%22kc%22%2C%22ck%22%2C%22fc%22%2C%22cf%22%2C%22multle%22%2C%22jtj%22%2C%22pic_dict%22%2C%22tc%22%2C%22ct%22%2C%22typos%22%2C%22special%22%2C%22tcb%22%2C%22baike%22%2C%22lang%22%2C%22simple%22%2C%22wordform%22%2C%22exam_dict%22%2C%22ctc%22%2C%22web_search%22%2C%22auth_sents_part%22%2C%22ec21%22%2C%22phrs%22%2C%22input%22%2C%22wikipedia_digest%22%2C%22ee%22%2C%22collins%22%2C%22ugc%22%2C%22media_sents_part%22%2C%22syno%22%2C%22rel_word%22%2C%22longman%22%2C%22ce_new%22%2C%22le%22%2C%22newcj_sents%22%2C%22blng_sents_part%22%2C%22hh%22%5D%2C%5B%22ugc%22%5D%2C%5B%22longman%22%5D%2C%5B%22newjc%22%5D%2C%5B%22newcj%22%5D%2C%5B%22web_trans%22%5D%2C%5B%22fanyi%22%5D%5D%7D&keyfrom=mdict.7.2.0.android&model=honor&mid=5.6.1&imei=659135764921685&vendor=wandoujia&screen=1080x1800&ssid=superman&network=wifi&abtest=2&xmlVersion=5.1'
         word = request.args.get('word')
@@ -242,7 +257,8 @@ def get_word_dict():
                 'phrases': json_data['phrs'],
             }
         }
-    except:
+    except Exception as ex:
+        print(ex)
         return {
             'status': 404
         }
