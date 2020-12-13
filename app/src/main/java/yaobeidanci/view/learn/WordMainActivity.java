@@ -11,22 +11,18 @@ import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import yaobeidanci.MyUtil;
 import yaobeidanci.bean.WordObject;
 import yaobeidanci.view.R;
 
 public class WordMainActivity extends AppCompatActivity {
-    static JSONArray jsonArray;
-    static int index = 0;
+    static WordObject wordObject = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("word main", "onCreate: ");
-
-        WordObject wordObject = getWordObject();
-
         /* ********************* *
          * Main
          * ********************* */
@@ -44,40 +40,38 @@ public class WordMainActivity extends AppCompatActivity {
         // Set the initial page to the page in middle
         outerViewPager.setCurrentItem(1);
         verticalButtonViewPager.setCurrentItem(1);
-
     }
 
-    public static WordObject getWordObject(){
-        String word_json = null;
-        WordObject wordObject = null;
+    /**
+     * 启动一个新的word页面，并加载单词
+     * @param src 调用者
+     */
+    public static void startIt(final Activity src){
+        JSONObject object = new JSONObject();
         try {
-            word_json = jsonArray.getString(index);
-            index++;
-            if (index==jsonArray.length()){
-                index=0;
-            }
-            wordObject = new Gson().fromJson(word_json, WordObject.class);
+            object.put("uid", "5447055154731782788");
+            MyUtil.httpGet(MyUtil.BASE_URL + "/resource/word", object, new MyUtil.MyCallback() {
+                @Override
+                public void onSuccess(Object result) {
+                    try {
+                        JSONObject res = new JSONObject((String) result);
+                        String word_json = res.getString("data");
+                        wordObject = new Gson().fromJson(word_json, WordObject.class);
+                        Intent intent = new Intent(src, WordMainActivity.class);
+                        src.startActivity(intent);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(Object result) {
+
+                }
+            },true);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return wordObject;
-    }
-
-    public static void startIt(Activity src){
-        String allData = MyUtil.readFile(src, "word.json");
-        Log.d("qwe", "startIt: " + allData);
-        try {
-            jsonArray = new JSONArray(allData);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        /* ***************
-         * Logic
-         * ***************/
-        Intent intent = new Intent(src, WordMainActivity.class);
-//        intent.putExtra("word", wordBean);
-        src.startActivity(intent);
     }
 
 }

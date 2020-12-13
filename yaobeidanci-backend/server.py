@@ -86,11 +86,12 @@ def register():
 
 
 # 设置单词书，字段为uid和book_id
-@app.route('/api/setBook')
-def set_book():
+@app.route('/api/setSchedule')
+def set_schedule():
     uid = request.args.get('uid')
     book_id = request.args.get('book_id')
-    res = db.execute("insert into schedule values (?,?,?,?)", (uid, book_id, "2020-12-13", 0))
+    num_daily = request.args.get('num_daily')
+    res = db.execute("insert into schedule values (?,?,?,?,?)", (uid, book_id, "2020-12-13", 1, num_daily))
     if res:
         return {
             'status': 200,
@@ -103,13 +104,28 @@ def set_book():
         }
 
 
-# 添加单词收藏，字段为uid、word_id
+# 获取计划信息
+@app.route('/resoucre/schedule')
+def get_schedule():
+    uid = request.args.get('uid')
+    res = db.execute_query("select * from schedule where uid=?", (uid,))
+    if len(res) == 0:
+        return {
+            'status': 404,
+            'msg': '未添加计划'
+        }
+    return {
+        'status': 200,
+        'data': res[0]
+    }
+
+
+# 添加单词收藏，字段为uid、word
 @app.route('/api/addStarWord')
 def add_star_word():
     uid = request.args.get('uid')
-    word_id = request.args.get('word_id')
-    category = request.args.get('book_id')
-    res = db.execute("insert into star_word values (?,?,?)", (uid, word_id, category))
+    word = request.args.get('word')
+    res = db.execute("insert into star_word values (?,?)", (uid, word))
     if res:
         return {
             'status': 200,
@@ -168,12 +184,12 @@ def get_user():
         }
 
 
-# TODO 取得的数据结构需要改
 # 获取收藏的单词，字段为uid
 @app.route('/resource/starWords')
 def get_star_words():
     uid = request.args.get('uid')
-    res = db.execute_query("select * from star_word where uid=?", (uid,))
+    res = db.execute_query("select * from word where word in (select word from star_word where uid=?)", (uid,))
+    res = [data_manager.get_word_from_db_form(i, db) for i in res]
     return {
         'status': 200,
         'data': res
@@ -220,6 +236,26 @@ def get_word_list():
         return {
             'status': 404
         }
+
+
+# 获取要背的单词，传入uid
+@app.route('/resource/word')
+def get_current_word():
+    # try:
+        uid = request.args.get('uid')
+        book, next_word_index = data_manager.word_generator(uid, db)
+        res = db.execute_query("select * from word where category=? and word_id=?", (book, next_word_index))
+        res = data_manager.get_word_from_db_form(res[0], db)
+        db.execute("update schedule set current_progress=current_progress + 1", ())
+        return {
+            'status': 200,
+            'data': res
+        }
+    # except Exception as ex:
+    #     print(ex)
+    #     return {
+    #         'status': 404
+    #     }
 
 
 # 请求有道单词发音，word为请求的单词，type美音为0，英音为1
