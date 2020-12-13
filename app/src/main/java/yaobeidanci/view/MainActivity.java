@@ -45,14 +45,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-    public void onclick(View view){
-        Intent intent=new Intent(MainActivity.this, SelfPage.class);
-        startActivity(intent);
-    }
-    public static Context getContext() {
-        return context;
-    }
-
 }

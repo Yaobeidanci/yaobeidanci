@@ -1,6 +1,9 @@
 import json
-import random
+import os
 from db import DBTool
+import hashlib
+import random
+
 
 root = 'res/'
 origins = ['新概念英语第一册', '新概念英语第二册', '新概念英语第三册', '新概念英语第四册', '新东方英语']
@@ -132,6 +135,7 @@ def get_word_from_db_form(word_obj, db):
     word_obj['relate_words'] = json.loads(word_obj['relate_words'])
     word_obj['phrases'] = json.loads(word_obj['phrases'])
     word_obj['remember_method'] = json.loads(word_obj['remember_method'])
+    word_obj['questions'] = json.loads(word_obj['questions'])
     # 附加上label
     word_obj['sentences_label'] = '例句'
     word_obj['relate_words_label'] = '相关词'
@@ -151,8 +155,21 @@ def load_word_list():
     print(books)
     for book in books:
         with open(root + book + '.json', 'r', encoding='utf-8') as file:
-            for line in file.readlines():
+            lines = file.readlines()
+            for line in lines:
                 word_obj = get_word(line)
+
+                # 生成四选一题目
+                questions = []
+                question_indexes = random.sample([i for i in range(len(lines))], 3)
+                for question_index in question_indexes:
+                    quest_obj = get_word(lines[question_index])
+                    questions.append(quest_obj['explains'][0])
+                questions.append(word_obj['explains'][0])
+                questions = random.shuffle(questions)
+                word_obj['questions'] = questions
+                # question_indexes = [i for i in range(len(lines))]
+
                 print(word_obj['word_id'])
                 sentences = word_obj['sentences']
                 for sentence in sentences:
@@ -164,7 +181,8 @@ def load_word_list():
                            (word_obj['word_id'], word_obj['word'], word_obj['category'], word_obj['phonetic_uk'],
                             word_obj['phonetic_us'], json.dumps(word_obj['relate_words']),
                             json.dumps(word_obj['explains']), json.dumps(word_obj['phrases']),
-                            json.dumps(word_obj['remember_method']), None), commit=False)
+                            json.dumps(word_obj['remember_method']), json.dumps(word_obj['questions'])), commit=False)
+
             db.commit()
     db.close()
 
@@ -178,13 +196,13 @@ def word_generator(uid, db):
 
 
 if __name__ == '__main__':
+    print('start')
     db = DBTool()
-    # res = db.execute_query("select * from word where category='CET4luan_2' limit 50", ())
-    # for r in res:
-    #     s = db.execute_query("select * from sentence where origin_word=?", (r['word'],))
-    #     r['sentences'] = s
-    #     print(r)
     db.reset()
     db.close()
     load_book_list()
     load_word_list()
+    # x = hashlib.md5()
+    # x.update('123456789'.encode("utf-8"))
+    # print(x.hexdigest())
+    # print(random.sample([i for i in range(1000)], 100))

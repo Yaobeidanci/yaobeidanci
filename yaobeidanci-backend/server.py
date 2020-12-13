@@ -62,7 +62,7 @@ def register():
         if len(res) == 0:
             # uid其实就是username的hash
             res = db.execute("insert into user values (?, ?, ?, ?, ?, ?)",
-                             (username, password, hash(username), phone, '', ''))
+                             (username, password, util.get_md5(username), phone, '', ''))
             if res:
                 return {
                     'status': 200,
