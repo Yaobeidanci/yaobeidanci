@@ -45,4 +45,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    public static Context getContext() {
+        return context;
+    }
 }

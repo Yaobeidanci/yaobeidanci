@@ -1,22 +1,22 @@
 package yaobeidanci.view.book;
 
 public class BookItemEntity {
-    private int BookId;//书的id
+    private String BookId;//书的id
     private String BookName;//书名
     private int BookWordCount;//单词数量
     private int BookImg;//图片
     private String BookIntr;//简介
-    public BookItemEntity(int bookId, String bookName, int bookWordCount, int bookImg, String intr) {
+    public BookItemEntity(String bookId, String bookName, int bookWordCount, int bookImg, String intr) {
         this.BookId=bookId;
         this.BookName=bookName;
         this.BookWordCount=bookWordCount;
         this.BookImg=bookImg;
         this.BookIntr=intr;
     }
-    public int getBookId() {
+    public String getBookId() {
         return BookId;
     }
-    public void setBookId(int bookId) {
+    public void setBookId(String bookId) {
         this.BookId = bookId;
     }
 

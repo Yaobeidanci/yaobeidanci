@@ -1,5 +1,6 @@
 package yaobeidanci.view.book;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
             bookimg= (ImageView) itemView.findViewById(R.id.item_img_book);
             intr=(TextView)itemView.findViewById(R.id.item_text_book_intr);
         }
-   }
+    }
     public BookListAdapter(ArrayList<BookItemEntity> data) {
         this.mItemWordBookList = data;
     }
@@ -45,7 +46,22 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 final BookItemEntity itemWordBook = mItemWordBookList.get(position);
-                Toast.makeText(MainActivity.getContext(), itemWordBook.getBookId()+":"+itemWordBook.getBookName(), Toast.LENGTH_SHORT).show();
+//                if(itemWordBook.getBookId()==ConstantConfig.CET6) {
+//                    Toast.makeText(MainActivity.getContext(), "已经是"+itemWordBook.getBookId()+":"+itemWordBook.getBookName()+"了哦", Toast.LENGTH_SHORT).show();
+//                }
+//                else{
+//                    // 传值
+//                    Intent intent = new Intent(MainActivity.getContext(), StudyPlan.class);
+//                    intent.putExtra("bookname",itemWordBook.getBookName());
+//                    intent.putExtra("bookid",itemWordBook.getBookId());
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    MainActivity.getContext().startActivity(intent);
+//                }
+                Intent intent = new Intent(MainActivity.getContext(), StudyPlan.class);
+                intent.putExtra("bookname",itemWordBook.getBookName());
+                intent.putExtra("bookid",itemWordBook.getBookId());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                MainActivity.getContext().startActivity(intent);
             }
         });
         return holder;

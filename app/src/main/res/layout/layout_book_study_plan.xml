@@ -76,7 +76,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="fitXY"
-                                android:src="@drawable/cetsix"/>
+                                android:src="@drawable/img_cet6"/>
 
                         </androidx.cardview.widget.CardView>
 
@@ -91,7 +91,7 @@
                                 android:id="@+id/text_plan_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="六级考纲词汇"
+                                android:text="六级英语词汇"
                                 android:textColor="@color/colorBlack"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
@@ -103,22 +103,46 @@
                                 android:layout_marginBottom="20dp"
                                 android:background="@color/colorBgWhite" />
 
-                            <TextView
-                                android:id="@+id/text_plan_num"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="每日学习单词：50词"
-                                android:textColor="@color/colorGrey"
-                                android:textSize="12sp" />
+                                android:orientation="horizontal"
+                                android:layout_marginTop="15dp">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="每日学习单词："
+                                    android:textColor="@color/colorGrey"
+                                    android:textSize="12sp" />
+                                <TextView
+                                    android:id="@+id/daily_num"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="50词"
+                                    android:textColor="@color/colorGrey"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/text_plan_daily"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="15dp"
-                                android:text="已完成：2000/2416词"
-                                android:textColor="@color/colorGrey"
-                                android:textSize="12sp" />
+                                android:orientation="horizontal"
+                                android:layout_marginTop="15dp">
+                                <TextView
+                                    android:id="@+id/now_count"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="已完成：2000/"
+                                    android:textColor="@color/colorGrey"
+                                    android:textSize="12sp" />
+                                <TextView
+                                    android:id="@+id/total_count"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="2078词"
+                                    android:textColor="@color/colorGrey"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
 
                         </LinearLayout>
 
@@ -130,7 +154,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
                         android:gravity="center"
-                        android:text="预计将于2020年12月3日学完所有单词"
+                        android:text="预计将于2020年12月18日学完所有单词"
                         android:textColor="@color/colorGrey"
                         android:textSize="12sp" />
 
@@ -221,6 +245,7 @@
                                         android:textColor="@color/colorBlack" />
                                 </LinearLayout>
                                 <TextView
+                                    android:id="@+id/today_count"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="10dp"
@@ -262,6 +287,7 @@
                                         android:textColor="@color/colorBlack" />
                                 </LinearLayout>
                                 <TextView
+                                    android:id="@+id/already_study_count"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="10dp"
@@ -303,6 +329,7 @@
                                         android:textColor="@color/colorBlack" />
                                 </LinearLayout>
                                 <TextView
+                                    android:id="@+id/today_study_time"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="10dp"
@@ -344,6 +371,7 @@
                                         android:textColor="@color/colorBlack" />
                                 </LinearLayout>
                                 <TextView
+                                    android:id="@+id/total_study_time"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="10dp"
