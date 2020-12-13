@@ -141,16 +141,14 @@ public class CollectMainActivity extends AppCompatActivity {
         detail_tv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(CollectMainActivity.this,WordDetailActivity.class);
-                startActivity(intent);
+                WordDetailActivity.startIt(CollectMainActivity.this);
             }
         });
 
         detail_tv2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(CollectMainActivity.this,SentenceDetailActivity.class);
-                startActivity(intent);
+                SentenceDetailActivity.startIt(CollectMainActivity.this);
             }
         });
 
