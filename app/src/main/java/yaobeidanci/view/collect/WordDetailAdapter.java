@@ -11,14 +11,14 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import yaobeidanci.bean.Word;
+import yaobeidanci.bean.WordObject;
 import yaobeidanci.view.R;
 
-public class WordDetailAdapter extends ArrayAdapter<Word> {
+public class WordDetailAdapter extends ArrayAdapter<WordObject> {
     private int resourceId;
 
     //构造函数
-    public WordDetailAdapter(Context context, int textViewResourceId, List<Word> word){
+    public WordDetailAdapter(Context context, int textViewResourceId, List<WordObject> word){
         super(context,textViewResourceId,word);
         resourceId=textViewResourceId;
     }
@@ -26,7 +26,7 @@ public class WordDetailAdapter extends ArrayAdapter<Word> {
     @Override
     //convertView 缓存加载好的布局
     public View getView(int position , View convertView, ViewGroup parent){
-        Word word= (Word) getItem(position);
+        WordObject word= (WordObject) getItem(position);
 
         View view ;
         ViewHolder viewHolder;

@@ -12,12 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import yaobeidanci.bean.Word;
+import yaobeidanci.bean.WordObject;
 import yaobeidanci.view.R;
 
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
 
-    private List<Word> wordList = new ArrayList<>();
+    private List<WordObject> wordList = new ArrayList<>();
     private CollectMainActivity ma;
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView wordText;
@@ -30,7 +30,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
         }
     }
 
-    public WordAdapter(CollectMainActivity ma, List<Word> wordList) {
+    public WordAdapter(CollectMainActivity ma, List<WordObject> wordList) {
         this.ma=ma;
         this.wordList = wordList;
     }
@@ -46,13 +46,13 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     //用于对RecycleView子项的数据进行赋值的，会在每个子项滚动到屏幕内的时候执行
     @Override
     public void onBindViewHolder(final WordAdapter.ViewHolder holder, int position) {
-        final Word word = wordList.get(position);
+        final WordObject word = wordList.get(position);
         holder.wordText.setText(word.getText());
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position= holder.getAdapterPosition();
-                Word w=wordList.get(position);
+                WordObject w=wordList.get(position);
                 Toast.makeText(v.getContext(),"你点击了： "+w.getText(),Toast.LENGTH_SHORT).show();
                 ma.sd.setVisibility(View.VISIBLE);
                 ma.word_title_tv.setText(word.getText());

@@ -10,14 +10,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import yaobeidanci.bean.Explanation;
+import yaobeidanci.bean.WordExplanationObject;
 import yaobeidanci.view.R;
 
-public class ExpAdapter extends ArrayAdapter<Explanation> {
+public class ExpAdapter extends ArrayAdapter<WordExplanationObject> {
     private int resourceId;
 
     //构造函数
-    public ExpAdapter(Context context, int textViewResourceId, List<Explanation> exps){
+    public ExpAdapter(Context context, int textViewResourceId, List<WordExplanationObject> exps){
         super(context,textViewResourceId,exps);
         resourceId=textViewResourceId;
     }
@@ -25,7 +25,7 @@ public class ExpAdapter extends ArrayAdapter<Explanation> {
     @Override
     //convertView 缓存加载好的布局
     public View getView(int position , View convertView, ViewGroup parent){
-        Explanation exp= (Explanation) getItem(position);
+        WordExplanationObject exp= (WordExplanationObject) getItem(position);
 
         View view ;
         ViewHolder viewHolder;
@@ -45,8 +45,8 @@ public class ExpAdapter extends ArrayAdapter<Explanation> {
         }
 
         //获取控件实例，并显示出来
-        viewHolder.cexp_tv.setText(exp.getcExp());
-        viewHolder.eexp_tv.setText(exp.geteExp());
+        viewHolder.cexp_tv.setText(exp.getExplain_c());
+        viewHolder.eexp_tv.setText(exp.getExplain_e());
         return view;
     }
 

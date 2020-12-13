@@ -12,15 +12,16 @@ import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import yaobeidanci.bean.SentenceObject;
 import yaobeidanci.view.R;
 
 import java.util.List;
 
-import yaobeidanci.bean.Sentence;
 
 public class SentenceAdapter extends RecyclerView.Adapter<SentenceAdapter.ViewHolder> {
 
-    private List<Sentence> sList;
+    private List<SentenceObject> sList;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         ImageView bg_iv;
@@ -36,7 +37,7 @@ public class SentenceAdapter extends RecyclerView.Adapter<SentenceAdapter.ViewHo
         }
     }
 
-    public SentenceAdapter(List<Sentence> sList) {
+    public SentenceAdapter(List<SentenceObject> sList) {
         this.sList = sList;
     }
 
@@ -51,10 +52,10 @@ public class SentenceAdapter extends RecyclerView.Adapter<SentenceAdapter.ViewHo
     //用于对RecycleView子项的数据进行赋值的，会在每个子项滚动到屏幕内的时候执行
     @Override
     public void onBindViewHolder(final SentenceAdapter.ViewHolder holder, int position) {
-        Sentence s = sList.get(position);
-        holder.bg_iv.setImageResource(s.getImageId());
-        holder.from_tv.setText(s.getFrom());
-        holder.text_tv.setText(s.getContext());
+        SentenceObject s = sList.get(position);
+        holder.bg_iv.setImageResource(s.getFromImageId());
+        holder.from_tv.setText(s.getFromImageId());
+        holder.text_tv.setText(s.getSentence());
         holder.text_tv.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC);
         holder.from_tv.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC);
         //holder.fruitName.setWidth(fruit.getName().length()*20);
@@ -62,7 +63,7 @@ public class SentenceAdapter extends RecyclerView.Adapter<SentenceAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 int position= holder.getAdapterPosition();
-                Sentence s=sList.get(position);
+                SentenceObject s=sList.get(position);
                 Toast.makeText(v.getContext(),"你点击了： "+s.getId(),Toast.LENGTH_SHORT).show();
             }
         });

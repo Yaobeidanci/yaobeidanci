@@ -6,24 +6,30 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import yaobeidanci.bean.Explanation;
-import yaobeidanci.bean.Sentence;
-import yaobeidanci.bean.Word;
+import yaobeidanci.MyUtil;
+import yaobeidanci.bean.SentenceObject;
+import yaobeidanci.bean.WordObject;
+import yaobeidanci.view.MainActivity;
 import yaobeidanci.view.R;
 
 public class CollectMainActivity extends AppCompatActivity {
 
-    private List<Word> wordList = new ArrayList<>();
-    private List<Sentence> sList=new ArrayList<>();
+    private List<WordObject> wordList = new ArrayList<>();
+    private List<SentenceObject> sList=new ArrayList<>();
     public SlidingDrawer sd;
     public ListView exp_ls;
     public TextView word_title_tv;
@@ -35,38 +41,13 @@ public class CollectMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_collect_activity_main);
+
         //初始化单词数据
-        Word w1 = new Word("recycle");
-        wordList.add(w1);
-        Word w2 = new Word("banana");
-        wordList.add(w2);
-        Word w3 = new Word("cat");
-        wordList.add(w3);
-        Word w4 = new Word("pluralism");
-        wordList.add(w4);
-        Word w5 = new Word("hahahahahahhaha");
-        wordList.add(w5);
-        Word w6 = new Word("hahahahahahhaha");
-        wordList.add(w6);
-        Word w7 = new Word("hahahahahahhaha");
-        wordList.add(w7);
 
         //初始化句子数据
-        Sentence s1 =new Sentence("She uses accomplices, vagrants that she pays off if they'll do a little jail time.",
-                "疑犯追踪 第三季","1",R.drawable.a,R.drawable.yfzz);
-        sList.add(s1);
-        Sentence s2 =new Sentence("She uses accomplices, vagrants that she pays off if they'll do a little jail time.",
-                "疑犯追踪 第三季","2",R.drawable.b,R.drawable.yfzz);
-        sList.add(s2);
-        Sentence s3 =new Sentence("She uses accomplices, vagrants that she pays off if they'll do a little jail time.",
-                "疑犯追踪 第三季","3",R.drawable.c,R.drawable.yfzz);
-        sList.add(s3);
 
         //初始化解释
-        Explanation e1=new Explanation("adj.回收利用；再利用","to treat things that have already been used so that they can be used again");
-        w1.addExp(e1);
-        w1.addExp(e1);
-        w1.addExp(e1);
+
 
         //获取布局
         exp_ls = findViewById(R.id.exp_detail_ls);

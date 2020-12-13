@@ -10,14 +10,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import yaobeidanci.bean.Sentence;
+import yaobeidanci.bean.SentenceObject;
 import yaobeidanci.view.R;
 
-public class SentenceDetailAdapter extends ArrayAdapter<Sentence> {
+public class SentenceDetailAdapter extends ArrayAdapter<SentenceObject> {
     private int resourceId;
 
     //构造函数
-    public SentenceDetailAdapter(Context context, int textViewResourceId, List<Sentence> sentence){
+    public SentenceDetailAdapter(Context context, int textViewResourceId, List<SentenceObject> sentence){
         super(context,textViewResourceId,sentence);
         resourceId=textViewResourceId;
     }
@@ -25,7 +25,7 @@ public class SentenceDetailAdapter extends ArrayAdapter<Sentence> {
     @Override
     //convertView 缓存加载好的布局
     public View getView(int position , View convertView, ViewGroup parent){
-        Sentence s= (Sentence) getItem(position);
+        SentenceObject s= (SentenceObject) getItem(position);
 
         View view ;
         SentenceDetailAdapter.ViewHolder viewHolder;
@@ -45,9 +45,9 @@ public class SentenceDetailAdapter extends ArrayAdapter<Sentence> {
         }
 
         //获取控件实例，并显示出来
-        viewHolder.context.setText(s.getContext());
+        viewHolder.context.setText(s.getSentence());
         viewHolder.fromig.setImageResource(s.getFromImageId());
-        viewHolder.from.setText(s.getFrom());
+        viewHolder.from.setText(s.getOrigin_title());
         return view;
     }
 

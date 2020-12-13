@@ -16,12 +16,11 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import yaobeidanci.bean.Explanation;
-import yaobeidanci.bean.Word;
+import yaobeidanci.bean.WordObject;
 import yaobeidanci.view.R;
 public class WordDetailActivity extends AppCompatActivity {
 
-    private List<Word> wordList = new ArrayList<>();
+    private List<WordObject> wordList = new ArrayList<>();
     public SlidingDrawer sd;
     public ListView exp_ls;
     public TextView word_title_tv;
@@ -34,25 +33,10 @@ public class WordDetailActivity extends AppCompatActivity {
         setContentView(R.layout.layout_collect_activity_word_detail);
 
         //初始化单词数据
-        Word w1 = new Word("recycle");
-        wordList.add(w1);
-        Word w2 = new Word("banana");
-        wordList.add(w2);
-        Word w3 = new Word("cat");
-        wordList.add(w3);
-        Word w4 = new Word("pluralism");
-        wordList.add(w4);
-        Word w5 = new Word("hahahahahahhaha");
-        wordList.add(w5);
-        Word w6 = new Word("hahahahahahhaha");
-        wordList.add(w6);
-        Word w7 = new Word("hahahahahahhaha");
+
 
         //初始化解释
-        Explanation e1=new Explanation("adj.回收利用；再利用","to treat things that have already been used so that they can be used again");
-        w1.addExp(e1);
-        w1.addExp(e1);
-        w1.addExp(e1);
+
 
         //获取组件
         exp_ls = findViewById(R.id.exp_detail_ls);
@@ -72,7 +56,7 @@ public class WordDetailActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Word word=wordList.get(position);
+                WordObject word=wordList.get(position);
                 Toast.makeText(WordDetailActivity.this, "Hi！我是"+word.getText(), Toast.LENGTH_SHORT).show();
                 sd.setVisibility(View.VISIBLE);
                 word_title_tv.setText(word.getText());

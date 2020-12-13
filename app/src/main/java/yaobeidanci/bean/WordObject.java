@@ -25,5 +25,18 @@ public class WordObject {
 
     public int word_id;
 
-}
+    public String getText(){
+        return word;
+    }
 
+    public List<WordExplanationObject> getExp(){ return explains;}
+
+    public String getcExp(){
+        String cexp="";
+        for (int i=0;i<explains.size();i++){
+            cexp+=explains.get(i).getExplain_c()+"；";
+        }
+        return cexp;
+    }
+
+}
