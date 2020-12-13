@@ -17,5 +17,13 @@ public class WordObject {
     public String remember_method;
     public List<WordExplanationObject> questions;
     public int correct_index;
+
+    public String phrases_label;
+    public String relate_words_label;
+    public String remember_method_label;
+    public String sentences_label;
+
+    public int word_id;
+
 }
 

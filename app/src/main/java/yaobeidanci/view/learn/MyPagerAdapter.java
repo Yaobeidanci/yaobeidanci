@@ -15,6 +15,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import yaobeidanci.bean.PhraseObject;
@@ -149,6 +151,7 @@ public class MyPagerAdapter extends PagerAdapter {
     public static class CardViewPagerAdapter extends MyPagerAdapter {
 
         List<Object> itemList;
+        List<String> titleList;
 
         enum TYPE {LEFT, RIGHT}
 
@@ -166,9 +169,11 @@ public class MyPagerAdapter extends PagerAdapter {
                 this.itemList = new ArrayList<>();
                 this.itemList.add(wordObject.phrases);
                 this.itemList.add(wordObject.relate_words);
+                this.titleList = Arrays.asList(wordObject.phrases_label,wordObject.relate_words_label);
             } else if (this.type == TYPE.RIGHT) {
                 this.itemList = new ArrayList<>();
                 this.itemList.addAll(wordObject.explains);
+                this.titleList = Collections.singletonList("释义");
             }
             this.notifyDataSetChanged();
         }
@@ -181,7 +186,11 @@ public class MyPagerAdapter extends PagerAdapter {
         @Nullable
         @Override
         public CharSequence getPageTitle(int position) {
-            return "title";
+            if (type == TYPE.LEFT) {
+                return this.titleList.get(position);
+            }else {
+                return this.titleList.get(0);
+            }
         }
 
         @NonNull
@@ -276,7 +285,7 @@ public class MyPagerAdapter extends PagerAdapter {
 
             SentenceObject sentenceObject = sentenceList.get(position);
             title.setText(sentenceObject.origin_title);
-            chinese.setText(sentenceObject.explain);
+            chinese.setText(sentenceObject.translation);
             english.setText(sentenceObject.sentence);
 
             if (view != null) {

@@ -28,11 +28,22 @@ import okhttp3.Response;
  * 网络工具包
  */
 public class MyUtil {
+    public static final String BASE_URL = "http://10.0.2.2:5000";
     /**
      * 回调函数
      */
-    public static interface SuccessCallback {
-        public void onSuccess(Object result);
+    public interface MyCallback {
+        /**
+         * 请求成功时
+         * @param result 请求结果
+         */
+        void onSuccess(Object result);
+
+        /**
+         * 请求失败时，没想好怎么用，暂时不要用
+         * @param result
+         */
+        void onError(Object result);
     }
 
     public static final MediaType JSON_TYPE
@@ -40,7 +51,7 @@ public class MyUtil {
     static OkHttpClient client = new OkHttpClient();
 
     // 异步，但是应该是无法更新UI线程，因此不使用
-    public static void httpGetAsync(String url, JSONObject json, final SuccessCallback callback, final boolean isString) {
+    public static void httpGetAsync(String url, JSONObject json, final MyCallback callback, final boolean isString) {
         String result = null;
         HttpUrl.Builder url_builder = HttpUrl.parse(url).newBuilder();
         try {
@@ -80,7 +91,7 @@ public class MyUtil {
     }
 
     // 异步，但是应该是无法更新UI线程，因此不使用
-    public static void httpPostAsync(final String url, JSONObject json, final boolean isForm, final SuccessCallback callback) {
+    public static void httpPostAsync(final String url, JSONObject json, final boolean isForm, final MyCallback callback) {
         try {
             Request request;
             if (isForm) {
@@ -128,7 +139,7 @@ public class MyUtil {
      * @param callback 回调
      * @param isString 返回是否为字符串，如果是，则返回字符串，否则返回字节数组
      */
-    public static void httpGet(final String url, final JSONObject json, final SuccessCallback callback, final boolean isString) {
+    public static void httpGet(final String url, final JSONObject json, final MyCallback callback, final boolean isString) {
         new AsyncTask<Void, Void, Object>() {
 
             @Override
@@ -180,7 +191,7 @@ public class MyUtil {
      * @param isForm   是否为form格式，传入true
      * @param callback 回调，返回字符串
      */
-    public static void httpPost(final String url, final JSONObject json, final boolean isForm, final SuccessCallback callback) {
+    public static void httpPost(final String url, final JSONObject json, final boolean isForm, final MyCallback callback) {
         new AsyncTask<Void, Void, String>() {
 
             @Override

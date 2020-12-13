@@ -5,7 +5,7 @@ package yaobeidanci.bean;
  */
 public class SentenceObject{
     public String sentence;
-    public String explain;
+    public String translation;
     public String origin_title;
     public String background_path;
 

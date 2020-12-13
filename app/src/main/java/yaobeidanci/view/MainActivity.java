@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject object = new JSONObject();
                 try {
                     object.put("book_id", "CET4luan_2");
-                    object.put("total", 5);
-                    MyUtil.httpGet("http://10.0.2.2:5000/resource/wordList", object, new MyUtil.SuccessCallback() {
+                    object.put("total", 20);
+                    MyUtil.httpGet(MyUtil.BASE_URL + "/resource/wordList", object, new MyUtil.MyCallback() {
                         @Override
                         public void onSuccess(Object result) {
                             try {
@@ -66,6 +66,11 @@ public class MainActivity extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                        }
+
+                        @Override
+                        public void onError(Object result) {
+
                         }
                     }, true);
                 } catch (JSONException e) {
@@ -81,10 +86,15 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     object.put("username", "tsluqn");
                     object.put("password", "123456");
-                    MyUtil.httpPost("http://10.0.2.2:5000/api/login", object, true, new MyUtil.SuccessCallback() {
+                    MyUtil.httpPost(MyUtil.BASE_URL + "/api/login", object, true, new MyUtil.MyCallback() {
                         @Override
                         public void onSuccess(Object result) {
                             Toast.makeText(MainActivity.this, (String) result, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onError(Object result) {
+
                         }
                     });
                 } catch (JSONException e) {
