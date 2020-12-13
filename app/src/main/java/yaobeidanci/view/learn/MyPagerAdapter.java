@@ -1,11 +1,14 @@
 package yaobeidanci.view.learn;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import yaobeidanci.bean.PhraseObject;
 import yaobeidanci.bean.RelateWordObject;
@@ -118,16 +123,39 @@ public class MyPagerAdapter extends PagerAdapter {
                     LinearLayout linearLayout = viewItem.findViewById(R.id.options);
                     for (int i = 0; i < 4; i++) {
                         Button button = (Button) linearLayout.getChildAt(i);
-                        button.setText("ffg");
+                        WordExplanationObject explanationObject = wordObject.questions.get(i);
+                        button.setText(explanationObject.prop + ". " + explanationObject.explain_c);
                         final View finalView = viewItem;
                         button.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                View layout = finalView.findViewById(R.id.options);
-                                layout.setVisibility(INVISIBLE);
-                                TextView answer = finalView.findViewById(R.id.showedAns);
-                                answer.setText("the answer");
-                                answer.setVisibility(VISIBLE);
+
+                                Button bt = (Button) v;
+                                String selectAns = bt.getText().toString();
+                                WordExplanationObject correct = wordObject.explains.get(0);
+
+                                final String ans = correct.prop + ". " + correct.explain_c;
+                                if (selectAns.equals(ans)) {
+                                    Toast.makeText(mContext, "yes", Toast.LENGTH_SHORT).show();
+                                    bt.setBackgroundColor(Color.GREEN);
+                                }else {
+                                    Toast.makeText(mContext, "no", Toast.LENGTH_SHORT).show();
+                                    bt.setBackgroundColor(Color.RED);
+                                }
+                                // 得用 handler 作延时，其他线程无法操作UI
+                                Handler handler = new Handler();
+                                Runnable runnable = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        View layout = finalView.findViewById(R.id.options);
+                                        // GONE 不占空间
+                                        layout.setVisibility(View.GONE);
+                                        TextView answer = finalView.findViewById(R.id.showedAns);
+                                        answer.setText(ans);
+                                        answer.setVisibility(VISIBLE);
+                                    }
+                                };
+                                handler.postDelayed(runnable, 1000);
                             }
                         });
 

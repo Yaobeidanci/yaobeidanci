@@ -1,4 +1,8 @@
 import sqlite3
+import threading
+
+# 需要加锁，否则sqlite会报错Recursive use of cursors not allowed
+lock = threading.Lock()
 
 
 # 官方文档中将查询结果以dict的结构返回的方案
@@ -20,6 +24,7 @@ class DBTool:
     def execute(self, sql, args, commit=True):
         # 执行其他sql语句
         try:
+            lock.acquire(True)
             self.c.execute(sql, args)
             if commit:
                 self.db.commit()
@@ -27,11 +32,17 @@ class DBTool:
         except Exception as ex:
             print(ex)
             return False
+        finally:
+            lock.release()
 
     def execute_query(self, sql, args):
         # 执行select
-        self.c.execute(sql, args)
-        return self.c.fetchall()
+        try:
+            lock.acquire(True)
+            self.c.execute(sql, args)
+            return self.c.fetchall()
+        finally:
+            lock.release()
 
     def reset(self):
         # 删库重建

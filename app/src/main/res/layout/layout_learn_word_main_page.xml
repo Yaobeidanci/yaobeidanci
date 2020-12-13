@@ -26,17 +26,10 @@
         android:textColor="@color/colorWord"
         android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/showedAns"
-        android:visibility="invisible"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""/>
-
     <LinearLayout
         android:id="@+id/options"
         android:layout_width="match_parent"
-        android:layout_height="400sp"
+        android:layout_height="300sp"
         android:orientation="vertical">
 
         <Button
@@ -79,7 +72,18 @@
             android:alpha="0.8"
             android:background="@color/colorOption"
             android:text="123" />
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/showedAns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="60sp"
+        android:text=""
+        android:textSize="24sp"
+        android:visibility="gone" />
 
 
 </LinearLayout>

@@ -166,9 +166,9 @@ def load_word_list():
                     quest_obj = get_word(lines[question_index])
                     questions.append(quest_obj['explains'][0])
                 questions.append(word_obj['explains'][0])
-                questions = random.shuffle(questions)
+                random.shuffle(questions)
                 word_obj['questions'] = questions
-                # question_indexes = [i for i in range(len(lines))]
+                # print(word_obj['questions'])
 
                 print(word_obj['word_id'])
                 sentences = word_obj['sentences']
