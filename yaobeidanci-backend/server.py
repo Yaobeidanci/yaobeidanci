@@ -190,6 +190,7 @@ def get_star_words():
     uid = request.args.get('uid')
     res = db.execute_query("select * from word where word in (select word from star_word where uid=?)", (uid,))
     res = [data_manager.get_word_from_db_form(i, db) for i in res]
+    print(res)
     return {
         'status': 200,
         'data': res
@@ -202,6 +203,7 @@ def get_star_sentences():
     uid = request.args.get('uid')
     res = db.execute_query(
         "select * from sentence where sentence_id=(select sentence_id from star_sentence where uid=?)", (uid,))
+    print(res)
     return {
         'status': 200,
         'data': res

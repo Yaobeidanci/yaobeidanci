@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import yaobeidanci.view.book.StudyPlan;
 import yaobeidanci.view.collect.CollectMainActivity;
 import yaobeidanci.view.learn.WordMainActivity;
 import yaobeidanci.view.mainpage.SelfPage;
@@ -42,6 +43,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 CollectMainActivity.startIt(MainActivity.this);
+            }
+        });
+
+        ImageView book_bt = findViewById(R.id.book_bt);
+        book_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, StudyPlan.class);
+                startActivity(intent);
             }
         });
     }

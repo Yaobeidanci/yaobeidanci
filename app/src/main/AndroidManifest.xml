@@ -15,14 +15,14 @@
         android:theme="@style/AppTheme">
         <activity android:name=".book.ChooseBook"/>
         <activity android:name=".book.StudyPlan" />
-        <activity android:name=".welcome.Welcome" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".welcome.Welcome" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity"/>
         <activity android:name=".learn.WordMainActivity"/>
         <activity android:name=".collect.CollectMainActivity"/>
         <activity android:name=".mainpage.SelfPage"/>

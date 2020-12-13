@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
+
+import yaobeidanci.view.MainActivity;
 import yaobeidanci.view.R;
 import yaobeidanci.view.book.StudyPlan;
 
@@ -40,8 +42,10 @@ public class Welcome extends AppCompatActivity {
             }
             @Override
             public void onAnimationEnd(Animation animation) {
-                Intent intent = new Intent(Welcome.this, StudyPlan.class);
+                Intent intent = new Intent(Welcome.this, MainActivity.class);
                 startActivity(intent);
+                // 销毁启动动画界面
+                finish();
             }
             @Override
             public void onAnimationRepeat(Animation animation) {
