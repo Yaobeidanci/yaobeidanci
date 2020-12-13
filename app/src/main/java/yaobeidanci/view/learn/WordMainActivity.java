@@ -8,12 +8,16 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import yaobeidanci.MyUtil;
+import yaobeidanci.bean.SentenceObject;
 import yaobeidanci.bean.WordObject;
 import yaobeidanci.view.R;
 
@@ -49,7 +53,7 @@ public class WordMainActivity extends AppCompatActivity {
     public static void startIt(final Activity src){
         JSONObject object = new JSONObject();
         try {
-            object.put("uid", "5447055154731782788");
+            object.put("uid", "266c0c9fc2446658333fb249d10e3cdf");
             MyUtil.httpGet(MyUtil.BASE_URL + "/resource/word", object, new MyUtil.MyCallback() {
                 @Override
                 public void onSuccess(Object result) {
@@ -72,6 +76,31 @@ public class WordMainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+//
+//        JSONObject object = new JSONObject();
+//        try {
+//            object.put("uid", "266c0c9fc2446658333fb249d10e3cdf");
+//            MyUtil.httpGet(MyUtil.BASE_URL + "/resource/starWords", object, new MyUtil.MyCallback() {
+//                @Override
+//                public void onSuccess(Object result) {
+//                    try {
+//                        JSONObject res = new JSONObject((String) result);
+//                        String word_json = res.getString("data");
+//                        List<WordObject> myConvertList = new Gson().fromJson(word_json, new TypeToken<List<WordObject>>() {}.getType());
+//                        Log.d("hahaha", "onSuccess: ");
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//
+//                @Override
+//                public void onError(Object result) {
+//
+//                }
+//            },true);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
     }
 
 }
