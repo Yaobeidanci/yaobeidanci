@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,9 @@ import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,11 +29,12 @@ import yaobeidanci.bean.SentenceObject;
 import yaobeidanci.bean.WordObject;
 import yaobeidanci.view.MainActivity;
 import yaobeidanci.view.R;
+import yaobeidanci.view.learn.WordMainActivity;
 
 public class CollectMainActivity extends AppCompatActivity {
 
-    private List<WordObject> wordList = new ArrayList<>();
-    private List<SentenceObject> sList=new ArrayList<>();
+    private static List<WordObject> wordList = new ArrayList<>();
+    private static List<SentenceObject> sList=new ArrayList<>();
     public SlidingDrawer sd;
     public ListView exp_ls;
     public TextView word_title_tv;
@@ -37,17 +42,74 @@ public class CollectMainActivity extends AppCompatActivity {
     RecyclerView word_rv;
     RecyclerView sentence_rv;
 
+    /**
+     * 启动一个新的word页面，并加载单词
+     * @param src 调用者
+     */
+    public static void startIt(final Activity src){
+        final JSONObject object1 = new JSONObject();
+        final JSONObject object2 = new JSONObject();
+        try {
+            object1.put("uid", "3663892974427209744");
+            MyUtil.httpGet(MyUtil.BASE_URL + "/resource/starWords", object1, new MyUtil.MyCallback() {
+                @Override
+                public void onSuccess(Object result) {
+                    try {
+                        JSONObject res = new JSONObject((String) result);
+                        String words_json = res.getString("data");
+                        wordList = new Gson().fromJson(words_json, new TypeToken<List<WordObject>>(){}.getType());
+                        Intent intent = new Intent(src, CollectMainActivity.class);
+                        src.startActivity(intent);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(Object result) {
+
+                }
+            },true);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            object2.put("uid", "3663892974427209744");
+            MyUtil.httpGet(MyUtil.BASE_URL + "/resource/starSentences", object2, new MyUtil.MyCallback() {
+                @Override
+                public void onSuccess(Object result) {
+                    try {
+                        JSONObject res = new JSONObject((String) result);
+                        String sentences_json = res.getString("data");
+                        sList = new Gson().fromJson(sentences_json, new TypeToken<List<SentenceObject>>(){}.getType());
+                        Intent intent = new Intent(src, CollectMainActivity.class);
+                        src.startActivity(intent);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(Object result) {
+
+                }
+            },true);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_collect_activity_main);
 
         //初始化单词数据
-
         //初始化句子数据
-
         //初始化解释
-
 
         //获取布局
         exp_ls = findViewById(R.id.exp_detail_ls);

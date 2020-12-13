@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import yaobeidanci.view.collect.CollectMainActivity;
 import yaobeidanci.view.learn.WordMainActivity;
 import yaobeidanci.view.mainpage.SelfPage;
 
@@ -34,13 +35,21 @@ public class MainActivity extends AppCompatActivity {
                 WordMainActivity.startIt(MainActivity.this);
             }
         });
+
+        //进入收藏页面
+        ImageView collect = findViewById(R.id.imageView);
+        collect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CollectMainActivity.startIt(MainActivity.this);
+            }
+        });
     }
+
 
     public void onclick(View view){
         Intent intent=new Intent(MainActivity.this, SelfPage.class);
         startActivity(intent);
-
-
     }
     public static Context getContext() {
         return context;

@@ -22,7 +22,7 @@ import java.util.List;
 public class SentenceAdapter extends RecyclerView.Adapter<SentenceAdapter.ViewHolder> {
 
     private List<SentenceObject> sList;
-
+    private int [] bg;
     static class ViewHolder extends RecyclerView.ViewHolder{
         ImageView bg_iv;
         TextView text_tv;
@@ -39,6 +39,13 @@ public class SentenceAdapter extends RecyclerView.Adapter<SentenceAdapter.ViewHo
 
     public SentenceAdapter(List<SentenceObject> sList) {
         this.sList = sList;
+        bg=new int[5];
+
+        bg[0]=R.drawable.a;
+        bg[1]=R.drawable.b;
+        bg[2]=R.drawable.c;
+        bg[3]=R.drawable.d;
+        bg[4]=R.drawable.f;
     }
 
     //用来创建ViewHolder实例，并把加载出来的布局传入构造函数中，最后将ViewHolder的实例返回
@@ -53,8 +60,8 @@ public class SentenceAdapter extends RecyclerView.Adapter<SentenceAdapter.ViewHo
     @Override
     public void onBindViewHolder(final SentenceAdapter.ViewHolder holder, int position) {
         SentenceObject s = sList.get(position);
-        holder.bg_iv.setImageResource(s.getFromImageId());
-        holder.from_tv.setText(s.getFromImageId());
+        holder.bg_iv.setImageResource(bg[s.getBackgroundId()]);
+        holder.from_tv.setText(s.getOrigin_title());
         holder.text_tv.setText(s.getSentence());
         holder.text_tv.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC);
         holder.from_tv.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC);
