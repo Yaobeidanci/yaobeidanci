@@ -15,11 +15,16 @@ import yaobeidanci.view.R;
 
 public class SentenceDetailAdapter extends ArrayAdapter<SentenceObject> {
     private int resourceId;
+    private int [] form_image;
 
     //构造函数
     public SentenceDetailAdapter(Context context, int textViewResourceId, List<SentenceObject> sentence){
         super(context,textViewResourceId,sentence);
         resourceId=textViewResourceId;
+
+        form_image=new int[1];
+
+        form_image[0]=R.drawable.yfzz;
     }
 
     @Override
@@ -46,7 +51,7 @@ public class SentenceDetailAdapter extends ArrayAdapter<SentenceObject> {
 
         //获取控件实例，并显示出来
         viewHolder.context.setText(s.getSentence());
-        viewHolder.fromig.setImageResource(s.getFromImageId());
+        viewHolder.fromig.setImageResource(form_image[s.getFromImageId()]);
         viewHolder.from.setText(s.getOrigin_title());
         return view;
     }
