@@ -22,7 +22,9 @@ CREATE TABLE sentence (
     sentence_id varchar(50),
     sentence varchar(255),
     translation varchar(255),
-    origin_word varchar(50)
+    origin_word varchar(50),
+    origin_img integer,
+    origin_title varchar(50)
 );
 
 DROP TABLE IF EXISTS word;
@@ -35,7 +37,8 @@ CREATE TABLE word (
     relate_words varchar(255),
     explains varchar(255),
     phrases varchar(255),
-    remember_method varchar(255)
+    remember_method varchar(255),
+    questions varchar(255)
 );
 
 DROP TABLE IF EXISTS schedule;
@@ -43,7 +46,8 @@ CREATE TABLE schedule (
     uid varchar(50),
     book varchar(50),
     start_date varchar(50),
-    current_progress integer
+    current_progress integer,
+    num_daily integer
 );
 
 DROP TABLE IF EXISTS star_sentence;
@@ -55,6 +59,5 @@ CREATE TABLE star_sentence (
 DROP TABLE IF EXISTS star_word;
 CREATE TABLE star_word (
     uid varchar(50),
-    word_id integer,
-    category varchar(50)
+    word varchar(50)
 );

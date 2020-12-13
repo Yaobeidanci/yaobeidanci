@@ -19,7 +19,7 @@
     <!--    -->
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/learn_gate"
         android:layout_width="163dp"
         android:layout_height="194dp"
         android:background="@drawable/shape"
