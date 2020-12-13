@@ -50,7 +50,7 @@ public class CollectMainActivity extends AppCompatActivity {
         final JSONObject object1 = new JSONObject();
         final JSONObject object2 = new JSONObject();
         try {
-            object1.put("uid", "3663892974427209744");
+            object1.put("uid", "266c0c9fc2446658333fb249d10e3cdf");
             MyUtil.httpGet(MyUtil.BASE_URL + "/resource/starWords", object1, new MyUtil.MyCallback() {
                 @Override
                 public void onSuccess(Object result) {
@@ -75,7 +75,7 @@ public class CollectMainActivity extends AppCompatActivity {
         }
 
         try {
-            object2.put("uid", "3663892974427209744");
+            object2.put("uid", "266c0c9fc2446658333fb249d10e3cdf");
             MyUtil.httpGet(MyUtil.BASE_URL + "/resource/starSentences", object2, new MyUtil.MyCallback() {
                 @Override
                 public void onSuccess(Object result) {
