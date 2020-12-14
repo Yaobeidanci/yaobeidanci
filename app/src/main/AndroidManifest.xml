@@ -31,6 +31,7 @@
         <activity android:name=".learn.WordMainActivity" />
         <activity android:name=".collect.CollectMainActivity" />
         <activity android:name=".mainpage.SelfPage" />
+        <activity android:name=".mainpage.SettingPage"/>
         <activity
             android:name=".collect.SentenceDetailActivity"
             android:label="句库"

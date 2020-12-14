@@ -5,7 +5,8 @@ CREATE TABLE user (
     uid varchar(50),
     phone varchar(20),
     nickname varchar(50),
-    header varchar(255)
+    header varchar(255),
+    is_login integer
 );
 
 DROP TABLE IF EXISTS book;

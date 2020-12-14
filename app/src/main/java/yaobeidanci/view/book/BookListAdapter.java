@@ -51,43 +51,17 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 final BookItemEntity itemWordBook = mItemWordBookList.get(position);
-//                if(itemWordBook.getBookId()==ConstantConfig.CET6) {
-//                    Toast.makeText(MainActivity.getContext(), "已经是"+itemWordBook.getBookId()+":"+itemWordBook.getBookName()+"了哦", Toast.LENGTH_SHORT).show();
-//                }
-//                else{
-//                    // 传值
-//                    Intent intent = new Intent(MainActivity.getContext(), StudyPlan.class);
-//                    intent.putExtra("bookname",itemWordBook.getBookName());
-//                    intent.putExtra("bookid",itemWordBook.getBookId());
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    MainActivity.getContext().startActivity(intent);
-//                }
-//                JSONObject object = new JSONObject();
-//                try {
-//                    object.put("uid", "266c0c9fc2446658333fb249d10e3cdf");
-//                    object.put("book_id", itemWordBook.getBookId());
-//                    object.put("num_daily", 50);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                MyUtil.httpGet(MyUtil.BASE_URL + "/api/setSchedule", object, new MyUtil.MyCallback() {
-//                    @Override
-//                    public void onSuccess(Object result) {
-//                        String res = (String) result;
-//                        Toast.makeText(MainActivity.getContext(),res,Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    @Override
-//                    public void onError(Object result) {
-//
-//                    }
-//                }, true);
-                Intent intent = new Intent(MainActivity.getContext(), SetNumActivity.class);
-                intent.putExtra("bookname",itemWordBook.getBookName());
-                intent.putExtra("bookid",itemWordBook.getBookId());
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                MainActivity.getContext().startActivity(intent);
+
+                if(SetNumActivity.bookid!=null && itemWordBook.getBookId()==SetNumActivity.bookid) {
+                    Toast.makeText(MainActivity.getContext(), "已经是"+itemWordBook.getBookId()+":"+itemWordBook.getBookName()+"了哦", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Intent intent = new Intent(MainActivity.getContext(), SetNumActivity.class);
+                    intent.putExtra("bookname",itemWordBook.getBookName());
+                    intent.putExtra("bookid",itemWordBook.getBookId());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    MainActivity.getContext().startActivity(intent);
+                }
             }
         });
         return holder;

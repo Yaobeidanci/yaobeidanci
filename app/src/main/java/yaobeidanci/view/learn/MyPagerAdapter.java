@@ -34,6 +34,7 @@ import yaobeidanci.bean.RelateWordObject;
 import yaobeidanci.bean.SentenceObject;
 import yaobeidanci.bean.WordExplanationObject;
 import yaobeidanci.bean.WordObject;
+import yaobeidanci.view.MainActivity;
 import yaobeidanci.view.R;
 
 import static android.view.View.INVISIBLE;
@@ -114,7 +115,7 @@ public class MyPagerAdapter extends PagerAdapter {
 
             JSONObject object = new JSONObject();
             try {
-                object.put("uid", "266c0c9fc2446658333fb249d10e3cdf");
+                object.put("uid", MyUtil.getUid());
                 object.put("word_id", wordObject.word_id);
                 object.put("mode", 1);
                 object.put("result", result);
@@ -124,13 +125,13 @@ public class MyPagerAdapter extends PagerAdapter {
 
             MyUtil.httpGet(MyUtil.BASE_URL + "/api/setResult", object, new MyUtil.MyCallback() {
                 @Override
-                public void onSuccess(Object result) {
-                    Log.d("net-", "onSuccess: " + (String)result);
+                public void onSuccess(MyUtil.Res result) {
+                    Log.d("net-", "onSuccess: " + (String)result.data);
                 }
 
                 @Override
-                public void onError(Object result) {
-
+                public void onError(MyUtil.Res result) {
+                    Toast.makeText(MainActivity.getContext(), result.msg, Toast.LENGTH_SHORT).show();
                 }
             }, true);
 

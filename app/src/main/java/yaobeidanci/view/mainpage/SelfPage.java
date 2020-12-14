@@ -20,7 +20,5 @@ public class SelfPage extends AppCompatActivity {
     public void onclick_setting(View view){
         Intent intent=new Intent(SelfPage.this,SettingPage.class);
         startActivity(intent);
-
-
     }
 }

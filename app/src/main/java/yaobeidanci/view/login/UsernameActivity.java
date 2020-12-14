@@ -71,14 +71,14 @@ public class UsernameActivity extends AppCompatActivity {
                     object.put("password", password_string);
                     MyUtil.httpPost(MyUtil.BASE_URL + "/api/login", object, true, new MyUtil.MyCallback() {
                         @Override
-                        public void onSuccess(Object result) {
+                        public void onSuccess(MyUtil.Res result) {
                             try{
-                                JSONObject jsonObject = new JSONObject((String) result);
+                                JSONObject jsonObject = new JSONObject((String) result.data);
 //                                JSONObject status = jsonObject.getJSONObject("msg");
                                 if(jsonObject.getString("status").equals("200")){
                                     JSONObject data = jsonObject.getJSONObject("data");
                                     MyUtil.setUid(data.getString("uid"));
-                                    Toast.makeText(UsernameActivity.this, ((String) result) + " " + MyUtil.getUid(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(UsernameActivity.this, ((String) result.data) + " " + MyUtil.getUid(), Toast.LENGTH_SHORT).show();
 //                                    WordMainActivity.startIt(UsernameActivity.this);
                                     Intent intent = new Intent(UsernameActivity.this, MainActivity.class);
                                     startActivity(intent);
@@ -91,8 +91,8 @@ public class UsernameActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onError(Object result) {
-                            Toast.makeText(UsernameActivity.this, (String) result, Toast.LENGTH_SHORT).show();
+                        public void onError(MyUtil.Res result) {
+                            Toast.makeText(MainActivity.getContext(), result.msg, Toast.LENGTH_SHORT).show();
                         }
                     });
                 } catch (JSONException e) {

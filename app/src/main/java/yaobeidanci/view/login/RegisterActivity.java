@@ -67,25 +67,25 @@ public class RegisterActivity extends AppCompatActivity {
                     object.put("phone", second_password_string);
                     MyUtil.httpPost(MyUtil.BASE_URL + "/api/register", object, true, new MyUtil.MyCallback() {
                         @Override
-                        public void onSuccess(Object result) {
+                        public void onSuccess(MyUtil.Res result) {
                             try{
-                                JSONObject jsonObject = new JSONObject((String) result);
+                                JSONObject jsonObject = new JSONObject((String) result.data);
 //                                JSONObject status = jsonObject.getJSONObject("msg");
                                 if(jsonObject.getString("status").equals("200")){
-                                    Toast.makeText(RegisterActivity.this, (String) result, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(RegisterActivity.this, (String) result.data, Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                     startActivity(intent);
                                 }else{
                                     Toast.makeText(RegisterActivity.this, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
                                 }
                             }catch(Exception e){
-                                Toast.makeText(RegisterActivity.this, (String) result, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, (String) result.data, Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
-                        public void onError(Object result) {
-
+                        public void onError(MyUtil.Res result) {
+                            Toast.makeText(MainActivity.getContext(), result.msg, Toast.LENGTH_SHORT).show();
                         }
                     });
                 } catch (JSONException e) {

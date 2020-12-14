@@ -50,12 +50,12 @@ public class CollectMainActivity extends AppCompatActivity {
         final JSONObject object1 = new JSONObject();
         final JSONObject object2 = new JSONObject();
         try {
-            object1.put("uid", "266c0c9fc2446658333fb249d10e3cdf");
+            object1.put("uid", MyUtil.getUid());
             MyUtil.httpGet(MyUtil.BASE_URL + "/resource/starWords", object1, new MyUtil.MyCallback() {
                 @Override
-                public void onSuccess(Object result) {
+                public void onSuccess(MyUtil.Res result) {
                     try {
-                        JSONObject res = new JSONObject((String) result);
+                        JSONObject res = new JSONObject((String) result.data);
                         String words_json = res.getString("data");
                         wordList = new Gson().fromJson(words_json, new TypeToken<List<WordObject>>(){}.getType());
                         Intent intent = new Intent(src, CollectMainActivity.class);
@@ -66,8 +66,8 @@ public class CollectMainActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onError(Object result) {
-
+                public void onError(MyUtil.Res result) {
+                    Toast.makeText(MainActivity.getContext(), result.msg, Toast.LENGTH_SHORT).show();
                 }
             },true);
         } catch (JSONException e) {
@@ -75,12 +75,12 @@ public class CollectMainActivity extends AppCompatActivity {
         }
 
         try {
-            object2.put("uid", "266c0c9fc2446658333fb249d10e3cdf");
+            object2.put("uid", MyUtil.getUid());
             MyUtil.httpGet(MyUtil.BASE_URL + "/resource/starSentences", object2, new MyUtil.MyCallback() {
                 @Override
-                public void onSuccess(Object result) {
+                public void onSuccess(MyUtil.Res result) {
                     try {
-                        JSONObject res = new JSONObject((String) result);
+                        JSONObject res = new JSONObject((String) result.data);
                         String sentences_json = res.getString("data");
                         sList = new Gson().fromJson(sentences_json, new TypeToken<List<SentenceObject>>(){}.getType());
                         Intent intent = new Intent(src, CollectMainActivity.class);
@@ -91,8 +91,8 @@ public class CollectMainActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onError(Object result) {
-
+                public void onError(MyUtil.Res result) {
+                    Toast.makeText(MainActivity.getContext(), result.msg, Toast.LENGTH_SHORT).show();
                 }
             },true);
         } catch (JSONException e) {

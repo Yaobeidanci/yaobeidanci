@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -19,6 +20,7 @@ import java.util.List;
 import yaobeidanci.MyUtil;
 import yaobeidanci.bean.SentenceObject;
 import yaobeidanci.bean.WordObject;
+import yaobeidanci.view.MainActivity;
 import yaobeidanci.view.R;
 
 public class WordMainActivity extends AppCompatActivity {
@@ -53,12 +55,12 @@ public class WordMainActivity extends AppCompatActivity {
     public static void startIt(final Activity src){
         JSONObject object = new JSONObject();
         try {
-            object.put("uid", "266c0c9fc2446658333fb249d10e3cdf");
+            object.put("uid", MyUtil.getUid());
             MyUtil.httpGet(MyUtil.BASE_URL + "/resource/word", object, new MyUtil.MyCallback() {
                 @Override
-                public void onSuccess(Object result) {
+                public void onSuccess(MyUtil.Res result) {
                     try {
-                        JSONObject res = new JSONObject((String) result);
+                        JSONObject res = new JSONObject((String) result.data);
                         String word_json = res.getString("data");
                         wordObject = new Gson().fromJson(word_json, WordObject.class);
                         Intent intent = new Intent(src, WordMainActivity.class);
@@ -69,8 +71,8 @@ public class WordMainActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onError(Object result) {
-
+                public void onError(MyUtil.Res result) {
+                    Toast.makeText(MainActivity.getContext(), result.msg, Toast.LENGTH_SHORT).show();
                 }
             },true);
         } catch (JSONException e) {

@@ -38,7 +38,7 @@ public class SetNumActivity extends AppCompatActivity {
         inputcnt=Integer.parseInt(inputnum.getText().toString());//获取输入的要背的单词数
         JSONObject object = new JSONObject();
         try {
-            object.put("uid", "266c0c9fc2446658333fb249d10e3cdf");
+            object.put("uid", MyUtil.getUid());
             object.put("book_id", bookid);
             object.put("num_daily", inputcnt);
         } catch (JSONException e) {
@@ -47,14 +47,14 @@ public class SetNumActivity extends AppCompatActivity {
 
         MyUtil.httpGet(MyUtil.BASE_URL + "/api/setSchedule", object, new MyUtil.MyCallback() {
             @Override
-            public void onSuccess(Object result) {
-                String res = (String) result;
+            public void onSuccess(MyUtil.Res result) {
+                String res = (String) result.data;
                 //Toast.makeText(MainActivity.getContext(),res,Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onError(Object result) {
-
+            public void onError(MyUtil.Res result) {
+                Toast.makeText(MainActivity.getContext(), result.msg, Toast.LENGTH_SHORT).show();
             }
         }, true);
         Intent intent=new Intent(SetNumActivity.this,StudyPlan.class);

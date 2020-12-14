@@ -1,4 +1,4 @@
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, session
 import requests
 import io
 import data_manager
@@ -22,6 +22,7 @@ def login():
         res = db.execute_query("select * from user where username=?", (username,))
         if len(res) == 1:
             if res[0]['password'] == password:
+                # r0 = db.execute("update ")
                 return {
                     'status': 200,
                     'msg': '登陆成功',
@@ -51,6 +52,15 @@ def login():
         }
 
 
+@app.route('/api/logout')
+def logout():
+    uid = request.args.get('uid')
+    return {
+        'status': 200,
+        'msg': '退出成功'
+    }
+
+
 # 注册，字段为username、password、phone
 @app.route('/api/register', methods=['POST'])
 def register():
@@ -61,8 +71,8 @@ def register():
         res = db.execute_query("select * from user where username=?", (username,))
         if len(res) == 0:
             # uid其实就是username的hash
-            res = db.execute("insert into user values (?, ?, ?, ?, ?, ?)",
-                             (username, password, util.get_md5(username), phone, '', ''))
+            res = db.execute("insert into user values (?, ?, ?, ?, ?, ?, ?)",
+                             (username, password, util.get_md5(username), phone, '', '', 0))
             res1 = db.execute("create table " + username + "_table" + " (" +
                               "word integer," +
                               "level integer)", ())
@@ -307,8 +317,9 @@ def mark():
             'status': 404,
             'msg': '已签过到'
         }
-    res = db.execute("insert into calender values (?,?)", (uid, "2020-12-13"))
+    res = db.execute("insert into calendar values (?,?)", (uid, "2020-12-13"))
     res0 = db.execute_query("select cur_date from calendar where uid=?", (uid,))
+    res0 = [i['cur_date'] for i in res0]
     return {
         'status': 200,
         'msg': '签到成功',
@@ -321,6 +332,7 @@ def mark():
 def get_mark():
     uid = request.args.get('uid')
     res = db.execute_query("select cur_date from calendar where uid=?", (uid,))
+    res = [i['cur_date'] for i in res]
     return {
         'status': 200,
         'data': res

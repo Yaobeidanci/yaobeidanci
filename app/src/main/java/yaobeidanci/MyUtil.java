@@ -34,9 +34,9 @@ public class MyUtil {
     enum RESULT {SUCCESS, FAIL}
 
     public static class Res{
-        Object data;
-        RESULT result;
-        String msg;
+        public Object data;
+        public RESULT result;
+        public String msg;
     }
     /**
      * 回调函数
@@ -107,6 +107,7 @@ public class MyUtil {
                         result.data = response.body().bytes();
                     }
                     result.result = RESULT.SUCCESS;
+                    response.close();
                 } catch (IOException e1) {
                     e1.printStackTrace();
                     result.result = RESULT.FAIL;
@@ -175,6 +176,7 @@ public class MyUtil {
                     byte[] bytes = response.body().bytes();
                     result.data = new String(bytes, "utf-8");
                     result.result = RESULT.SUCCESS;
+                    response.close();
                 } catch (IOException e1) {
                     e1.printStackTrace();
                     result.result = RESULT.FAIL;

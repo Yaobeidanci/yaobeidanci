@@ -22,6 +22,7 @@ import java.util.List;
 import yaobeidanci.MyUtil;
 import yaobeidanci.bean.SentenceObject;
 import yaobeidanci.bean.WordObject;
+import yaobeidanci.view.MainActivity;
 import yaobeidanci.view.R;
 
 public class SentenceDetailActivity extends AppCompatActivity {
@@ -35,12 +36,12 @@ public class SentenceDetailActivity extends AppCompatActivity {
         final JSONObject object = new JSONObject();
 
         try {
-            object.put("uid", "266c0c9fc2446658333fb249d10e3cdf");
+            object.put("uid", MyUtil.getUid());
             MyUtil.httpGet(MyUtil.BASE_URL + "/resource/starSentences", object, new MyUtil.MyCallback() {
                 @Override
-                public void onSuccess(Object result) {
+                public void onSuccess(MyUtil.Res result) {
                     try {
-                        JSONObject res = new JSONObject((String) result);
+                        JSONObject res = new JSONObject((String) result.data);
                         String words_json = res.getString("data");
                         sList = new Gson().fromJson(words_json, new TypeToken<List<SentenceObject>>(){}.getType());
                         Intent intent = new Intent(src, SentenceDetailActivity.class);
@@ -51,8 +52,8 @@ public class SentenceDetailActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onError(Object result) {
-
+                public void onError(MyUtil.Res result) {
+                    Toast.makeText(MainActivity.getContext(), result.msg, Toast.LENGTH_SHORT).show();
                 }
             },true);
         } catch (JSONException e) {
