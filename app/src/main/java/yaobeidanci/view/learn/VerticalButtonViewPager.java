@@ -57,6 +57,8 @@ public class VerticalButtonViewPager extends VerticalViewPager {
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             View view = null;
+            Button button1;
+            Button button2;
             // the menu in main view, and the menu in left and right view
             switch (position) {
                 case 0:
@@ -67,8 +69,8 @@ public class VerticalButtonViewPager extends VerticalViewPager {
                     leftTitlePageIndicator.setTextColor(Color.rgb(100, 100, 100));
                     leftTitlePageIndicator.setSelectedColor(Color.RED);
 
-                    Button button1 = view.findViewById(R.id.bt1);
-                    Button button2 = view.findViewById(R.id.bt2);
+                     button1 = view.findViewById(R.id.bt1);
+                     button2 = view.findViewById(R.id.bt2);
                     button1.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -91,6 +93,23 @@ public class VerticalButtonViewPager extends VerticalViewPager {
                     ImageButton editBt = view.findViewById(R.id.editBt);
                     ImageButton chatBt = view.findViewById(R.id.chatBt);
                     ImageButton deleteBt = view.findViewById(R.id.deleteBt);
+
+                     button1 = view.findViewById(R.id.bt1);
+                     button2 = view.findViewById(R.id.bt2);
+                    button1.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(context, "click the bt1", Toast.LENGTH_SHORT).show();
+                            connected.setCurrentItem(0);
+                        }
+                    });
+                    button2.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(context, "click the bt2", Toast.LENGTH_SHORT).show();
+                            connected.setCurrentItem(2);
+                        }
+                    });
 
                     Button nextBt = view.findViewById(R.id.nextWord);
                     nextBt.setOnClickListener(new OnClickListener() {

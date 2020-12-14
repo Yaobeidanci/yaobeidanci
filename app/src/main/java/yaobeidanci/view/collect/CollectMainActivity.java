@@ -121,7 +121,7 @@ public class CollectMainActivity extends AppCompatActivity {
         TextView detail_tv2=(TextView) findViewById(R.id.sentence_detail_tv);
 
         //卡片word设置适配器
-        wordList.clear();
+        //wordList.clear();
         if (wordList.size()!=0){
             word_rv = (RecyclerView) findViewById(R.id.word_view);
             word_rv.setVisibility(View.VISIBLE);
@@ -137,7 +137,7 @@ public class CollectMainActivity extends AppCompatActivity {
         }
 
         //卡片sentence设置适配器
-        sList.clear();
+        //sList.clear();
         if (sList.size()!=0){
             sentence_rv = (RecyclerView) findViewById(R.id.sentence_view);
             sentence_rv.setVisibility(View.VISIBLE);
@@ -185,17 +185,17 @@ public class CollectMainActivity extends AppCompatActivity {
                         currentMS = System.currentTimeMillis();//long currentMS     获取系统时间
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        if (startY<event.getY()){
-                            if (sd.isOpened()){
-                                if (event.getY()>1520) {
-                                    System.out.println("start: " + startY + "Now: " + event.getY());
-                                    sd.setVisibility(View.GONE);
-                                }
-                            }else {
-                                System.out.println("start: "+startY+"Now: "+event.getY());
-                                sd.setVisibility(View.GONE);
-                            }
-                        }
+                       if (startY<event.getY()){
+                           if (sd.isOpened()){
+                               if (event.getY()>1520) {
+                                   System.out.println("start: " + startY + "Now: " + event.getY());
+                                   sd.setVisibility(View.GONE);
+                               }
+                           }else {
+                               System.out.println("start: "+startY+"Now: "+event.getY());
+                               sd.setVisibility(View.GONE);
+                           }
+                       }
                         //sd.setY(moveY);
                         break;
                     case MotionEvent.ACTION_UP:
@@ -209,6 +209,8 @@ public class CollectMainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
     }
 
 }
