@@ -4,11 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import yaobeidanci.view.MainActivity;
 import yaobeidanci.view.R;
+import yaobeidanci.view.dashboard.calender.CalenderActivity;
+import yaobeidanci.view.dashboard.overview.OverviewActivity;
 
 public class StudyPlan extends AppCompatActivity {
     public static String bookid;//当前书籍id
@@ -44,6 +47,14 @@ public class StudyPlan extends AppCompatActivity {
     }
     public void returnMain(View wiew){
         Intent intent=new Intent(StudyPlan.this, MainActivity.class);
+        startActivity(intent);
+    }
+    public void toOverview(View view){
+        Intent intent=new Intent(StudyPlan.this, OverviewActivity.class);
+        startActivity(intent);
+    }
+    public void toCalender(View view){
+        Intent intent=new Intent(StudyPlan.this, CalenderActivity.class);
         startActivity(intent);
     }
 }

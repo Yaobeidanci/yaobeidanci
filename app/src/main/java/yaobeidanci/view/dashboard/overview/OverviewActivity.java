@@ -33,6 +33,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import yaobeidanci.view.R;
+import yaobeidanci.view.book.StudyPlan;
 
 public class OverviewActivity extends AppCompatActivity {
     private Button button_return;
@@ -364,4 +365,8 @@ public class OverviewActivity extends AppCompatActivity {
 //            textView_review_amount.setText(String.valueOf((int)((BarEntry)e).getYVals()[1]));
         }
     };
+    public void toStudyPlan(View view){
+        Intent intent=new Intent(OverviewActivity.this, StudyPlan.class);
+        startActivity(intent);
+    }
 }

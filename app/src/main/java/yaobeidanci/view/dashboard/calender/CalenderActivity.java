@@ -1,11 +1,15 @@
 package yaobeidanci.view.dashboard.calender;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import yaobeidanci.view.R;
+import yaobeidanci.view.book.StudyPlan;
+
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
 
@@ -48,5 +52,9 @@ public class CalenderActivity extends AppCompatActivity {
             calendarView.addSchemeDate(calendar);
         }
         calendarView.setMonthView(MyCalenderView.class);
+    }
+    public void returnStudyPlan(View view){
+        Intent intent=new Intent(CalenderActivity.this, StudyPlan.class);
+        startActivity(intent);
     }
 }
