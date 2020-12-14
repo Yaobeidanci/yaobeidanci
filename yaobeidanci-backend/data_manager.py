@@ -173,10 +173,10 @@ def load_word_list():
                 print(word_obj['word_id'])
                 sentences = word_obj['sentences']
                 for sentence in sentences:
-                    rand = random.randint(0, 2)
-                    db.execute("insert into sentence values (?,?,?,?,?,?)",
+                    db.execute("insert into sentence values (?,?,?,?,?,?,?)",
                                (sentence['sentence_id'], sentence['sentence'], sentence['translation'],
-                                sentence['origin_word'], rand, origins[rand]), commit=False)
+                                sentence['origin_word'], random.randint(0, 2), random.randint(0, 2),
+                                origins[random.randint(0, 2)]), commit=False)
                 db.execute("insert into word values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                            (word_obj['word_id'], word_obj['word'], word_obj['category'], word_obj['phonetic_uk'],
                             word_obj['phonetic_us'], json.dumps(word_obj['relate_words']),

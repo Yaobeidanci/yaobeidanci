@@ -63,7 +63,11 @@ def register():
             # uid其实就是username的hash
             res = db.execute("insert into user values (?, ?, ?, ?, ?, ?)",
                              (username, password, util.get_md5(username), phone, '', ''))
-            if res:
+            # res1 = db.execute("create table ? (" +
+            #                   "word varchar(50)," +
+            #                   "level integer)", (username+"_table",))
+            res1 = True
+            if res and res1:
                 return {
                     'status': 200,
                     'msg': '注册成功'
@@ -258,6 +262,20 @@ def get_current_word():
     #     return {
     #         'status': 404
     #     }
+
+
+# 接受用户点击结果
+@app.route('/api/setResult')
+def set_result():
+    uid = request.args.get('uid')
+    word_id = request.args.get('word_id')
+    mode = request.args.get('mode')
+    result = request.args.get('result')
+    print(uid, word_id, mode, result)
+    return {
+        'status': 200,
+        'msg': '操作成功'
+    }
 
 
 # 请求有道单词发音，word为请求的单词，type美音为0，英音为1

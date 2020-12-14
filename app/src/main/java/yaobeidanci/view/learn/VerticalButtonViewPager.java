@@ -22,6 +22,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import fr.castorflex.android.verticalviewpager.VerticalViewPager;
+import yaobeidanci.bean.WordExplanationObject;
 import yaobeidanci.view.R;
 
 public class VerticalButtonViewPager extends VerticalViewPager {
@@ -30,6 +31,9 @@ public class VerticalButtonViewPager extends VerticalViewPager {
     // use static variables may not be a good choice
     static TitlePageIndicator leftTitlePageIndicator;
     static TitlePageIndicator rightTitlePageIndicator;
+
+    TextView showTheAns;
+    View afterAns;
 
     public VerticalButtonViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -88,11 +92,24 @@ public class VerticalButtonViewPager extends VerticalViewPager {
                     ImageButton chatBt = view.findViewById(R.id.chatBt);
                     ImageButton deleteBt = view.findViewById(R.id.deleteBt);
 
-                    TextView showTheAns = view.findViewById(R.id.showTheAns);
+                    Button nextBt = view.findViewById(R.id.nextWord);
+                    nextBt.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Activity activity = (Activity) context;
+                            WordMainActivity.startIt(activity);
+                            activity.finish();
+                        }
+                    });
+
+                     showTheAns = view.findViewById(R.id.showTheAns);
+                      afterAns = view.findViewById(R.id.afterAns);
                     showTheAns.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            MyPagerAdapter.OuterViewPagerAdapter connectedAdapter = (MyPagerAdapter.OuterViewPagerAdapter) connected.getAdapter();
+                            WordExplanationObject correct = connected.wordObject.explains.get(0);
+                            connectedAdapter.showAnswer(null, correct.prop + ". " + correct.explain_c);
                         }
                     });
 
@@ -109,10 +126,6 @@ public class VerticalButtonViewPager extends VerticalViewPager {
                         @Override
                         public void onClick(View v) {
 //                            Toast.makeText(context, "click the edit", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(context, WordMainActivity.class);
-                            context.startActivity(intent);
-                            Activity activity = (Activity) context;
-                            activity.finish();
                         }
                     });
 

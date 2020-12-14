@@ -23,8 +23,9 @@ CREATE TABLE sentence (
     sentence varchar(255),
     translation varchar(255),
     origin_word varchar(50),
-    origin_img integer,
-    origin_title varchar(50)
+    from_background_id integer,
+    from_image_id integer,
+    from_title varchar(50)
 );
 
 DROP TABLE IF EXISTS word;

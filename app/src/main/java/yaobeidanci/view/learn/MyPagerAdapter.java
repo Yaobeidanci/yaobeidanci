@@ -3,6 +3,7 @@ package yaobeidanci.view.learn;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,6 +18,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.viewpagerindicator.CirclePageIndicator;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -24,6 +28,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import yaobeidanci.MyUtil;
 import yaobeidanci.bean.PhraseObject;
 import yaobeidanci.bean.RelateWordObject;
 import yaobeidanci.bean.SentenceObject;
@@ -43,7 +48,7 @@ public class MyPagerAdapter extends PagerAdapter {
     // The context
     protected Context mContext;
     // The view pager bound to the adapter
-    ViewPager boundView;
+    protected ViewPager boundView;
 
     public MyPagerAdapter(Context mContext, ViewPager boundView) {
         this.mContext = mContext;
@@ -74,6 +79,84 @@ public class MyPagerAdapter extends PagerAdapter {
      */
     public static class OuterViewPagerAdapter extends MyPagerAdapter {
         View mainPage;
+        LinearLayout optionLayout = null;
+        TextView answer = null;
+
+        /**
+         * 显示答案
+         * @param selectBt 被选择的按钮
+         * @param correctAns 正确答案
+         */
+        public void showAnswer(Button selectBt, final String correctAns){
+            // 处理底栏
+            OuterViewPager pager = (OuterViewPager) boundView;
+            VerticalButtonViewPager verticalButtonViewPager = pager.connected;
+            verticalButtonViewPager.showTheAns.setVisibility(View.GONE);
+            verticalButtonViewPager.afterAns.setVisibility(VISIBLE);
+
+            // 处理逻辑
+            Button correctBt = null;
+            for(int i=0;i<4;i++){
+                Button bt = (Button) optionLayout.getChildAt(i);
+                if (bt.getText().toString().equals(correctAns)){
+                    correctBt=bt;
+                    break;
+                }
+            }
+            int result;
+            if (selectBt==null){
+                result = 0;
+            }else if(selectBt!=correctBt){
+                result = 1;
+            }else {
+                result=1;
+            }
+
+            JSONObject object = new JSONObject();
+            try {
+                object.put("uid", "266c0c9fc2446658333fb249d10e3cdf");
+                object.put("word_id", wordObject.word_id);
+                object.put("mode", 1);
+                object.put("result", result);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            MyUtil.httpGet(MyUtil.BASE_URL + "/api/setResult", object, new MyUtil.MyCallback() {
+                @Override
+                public void onSuccess(Object result) {
+                    Log.d("net-", "onSuccess: " + (String)result);
+                }
+
+                @Override
+                public void onError(Object result) {
+
+                }
+            }, true);
+
+            if (selectBt!=null){
+                if (correctBt!=selectBt){
+                    selectBt.setBackgroundColor(Color.RED);
+                }
+            }
+            if (correctBt!=null){
+                correctBt.setBackgroundColor(Color.GREEN);
+            }
+
+
+            // 得用 handler 作延时，其他线程无法操作UI
+            Handler handler = new Handler();
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    // GONE 不占空间
+                    optionLayout.setVisibility(View.GONE);
+                    answer.setText(correctAns);
+                    answer.setVisibility(VISIBLE);
+                }
+            };
+            handler.postDelayed(runnable, 1000);
+        }
 
         public OuterViewPagerAdapter(Context mContext, ViewPager boundView) {
             super(mContext, boundView);
@@ -120,42 +203,18 @@ public class MyPagerAdapter extends PagerAdapter {
                     word.setText(wordObject.word);
                     TextView pronunciation = viewItem.findViewById(R.id.pronunciation);
                     pronunciation.setText("[" + wordObject.phonetic_uk + "]" + "["  + wordObject.phonetic_us + "]");
-                    LinearLayout linearLayout = viewItem.findViewById(R.id.options);
+                    optionLayout = viewItem.findViewById(R.id.options);
+                    answer = viewItem.findViewById(R.id.showedAns);
                     for (int i = 0; i < 4; i++) {
-                        Button button = (Button) linearLayout.getChildAt(i);
+                        Button button = (Button) optionLayout.getChildAt(i);
                         WordExplanationObject explanationObject = wordObject.questions.get(i);
                         button.setText(explanationObject.prop + ". " + explanationObject.explain_c);
-                        final View finalView = viewItem;
                         button.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-
                                 Button bt = (Button) v;
-                                String selectAns = bt.getText().toString();
                                 WordExplanationObject correct = wordObject.explains.get(0);
-
-                                final String ans = correct.prop + ". " + correct.explain_c;
-                                if (selectAns.equals(ans)) {
-                                    Toast.makeText(mContext, "yes", Toast.LENGTH_SHORT).show();
-                                    bt.setBackgroundColor(Color.GREEN);
-                                }else {
-                                    Toast.makeText(mContext, "no", Toast.LENGTH_SHORT).show();
-                                    bt.setBackgroundColor(Color.RED);
-                                }
-                                // 得用 handler 作延时，其他线程无法操作UI
-                                Handler handler = new Handler();
-                                Runnable runnable = new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        View layout = finalView.findViewById(R.id.options);
-                                        // GONE 不占空间
-                                        layout.setVisibility(View.GONE);
-                                        TextView answer = finalView.findViewById(R.id.showedAns);
-                                        answer.setText(ans);
-                                        answer.setVisibility(VISIBLE);
-                                    }
-                                };
-                                handler.postDelayed(runnable, 1000);
+                                showAnswer(bt, correct.prop + ". " + correct.explain_c);
                             }
                         });
 
