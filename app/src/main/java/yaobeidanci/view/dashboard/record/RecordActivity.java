@@ -7,15 +7,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import yaobeidanci.MyUtil;
+import yaobeidanci.view.MainActivity;
 import yaobeidanci.view.R;
+
 /**
  * 74行，95行
  */
@@ -70,33 +80,60 @@ public class RecordActivity extends AppCompatActivity {
      */
     private List<List<DailyList>> AcquireLists() {
 
-        List<List<DailyList>> lists = new ArrayList<>();
+        final List<List<DailyList>> lists = new ArrayList<>();
 
+        final JSONObject object1 = new JSONObject();
+        try {
+            object1.put("uid", MyUtil.getUid());
+            MyUtil.httpGet(MyUtil.BASE_URL + "", object1, new MyUtil.MyCallback() {
+                @Override
+                public void onSuccess(MyUtil.Res result) {
+                    try {
+                        JSONObject res = new JSONObject((String) result.data);
+                        // 请求复习中的单词列表
+                        // 返回具体的单词和复习的日期
+                        JSONArray jsonArray_word = res.getJSONArray("words");
+                        JSONArray jsonArray_date = res.getJSONArray("dates");
 
-        // 请求复习中的单词列表
-        // 返回具体的单词和复习的日期
+                        Date date = new Date();
+                        DailyList dailyList = null;
+                        List<DailyList> list_study = new ArrayList<>();
+                        for (int i = 0; i < jsonArray_word.length(); i++) {
 
-        Date date = new Date();
-        DailyList dailyList = null;
-        List<DailyList> list_study = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-//            date = ;
-            String word = "";
-            if (dailyList == null || !dailyList.getDate().equals(date)) {
-                if (dailyList != null) {
-                    list_study.add(dailyList);
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");//注意月份是MM
+                            date = simpleDateFormat.parse((String) jsonArray_date.get(i));
+
+                            String word = (String) jsonArray_word.get(i);
+
+                            if (dailyList == null || !dailyList.getDate().equals(date)) {
+                                if (dailyList != null) {
+                                    list_study.add(dailyList);
+                                }
+                                dailyList = new DailyList(getTimeTag(date), date);
+
+                            }
+                            dailyList.addItem(word);
+                        }
+                        lists.add(list_study);
+                    } catch (JSONException | ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
-                dailyList = new DailyList(getTimeTag(date));
 
-            }
-            dailyList.addItem(word);
+                @Override
+                public void onError(MyUtil.Res result) {
+                    Toast.makeText(MainActivity.getContext(), result.msg, Toast.LENGTH_SHORT).show();
+                }
+            }, true);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        lists.add(list_study);
 
 
         //请求已掌握的单词列表
         //返回具体的单词、掌握的日期、标记的类型（系统判定/手动标记）
 
+        Date date = new Date();
         DailyList dailyList_mastered = null;
         List<DailyList> list_mastered = new ArrayList<>();
         DailyList dailyList_sys = null;
@@ -113,22 +150,22 @@ public class RecordActivity extends AppCompatActivity {
                 if (dailyList_mastered != null) {
                     // 添加列表
                     list_mastered.add(dailyList_mastered);
-                    if(list_sys.size()!=0){
+                    if (list_sys.size() != 0) {
                         list_sys.add(dailyList_sys);
                     }
-                    if(list_manual.size()!=0){
+                    if (list_manual.size() != 0) {
                         list_manual.add(dailyList_manual);
                     }
 
                 }
-                dailyList_mastered = new DailyList(getTimeTag(date));
-                dailyList_sys = new DailyList(getTimeTag(date));
-                dailyList_manual = new DailyList(getTimeTag(date));
+                dailyList_mastered = new DailyList(getTimeTag(date), date);
+                dailyList_sys = new DailyList(getTimeTag(date), date);
+                dailyList_manual = new DailyList(getTimeTag(date), date);
             }
             dailyList_mastered.addItem(word);
-            if(flag){
+            if (flag) {
                 dailyList_sys.addItem(word);
-            }else{
+            } else {
                 dailyList_manual.addItem(word);
             }
         }

@@ -4,15 +4,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import yaobeidanci.MyUtil;
+import yaobeidanci.bean.WordObject;
+import yaobeidanci.view.MainActivity;
 import yaobeidanci.view.R;
 import yaobeidanci.view.book.StudyPlan;
+import yaobeidanci.view.collect.CollectMainActivity;
 
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -26,6 +37,7 @@ public class CalenderActivity extends AppCompatActivity {
     private TextView textView_days_seq;
     private TextView textView_days_total;
     private TextView tv_year_month;
+    final List<Calendar> calendars = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +45,7 @@ public class CalenderActivity extends AppCompatActivity {
         setContentView(R.layout.layout_dashboard_calender);
 
         FindViews();
+        AcquireDates();
         InitCalender();
     }
 
@@ -47,31 +60,52 @@ public class CalenderActivity extends AppCompatActivity {
         MarkDays();
     }
 
-    private List<Calendar> AcquireDates() {
-        List<Calendar> calendars = new ArrayList<>();
+    private void AcquireDates() {
 
+        final JSONObject object1 = new JSONObject();
+        try {
+            object1.put("uid", MyUtil.getUid());
+            MyUtil.httpGet(MyUtil.BASE_URL + "/resource/mark", object1, new MyUtil.MyCallback() {
+                @Override
+                public void onSuccess(MyUtil.Res result) {
+                    try {
+                        JSONObject res = new JSONObject((String) result.data);
+                        JSONArray jsonArray = res.getJSONArray("data");
+                        // 请求近两个月的签到信息
+                        // 返回签到日期（String）数组 dates
+                        List<String> dates = new ArrayList<>();
 
-        // 请求近两个月的签到信息
-        // 返回签到日期（String）数组 dates
+                        for(int i =0 ;i<jsonArray.length();i++){
+                            dates.add((String) jsonArray.get(i));
+                        }
 
-        List<String> dates = new ArrayList<>();
+                        for (int i = 0; i < dates.size(); i++) {
+                            String[] date = dates.get(i).split("-");
+                            Calendar calendar = new Calendar();
+                            calendar.setYear(Integer.parseInt(date[0]));
+                            calendar.setMonth(Integer.parseInt(date[1]));
+                            calendar.setDay(Integer.parseInt(date[2]));
+                            calendars.add(calendar);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-        for (int i = 0; i < dates.size(); i++) {
-            String[] date = dates.get(i).split("-");
-            Calendar calendar = new Calendar();
-            calendar.setYear(Integer.parseInt(date[0]));
-            calendar.setMonth(Integer.parseInt(date[1]));
-            calendar.setDay(Integer.parseInt(date[2]));
-            calendars.add(calendar);
+                @Override
+                public void onError(MyUtil.Res result) {
+                    Toast.makeText(MainActivity.getContext(), result.msg, Toast.LENGTH_SHORT).show();
+                }
+            },true);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-        return calendars;
     }
 
     private void MarkDays() {
         int seq = 0;
 
-        List<Calendar> calendars = AcquireDates();
         for (int i = 0; i < calendars.size(); i++) {
             Calendar calendar = calendars.get(i);
             calendarView.addSchemeDate(calendar);

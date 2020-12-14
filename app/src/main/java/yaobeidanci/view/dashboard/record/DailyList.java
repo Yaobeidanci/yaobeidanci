@@ -20,8 +20,9 @@ public class DailyList {
      * @description: 构造函数
      * @param: timeTag
      */
-    public DailyList(String timeTag){
+    public DailyList(String timeTag,Date date){
         this.timeTag = timeTag;
+        this.date = date;
         wordList = new ArrayList<>();
     }
     /**

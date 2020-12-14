@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,12 +28,18 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import yaobeidanci.MyUtil;
+import yaobeidanci.view.MainActivity;
 import yaobeidanci.view.R;
 import yaobeidanci.view.book.StudyPlan;
 
@@ -52,6 +59,8 @@ public class OverviewActivity extends AppCompatActivity {
     private TextView textView_learn_time = null;
     private TextView textView_total_time = null;
     private TextView textView_learn_time_hint = null;
+    private final List<List<Integer>> word_amount = new ArrayList<>();
+    private final ArrayList<Entry> time = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +69,7 @@ public class OverviewActivity extends AppCompatActivity {
 
         FindViews();
         SetListeners();
+        AcquireData();
         InitBarCharts();
         InitLineCharts();
     }
@@ -146,11 +156,10 @@ public class OverviewActivity extends AppCompatActivity {
     private void SetBarChartData() {
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
-        List<List<Integer>> values = AcquireAmountData();
         //获取数据
         for (int i = 0; i < 7; i++) {
-            int val1 = values.get(0).get(i);
-            int val2 = values.get(1).get(i);
+            int val1 = word_amount.get(0).get(i);
+            int val2 = word_amount.get(1).get(i);
             yVals1.add(new BarEntry(i, new float[]{val1, val2}));
         }
 
@@ -235,11 +244,8 @@ public class OverviewActivity extends AppCompatActivity {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAxisLineColor(Color.WHITE);
 
-        //数据
-        ArrayList<Entry> values = AcquireTimeData();
-
         //设置数据
-        SetLineChartData(values);
+        SetLineChartData(time);
 
         //默认动画
         lineChart[0].animateX(2000);
@@ -248,38 +254,50 @@ public class OverviewActivity extends AppCompatActivity {
 
     }
 
-    public List<List<Integer>> AcquireAmountData() {
-        List<List<Integer>> values = new ArrayList<>();
+    public void AcquireData() {
+        final JSONObject object1 = new JSONObject();
+        try {
+            object1.put("uid", MyUtil.getUid());
+            MyUtil.httpGet(MyUtil.BASE_URL + "/resource/learnData", object1, new MyUtil.MyCallback() {
+                @Override
+                public void onSuccess(MyUtil.Res result) {
+                    try {
+                        JSONObject res = new JSONObject((String) result.data);
+                        JSONArray jsonArray = res.getJSONArray("data");
 
+                        List<Integer> value1 = new ArrayList<>();
+                        List<Integer> value2 = new ArrayList<>();
+                        for (int j = 0; j < 7; j++) {
+                            value1.add(((JSONObject) jsonArray.get(j)).getInt("word_learn"));
+                            value2.add(((JSONObject) jsonArray.get(j)).getInt("word_review"));
+                        }
+                        word_amount.add(value1);
+                        word_amount.add(value2);
 
-        // 请求过去一周的学习、复习单词数量的信息
-        // 返回两个个大小为7的数组
+                        List<Integer> minutes = new ArrayList<>();      //请求
 
-        List<List<String>> valueStr = new ArrayList<>();      //请求
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            minutes.add(((JSONObject) jsonArray.get(i)).getInt("learn_time"));
+                        }
 
-        for (int i = 0; i < 2; i++) {
-            List<Integer> value = new ArrayList<>();
-            for (int j = 0; j < 7; j++) {
-                value.add(Integer.parseInt(valueStr.get(i).get(j)));
-            }
-            values.add(value);
+                        for (int i = 0; i < 7; i++) {
+                            time.add(new Entry(i, minutes.get(i)));
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(MyUtil.Res result) {
+                    Toast.makeText(MainActivity.getContext(), result.msg, Toast.LENGTH_SHORT).show();
+                }
+            }, true);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-        return values;
-    }
-
-    public ArrayList<Entry> AcquireTimeData() {
-        ArrayList<Entry> values = new ArrayList<>();
-
-        // 请求过去一周的学习时间信息
-        // 返回一个大小为7的数组minutes
-
-        List<String> minutes = new ArrayList<>();      //请求
-        for (int i = 0; i < 7; i++) {
-            values.add(new Entry(i, Integer.parseInt(minutes.get(i))));
-        }
-
-        return values;
     }
 
     //传递数据集
