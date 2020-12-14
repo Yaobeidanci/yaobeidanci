@@ -95,14 +95,14 @@ public class MyCalenderView extends MonthView {
 
             //绘制圆圈
             mSelectedPaint.setColor(Color.rgb(255, 120, 100));
-            canvas.drawCircle(x + mPadding + 65, y + mPadding + 55, mRadio, mSelectedPaint);
+            canvas.drawCircle(x + mItemWidth - mRadio, y + mItemHeight - mRadio, mRadio, mSelectedPaint);
             //绘制日期
             mSchemeTextPaint.setColor(Color.WHITE);
             canvas.drawText(date, cx, mTextBaseLine + top, mSchemeTextPaint);
         } else {
 
             canvas.drawText(date, cx, mTextBaseLine + top,
-                            calendar.isCurrentMonth() ? mCurMonthTextPaint : mOtherMonthTextPaint);
+                    calendar.isCurrentMonth() ? mCurMonthTextPaint : mOtherMonthTextPaint);
 
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mCurMonthLunarTextPaint);
 

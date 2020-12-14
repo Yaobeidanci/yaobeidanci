@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import yaobeidanci.view.MainActivity;
 import yaobeidanci.view.R;
 import yaobeidanci.view.book.StudyPlan;
+import yaobeidanci.view.login.LoginActivity;
 
 public class Welcome extends AppCompatActivity {
     // 壁纸
@@ -42,7 +43,7 @@ public class Welcome extends AppCompatActivity {
             }
             @Override
             public void onAnimationEnd(Animation animation) {
-                Intent intent = new Intent(Welcome.this, MainActivity.class);
+                Intent intent = new Intent(Welcome.this, LoginActivity.class);
                 startActivity(intent);
                 // 销毁启动动画界面
                 finish();

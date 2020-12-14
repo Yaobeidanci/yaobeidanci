@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/loging_background">
+
+    <Button
+        android:id="@+id/username_password_back"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/icon_left"
+        android:textSize="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:padding="30dp"
+        android:text="账号密码登录"
+        android:textColor="#FFFFFF"
+        android:textSize="28dp"
+        app:layout_constraintStart_toEndOf="@+id/username_password_back"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/login_username_enter"
+        android:layout_width="385dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="12dp"
+
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="49dp"
+        android:background="#A6FFFFFF"
+        android:digits="0123456789abcdefghijklmnopqrstuvwxyz"
+        android:ems="10"
+        android:gravity="center_vertical|left"
+        android:hint="输入用户名"
+        android:inputType="textPersonName|textImeMultiLine"
+        android:maxLength="300"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <EditText
+        android:id="@+id/login_password_enter"
+        android:layout_width="385dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="12dp"
+
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="20dp"
+        android:background="#A6FFFFFF"
+        android:digits="0123456789abcdefghijklmnopqrstuvwxyz"
+        android:ems="10"
+        android:gravity="center_vertical|left"
+        android:hint="输入密码"
+        android:inputType="textPersonName|textImeMultiLine"
+        android:maxLength="300"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_username_enter" />
+
+    <Button
+        android:id="@+id/login_password_login"
+        android:layout_width="238dp"
+        android:layout_height="65dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="84dp"
+        android:layout_marginLeft="84dp"
+        android:layout_marginTop="72dp"
+        android:background="@drawable/button_drawable"
+        android:drawablePadding="10dip"
+        android:paddingLeft="20dip"
+        android:text="登 录"
+        android:textColor="#ffffff"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_password_enter" />
+
+    <Button
+        android:id="@+id/register_user"
+        android:layout_width="238dp"
+        android:layout_height="65dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="84dp"
+        android:layout_marginLeft="84dp"
+        android:layout_marginTop="29dp"
+        android:background="@drawable/button_drawable"
+        android:drawablePadding="10dip"
+        android:paddingLeft="20dip"
+        android:text="注 册"
+        android:textColor="#ffffff"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_password_login" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
