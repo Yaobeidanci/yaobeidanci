@@ -248,6 +248,10 @@ public class OverviewActivity extends AppCompatActivity {
     public List<List<Integer>> AcquireAmountData() {
         List<List<Integer>> values = new ArrayList<>();
 
+
+        // 请求过去一周的学习、复习单词数量的信息
+        // 返回两个个大小为7的数组
+
         for (int i = 0; i < 2; i++) {
             List<Integer> value = new ArrayList<>();
             for (int j = 0; j < 7; j++) {
@@ -261,6 +265,9 @@ public class OverviewActivity extends AppCompatActivity {
 
     public ArrayList<Entry> AcquireTimeData() {
         ArrayList<Entry> values = new ArrayList<>();
+
+        // 请求过去一周的学习时间信息
+        // 返回一个大小为7的数组
 
         List<Integer> minutes = new ArrayList<>();      //请求
         for (int i = 0; i < 7; i++) {

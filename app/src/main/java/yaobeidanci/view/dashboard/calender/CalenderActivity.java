@@ -47,7 +47,11 @@ public class CalenderActivity extends AppCompatActivity {
     private List<Calendar> AcquireDates() {
         List<Calendar> calendars = new ArrayList<>();
 
-        List<String> dates = new ArrayList<>(); //此处请求并得到数据
+
+        // 请求近两个月的签到信息
+        // 返回签到日期（String）数组
+
+        List<String> dates = new ArrayList<>();
 
         for (int i = 0; i < dates.size(); i++) {
             String[] date = dates.get(i).split("-");

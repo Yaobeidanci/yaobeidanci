@@ -70,6 +70,10 @@ public class RecordActivity extends AppCompatActivity {
 
         List<List<DailyList>> lists = new ArrayList<>();
 
+
+        // 请求复习中的单词列表
+        // 返回具体的单词和复习的日期
+
         Date date = new Date();
         DailyList dailyList = null;
         List<DailyList> list_study = new ArrayList<>();
@@ -86,6 +90,10 @@ public class RecordActivity extends AppCompatActivity {
             dailyList.addItem(word);
         }
         lists.add(list_study);
+
+
+        //请求已掌握的单词列表
+        //返回具体的单词、掌握的日期、标记的类型（系统判定/手动标记）
 
         DailyList dailyList_mastered = null;
         List<DailyList> list_mastered = new ArrayList<>();
