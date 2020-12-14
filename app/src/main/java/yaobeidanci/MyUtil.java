@@ -29,6 +29,7 @@ import okhttp3.Response;
  */
 public class MyUtil {
     public static final String BASE_URL = "http://10.0.2.2:5000";
+    public static String user_uid;
     /**
      * 回调函数
      */
@@ -263,4 +264,13 @@ public class MyUtil {
         }
         return result;
     }
+
+    public static String getUid(){
+        return user_uid;
+    }
+
+    public static void setUid(String uid){
+        user_uid = uid;
+    }
+
 }
