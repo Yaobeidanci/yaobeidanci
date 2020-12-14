@@ -91,7 +91,7 @@
         app:layout_constraintVertical_bias="0.499" />
 
     <Button
-        android:id="@+id/button9"
+        android:id="@+id/logout_bt"
         android:layout_width="272dp"
         android:layout_height="60dp"
         android:background="@drawable/shape_yellow"

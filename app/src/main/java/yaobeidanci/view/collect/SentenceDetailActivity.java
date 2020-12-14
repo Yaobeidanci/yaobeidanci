@@ -21,7 +21,6 @@ import java.util.List;
 
 import yaobeidanci.MyUtil;
 import yaobeidanci.bean.SentenceObject;
-import yaobeidanci.bean.WordObject;
 import yaobeidanci.view.MainActivity;
 import yaobeidanci.view.R;
 
@@ -84,7 +83,7 @@ public class SentenceDetailActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 SentenceObject s=sList.get(position);
-                Toast.makeText(SentenceDetailActivity.this, "Hi！我是"+s.getId(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SentenceDetailActivity.this, "Hi！我是"+s.getSentence_id(), Toast.LENGTH_SHORT).show();
             }
         });
 

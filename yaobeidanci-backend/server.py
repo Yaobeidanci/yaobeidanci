@@ -3,6 +3,8 @@ import requests
 import io
 import data_manager
 from db import DBTool
+import time
+import datetime
 import util
 
 app = Flask(__name__)
@@ -10,6 +12,9 @@ db = DBTool()
 
 # 设置响应使用utf-8编码而不是unicode
 app.config['JSON_AS_ASCII'] = False
+
+
+time_start = None
 
 
 # 登录，字段为username和password，返回uid，使用/resource/user路由获取用户信息
@@ -23,6 +28,8 @@ def login():
         if len(res) == 1:
             if res[0]['password'] == password:
                 # r0 = db.execute("update ")
+                global time_start
+                time_start = datetime.datetime.now()
                 return {
                     'status': 200,
                     'msg': '登陆成功',
@@ -132,6 +139,16 @@ def get_schedule():
             'status': 404,
             'msg': '未添加计划'
         }
+    res1 = db.execute_query("select num from book where book_id=?", (res[0]['book_id'],))
+
+    res[0]['num'] = res1[0]['num']
+
+    global time_start
+    # time_start = datetime.datetime.now()
+    time_end = datetime.datetime.now()
+    duration = (time_end - time_start).seconds / 60
+    r0 = db.execute("update record set time_day=?", (duration,))
+    print(duration)
     res0 = db.execute_query("select * from record where uid=? and cur_date=?", (uid, "2020-12-13"))
     if len(res0) == 0:
         res[0]['learn_day'] = 0
@@ -229,7 +246,7 @@ def get_star_words():
 def get_star_sentences():
     uid = request.args.get('uid')
     res = db.execute_query(
-        "select * from sentence where sentence_id=(select sentence_id from star_sentence where uid=?)", (uid,))
+        "select * from sentence where sentence_id in (select sentence_id from star_sentence where uid=?)", (uid,))
     print(res)
     return {
         'status': 200,
@@ -350,6 +367,27 @@ def get_old_word():
     return {
         'status': 200,
         'data': res
+    }
+
+
+#
+@app.route('/resource/learnData')
+def get_learn_data():
+    uid = request.args.get('uid')
+    return {
+        'status': 200,
+        'data': [
+            {
+                'word_learn': 10,
+                'word_review': 10,
+                'time_learn': 10
+            },
+            {
+                'word_learn': 10,
+                'word_review': 10,
+                'time_learn': 10
+            }
+        ]
     }
 
 

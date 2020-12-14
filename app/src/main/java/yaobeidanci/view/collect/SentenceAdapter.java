@@ -1,8 +1,6 @@
 package yaobeidanci.view.collect;
 
 import android.graphics.Typeface;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +69,7 @@ public class SentenceAdapter extends RecyclerView.Adapter<SentenceAdapter.ViewHo
             public void onClick(View v) {
                 int position= holder.getAdapterPosition();
                 SentenceObject s=sList.get(position);
-                Toast.makeText(v.getContext(),"你点击了： "+s.getId(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(),"你点击了： "+s.getSentence_id(),Toast.LENGTH_SHORT).show();
             }
         });
     }

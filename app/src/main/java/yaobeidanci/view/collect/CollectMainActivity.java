@@ -58,8 +58,48 @@ public class CollectMainActivity extends AppCompatActivity {
                         JSONObject res = new JSONObject((String) result.data);
                         String words_json = res.getString("data");
                         wordList = new Gson().fromJson(words_json, new TypeToken<List<WordObject>>(){}.getType());
-                        Intent intent = new Intent(src, CollectMainActivity.class);
-                        src.startActivity(intent);
+
+                        // 为空，初始化一个
+                        if (wordList.isEmpty()){
+                            WordObject tmp = new WordObject();
+                            tmp.init();
+                            wordList.add(tmp);
+                        }
+
+                        try {
+                            object2.put("uid", MyUtil.getUid());
+                            MyUtil.httpGet(MyUtil.BASE_URL + "/resource/starSentences", object2, new MyUtil.MyCallback() {
+                                @Override
+                                public void onSuccess(MyUtil.Res result) {
+                                    try {
+                                        JSONObject res = new JSONObject((String) result.data);
+                                        String sentences_json = res.getString("data");
+                                        sList = new Gson().fromJson(sentences_json, new TypeToken<List<SentenceObject>>(){}.getType());
+
+                                        // 为空，初始化一个
+                                        if (sList.isEmpty()){
+                                            SentenceObject tmp = new SentenceObject();
+                                            tmp.init();
+                                            sList.add(tmp);
+                                        }
+
+                                        Intent intent = new Intent(src, CollectMainActivity.class);
+                                        src.startActivity(intent);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                @Override
+                                public void onError(MyUtil.Res result) {
+                                    Toast.makeText(MainActivity.getContext(), result.msg, Toast.LENGTH_SHORT).show();
+                                }
+                            },true);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+//                        Intent intent = new Intent(src, CollectMainActivity.class);
+//                        src.startActivity(intent);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -73,33 +113,6 @@ public class CollectMainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        try {
-            object2.put("uid", MyUtil.getUid());
-            MyUtil.httpGet(MyUtil.BASE_URL + "/resource/starSentences", object2, new MyUtil.MyCallback() {
-                @Override
-                public void onSuccess(MyUtil.Res result) {
-                    try {
-                        JSONObject res = new JSONObject((String) result.data);
-                        String sentences_json = res.getString("data");
-                        sList = new Gson().fromJson(sentences_json, new TypeToken<List<SentenceObject>>(){}.getType());
-                        Intent intent = new Intent(src, CollectMainActivity.class);
-                        src.startActivity(intent);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onError(MyUtil.Res result) {
-                    Toast.makeText(MainActivity.getContext(), result.msg, Toast.LENGTH_SHORT).show();
-                }
-            },true);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
     }
 
     @Override

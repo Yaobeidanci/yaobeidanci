@@ -48,7 +48,7 @@ public class StudyPlan extends AppCompatActivity {
                             Toast.makeText(MainActivity.getContext(), jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
                         }else{
                             JSONObject object1 = jsonObject.getJSONObject("data");
-                            SetNumActivity.bookid = object1.getString("book");
+                            SetNumActivity.bookid = object1.getString("book_id");
                             // 每天计划背多少
                             SetNumActivity.inputcnt = object1.getInt("num_daily");
                             // 今天已经学了多少个

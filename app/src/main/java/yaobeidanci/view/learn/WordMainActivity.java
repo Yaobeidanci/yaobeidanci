@@ -52,7 +52,7 @@ public class WordMainActivity extends AppCompatActivity {
      * 启动一个新的word页面，并加载单词
      * @param src 调用者
      */
-    public static void startIt(final Activity src){
+    public static void startIt(final Activity src, final boolean finish_it){
         JSONObject object = new JSONObject();
         try {
             object.put("uid", MyUtil.getUid());
@@ -65,6 +65,9 @@ public class WordMainActivity extends AppCompatActivity {
                         wordObject = new Gson().fromJson(word_json, WordObject.class);
                         Intent intent = new Intent(src, WordMainActivity.class);
                         src.startActivity(intent);
+                        if (finish_it) {
+                            src.finish();
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

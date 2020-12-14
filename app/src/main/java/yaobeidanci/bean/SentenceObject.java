@@ -9,15 +9,15 @@ public class SentenceObject{
     public String origin_title;
     public int backgroundId;
     public int fromImageId;
-    public String id;
+    public String sentence_id;
 
 
     public String getSentence(){
         return sentence;
     }
 
-    public String getId(){
-        return id;
+    public String getSentence_id(){
+        return sentence_id;
     }
 
     public String getOrigin_title(){
@@ -30,6 +30,13 @@ public class SentenceObject{
 
     public int getFromImageId(){
         return fromImageId;
+    }
+
+    public void init() {
+        sentence = "";
+        translation = "";
+        origin_title = "";
+        sentence_id = "";
     }
 }
 

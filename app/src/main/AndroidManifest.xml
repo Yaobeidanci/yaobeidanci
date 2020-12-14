@@ -14,7 +14,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".book.SetNumActivity"></activity>
-        <activity android:name=".login.LoginActivity" />
+        <activity android:name=".login.LoginActivity"
+            android:launchMode="singleTask"/>
         <activity android:name=".login.PhoneLoginActivity" />
         <activity android:name=".login.UsernameActivity" />
         <activity android:name=".login.RegisterActivity" />

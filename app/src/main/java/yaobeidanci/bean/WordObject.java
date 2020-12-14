@@ -1,5 +1,6 @@
 package yaobeidanci.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +25,20 @@ public class WordObject {
     public String sentences_label;
 
     public int word_id;
+
+    public void init(){
+        word = "";
+        phonetic_us = "";
+        phonetic_uk = "";
+        category = "";
+        sentences = new ArrayList<>();
+        relate_words = new ArrayList<>();
+        explains = new ArrayList<>();
+        phrases = new ArrayList<>();
+        remember_method = "";
+        questions = new ArrayList<>();
+
+    }
 
     public String getText(){
         return word;

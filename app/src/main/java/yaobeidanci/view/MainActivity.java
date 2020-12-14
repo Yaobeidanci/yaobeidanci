@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         learn_gate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WordMainActivity.startIt(MainActivity.this);
+                WordMainActivity.startIt(MainActivity.this, false);
             }
         });
 
@@ -76,6 +77,11 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.getContext(), jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(MainActivity.this, ChooseBook.class);
                             startActivity(intent);
+                        } else {
+                            JSONObject object1 = jsonObject.getJSONObject("data");
+                            int num = object1.getInt("num");
+                            TextView textView = findViewById(R.id.editTextTextPersonName5);
+                            textView.setText("" + num);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

@@ -46,7 +46,7 @@ CREATE TABLE word (
 DROP TABLE IF EXISTS schedule;
 CREATE TABLE schedule (
     uid varchar(50),
-    book varchar(50),
+    book_id varchar(50),
     start_date varchar(50),
     current_progress integer,
     num_daily integer,

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -206,6 +207,36 @@ public class MyPagerAdapter extends PagerAdapter {
                     pronunciation.setText("[" + wordObject.phonetic_uk + "]" + "["  + wordObject.phonetic_us + "]");
                     optionLayout = viewItem.findViewById(R.id.options);
                     answer = viewItem.findViewById(R.id.showedAns);
+
+                    // 星标按钮
+                    ImageView star_bt = viewItem.findViewById(R.id.star_bt);
+
+                    star_bt.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            JSONObject object = new JSONObject();
+                            try {
+                                object.put("uid", MyUtil.getUid());
+                                object.put("word", wordObject.word);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            MyUtil.httpGet(MyUtil.BASE_URL + "/api/addStarWord", object, new MyUtil.MyCallback() {
+                                @Override
+                                public void onSuccess(MyUtil.Res result) {
+                                    Toast.makeText(mContext, "星标成功", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onError(MyUtil.Res result) {
+                                    Toast.makeText(MainActivity.getContext(), result.msg, Toast.LENGTH_SHORT).show();
+                                }
+                            }, true);
+                        }
+                    });
+
+
+                    // 问题按钮
                     for (int i = 0; i < 4; i++) {
                         Button button = (Button) optionLayout.getChildAt(i);
                         WordExplanationObject explanationObject = wordObject.questions.get(i);
@@ -371,10 +402,35 @@ public class MyPagerAdapter extends PagerAdapter {
             TextView chinese = view.findViewById(R.id.chinese);
             TextView english = view.findViewById(R.id.english);
 
-            SentenceObject sentenceObject = sentenceList.get(position);
+            final SentenceObject sentenceObject = sentenceList.get(position);
             title.setText(sentenceObject.origin_title);
             chinese.setText(sentenceObject.translation);
             english.setText(sentenceObject.sentence);
+
+            ImageView star_bt = view.findViewById(R.id.star_bt);
+            star_bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    JSONObject object = new JSONObject();
+                    try {
+                        object.put("uid", MyUtil.getUid());
+                        object.put("sentence_id", sentenceObject.sentence_id);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    MyUtil.httpGet(MyUtil.BASE_URL + "/api/addStarSentence", object, new MyUtil.MyCallback() {
+                        @Override
+                        public void onSuccess(MyUtil.Res result) {
+                            Toast.makeText(mContext, "星标成功", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onError(MyUtil.Res result) {
+                            Toast.makeText(MainActivity.getContext(), result.msg, Toast.LENGTH_SHORT).show();
+                        }
+                    }, true);
+                }
+            });
 
             if (view != null) {
                 container.addView(view);

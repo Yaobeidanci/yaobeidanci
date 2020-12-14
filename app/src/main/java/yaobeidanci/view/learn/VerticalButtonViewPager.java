@@ -97,8 +97,7 @@ public class VerticalButtonViewPager extends VerticalViewPager {
                         @Override
                         public void onClick(View v) {
                             Activity activity = (Activity) context;
-                            WordMainActivity.startIt(activity);
-                            activity.finish();
+                            WordMainActivity.startIt(activity, true);
                         }
                     });
 
