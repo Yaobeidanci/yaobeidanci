@@ -25,15 +25,42 @@
         android:textColor="@color/colorWord"
         android:textSize="30sp" />
 
-    <TextView
-        android:id="@+id/pronunciation"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40sp"
         android:gravity="center"
-        android:text="TextView"
-        android:textColor="@color/colorWord"
-        android:textSize="18sp" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/phonetic_uk_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="TextView"
+            android:textColor="@color/colorWord"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/phonetic_uk_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/ic_lock_silent_mode_off" />
+
+        <TextView
+            android:id="@+id/phonetic_us_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="TextView"
+            android:textColor="@color/colorWord"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/phonetic_us_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/ic_lock_silent_mode_off" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/options"

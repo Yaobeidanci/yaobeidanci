@@ -379,6 +379,31 @@ def get_learn_data():
                 'word_learn': 10,
                 'word_review': 10,
                 'time_learn': 10
+            },
+            {
+                'word_learn': 10,
+                'word_review': 10,
+                'time_learn': 10
+            },
+            {
+                'word_learn': 10,
+                'word_review': 10,
+                'time_learn': 10
+            },
+            {
+                'word_learn': 10,
+                'word_review': 10,
+                'time_learn': 10
+            },
+            {
+                'word_learn': 10,
+                'word_review': 10,
+                'time_learn': 10
+            },
+            {
+                'word_learn': 10,
+                'word_review': 10,
+                'time_learn': 10
             }
         ]
     }

@@ -44,5 +44,6 @@ public class ChooseBook extends AppCompatActivity{
     public void returnPlan(View view) {
         Intent intent=new Intent(ChooseBook.this,StudyPlan.class);
         startActivity(intent);
+        //finish();
     }
 }

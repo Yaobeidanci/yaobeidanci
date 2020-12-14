@@ -3,6 +3,7 @@ package yaobeidanci.view.dashboard.calender;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +47,32 @@ public class CalenderActivity extends AppCompatActivity {
 
         FindViews();
         AcquireDates();
-        InitCalender();
+
+        Button bt = findViewById(R.id.mark_bt);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JSONObject object = new JSONObject();
+                try {
+                    object.put("uid", MyUtil.getUid());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                MyUtil.httpGet(MyUtil.BASE_URL + "/api/mark", object, new MyUtil.MyCallback() {
+                    @Override
+                    public void onSuccess(MyUtil.Res result) {
+                        String res = (String) result.data;
+                        Toast.makeText(MainActivity.getContext(), res, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(MyUtil.Res result) {
+                        Toast.makeText(MainActivity.getContext(), result.msg, Toast.LENGTH_SHORT).show();
+                    }
+                }, true);
+            }
+        });
+
     }
 
     private void FindViews() {
@@ -87,6 +113,7 @@ public class CalenderActivity extends AppCompatActivity {
                             calendar.setDay(Integer.parseInt(date[2]));
                             calendars.add(calendar);
                         }
+                        InitCalender();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -111,7 +138,7 @@ public class CalenderActivity extends AppCompatActivity {
             calendarView.addSchemeDate(calendar);
 
             // 计算连续签到天数
-            if (calendar.differ(calendars.get(i - 1)) == 1) {
+            if (calendar.differ(calendars.get(i)) == 1) {
                 seq += 1;
             } else {
                 seq = 0;

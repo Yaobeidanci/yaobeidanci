@@ -46,6 +46,9 @@ class DBTool:
 
     def reset(self):
         # 删库重建
+        users = self.execute_query("select uid from user", ())
+        for user in users:
+            self.execute("drop table [" + user['uid'] + "_table]", ())
         with open('create.sql') as f:
             self.c.executescript(f.read())
             self.db.commit()

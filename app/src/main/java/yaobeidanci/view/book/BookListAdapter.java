@@ -53,11 +53,12 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
                 final BookItemEntity itemWordBook = mItemWordBookList.get(position);
 
                 if(itemWordBook.getBookId().equals(SetNumActivity.bookid)) {
+//                    Log.d("bookid", SetNumActivity.bookid);
                     Toast.makeText(MainActivity.getContext(), "已经是"+itemWordBook.getBookName()+"了哦", Toast.LENGTH_SHORT).show();
                 }
-                else{
+                else {
+//                    Log.d("bookid", SetNumActivity.bookid);
                     Intent intent = new Intent(MainActivity.getContext(), SetNumActivity.class);
-                    intent.putExtra("bookname",itemWordBook.getBookName());
                     intent.putExtra("bookid",itemWordBook.getBookId());
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     MainActivity.getContext().startActivity(intent);
@@ -66,6 +67,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
         });
         return holder;
     }
+
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // 绑定数据
         final BookItemEntity bookitem=mItemWordBookList.get(position);

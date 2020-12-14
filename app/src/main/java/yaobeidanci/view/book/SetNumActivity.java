@@ -20,22 +20,29 @@ import yaobeidanci.view.mainpage.SelfPage;
 public class SetNumActivity extends AppCompatActivity {
     public static String bookid;//当前书籍id
     public static int inputcnt;//当前选择要背的单词数
+    TextView totalcnt,nowbook;
     EditText inputnum;
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_num);
-        Intent intent=getIntent();
-        TextView totalcnt=(TextView)findViewById(R.id.text_max_word_num);
-        TextView nowbook=(TextView)findViewById(R.id.now_book_chosen);
+        intent=getIntent();
+        totalcnt=(TextView)findViewById(R.id.text_max_word_num);
+        nowbook=(TextView)findViewById(R.id.now_book_chosen);
         inputnum=(EditText)findViewById(R.id.edit_word_num);
         if(intent.getStringExtra("bookid")!=null){
-            bookid=intent.getStringExtra("bookid");
-            totalcnt.setText(ConstantConfig.wordTotalNumberById(bookid)+"");
-            nowbook.setText(intent.getStringExtra("bookname"));
+            String id=intent.getStringExtra("bookid");
+            totalcnt.setText(ConstantConfig.wordTotalNumberById(id)+"");
+            nowbook.setText(ConstantConfig.bookNameById(id));
         }
     }
     public void getNumber(View view){
+        if(intent.getStringExtra("bookid")!=null){
+            bookid=intent.getStringExtra("bookid");
+            totalcnt.setText(ConstantConfig.wordTotalNumberById(bookid)+"");
+            nowbook.setText(ConstantConfig.bookNameById(bookid));
+        }
         inputcnt=Integer.parseInt(inputnum.getText().toString());//获取输入的要背的单词数
         JSONObject object = new JSONObject();
         try {
@@ -64,5 +71,6 @@ public class SetNumActivity extends AppCompatActivity {
     public void backchoice(View view){
         Intent intent=new Intent(SetNumActivity.this, ChooseBook.class);
         startActivity(intent);
+        //finish();
     }
 }

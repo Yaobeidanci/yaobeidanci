@@ -70,8 +70,6 @@ public class OverviewActivity extends AppCompatActivity {
         FindViews();
         SetListeners();
         AcquireData();
-        InitBarCharts();
-        InitLineCharts();
     }
 
     private void FindViews() {
@@ -287,6 +285,9 @@ public class OverviewActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
+                    InitBarCharts();
+                    InitLineCharts();
                 }
 
                 @Override

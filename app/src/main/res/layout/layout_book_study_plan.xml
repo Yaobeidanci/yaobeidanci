@@ -208,7 +208,7 @@
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:layout_marginLeft="175dp"
+                            android:layout_marginLeft="230dp"
                             android:layout_marginTop="5dp"
                             android:src="@drawable/icon_right" />
                     </LinearLayout>
@@ -428,7 +428,7 @@
                         android:layout_height="wrap_content"
                         android:text="连续签到 2 天"
                         android:textColor="@color/colorGrey"
-                        android:layout_marginLeft="125dp"
+                        android:layout_marginLeft="180dp"
                         android:textSize="12sp"/>
                     <ImageView
                         android:layout_width="20dp"

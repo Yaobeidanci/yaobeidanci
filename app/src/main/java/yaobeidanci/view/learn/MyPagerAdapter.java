@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import yaobeidanci.MyUtil;
 import yaobeidanci.bean.PhraseObject;
@@ -38,7 +36,6 @@ import yaobeidanci.bean.WordObject;
 import yaobeidanci.view.MainActivity;
 import yaobeidanci.view.R;
 
-import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
 /**
@@ -201,12 +198,32 @@ public class MyPagerAdapter extends PagerAdapter {
                 // main view, load the word and options data
                 case 1:
                     viewItem = View.inflate(mContext, R.layout.layout_learn_word_main_page, null);
-                    TextView word = viewItem.findViewById(R.id.word);
+                    final TextView word = viewItem.findViewById(R.id.word);
                     word.setText(wordObject.word);
-                    TextView pronunciation = viewItem.findViewById(R.id.pronunciation);
-                    pronunciation.setText("[" + wordObject.phonetic_uk + "]" + "["  + wordObject.phonetic_us + "]");
+                    TextView phonetic_uk_text = viewItem.findViewById(R.id.phonetic_uk_text);
+                    phonetic_uk_text.setText("[" + wordObject.phonetic_uk + "]");
+                    TextView phonetic_us_text = viewItem.findViewById(R.id.phonetic_us_text);
+                    phonetic_us_text.setText("["  + wordObject.phonetic_us + "]");
                     optionLayout = viewItem.findViewById(R.id.options);
                     answer = viewItem.findViewById(R.id.showedAns);
+
+                    // 音频按钮
+                    ImageView phonetic_uk_bt = viewItem.findViewById(R.id.phonetic_uk_bt);
+                    phonetic_uk_bt.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String url = "/resource/voice?type=0&word=" + wordObject.word;
+                            MyUtil.playAudio(MyUtil.BASE_URL + url);
+                        }
+                    });
+                    ImageView phonetic_us_bt = viewItem.findViewById(R.id.phonetic_us_bt);
+                    phonetic_us_bt.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String url = "/resource/voice?type=1&word=" + wordObject.word;
+                            MyUtil.playAudio(MyUtil.BASE_URL + url);
+                        }
+                    });
 
                     // 星标按钮
                     ImageView star_bt = viewItem.findViewById(R.id.star_bt);

@@ -1,8 +1,10 @@
 package yaobeidanci;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -28,8 +30,8 @@ import okhttp3.Response;
  * 网络工具包
  */
 public class MyUtil {
-//    public static final String BASE_URL = "http://192.168.43.82:5000";
-    public static final String BASE_URL = "http://10.0.2.2:5000";
+    public static final String BASE_URL = "http://192.168.43.82:5000";
+//    public static final String BASE_URL = "http://10.0.2.2:5000";
     public static String user_uid;
     enum RESULT {SUCCESS, FAIL}
 
@@ -226,4 +228,20 @@ public class MyUtil {
         user_uid = uid;
     }
 
+
+    public static void playAudio(String url){
+        final MediaPlayer player = new MediaPlayer();
+        try {
+            player.setDataSource(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        player.prepareAsync();
+        player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                player.start();
+            }
+        });
+    }
 }

@@ -95,12 +95,13 @@
         </com.haibin.calendarview.CalendarLayout>
 
         <Button
+            android:id="@+id/mark_bt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="签到"
-            android:background="@drawable/frame"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="400dp" />
+            android:layout_marginTop="400dp"
+            android:background="@drawable/frame"
+            android:text="签到" />
 
         <View
             android:layout_width="match_parent"
