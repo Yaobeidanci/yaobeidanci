@@ -255,10 +255,12 @@ public class OverviewActivity extends AppCompatActivity {
         // 请求过去一周的学习、复习单词数量的信息
         // 返回两个个大小为7的数组
 
+        List<List<String>> valueStr = new ArrayList<>();      //请求
+
         for (int i = 0; i < 2; i++) {
             List<Integer> value = new ArrayList<>();
             for (int j = 0; j < 7; j++) {
-                value.add(5);
+                value.add(Integer.parseInt(valueStr.get(i).get(j)));
             }
             values.add(value);
         }
