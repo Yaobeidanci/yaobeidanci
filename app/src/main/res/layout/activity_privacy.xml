@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/ll_btn_bottom"
+            android:layout_marginBottom="15dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="个人信息保护指引"
+                android:textColor="#000000"
+                android:textSize="22sp"
+                android:textStyle="bold"/>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:fadingEdgeLength="50dp"
+                android:requiresFadingEdge="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:singleLine="false"
+                    android:textSize="18sp"
+                    android:text="\n        我们依据《中华人民共和国网络安全法》以及其他相关法律法规和技术规范收集和使用您的个人信息，以帮助我们向您提供更优质的产品和/或服务。\n        请您在使用前，仔细阅读并充分理解本指引,希望您特别关注。一旦您使用或继续使用本品，即表示您同意我们按照本指引处理您的相关信息。
+
+请您注意，只有在您确认同意后，我们才会开始收集、使用、处理和存储您的个人信息。您可以选择以不注册/登录帐号的方式使用，我们将尽最大减少信息收集并向您提供浏览功能，但这将导致您无法完整使用各项功能或服务。如果您不同意收集您的任何个人信息，请您停止使用并退出本品。
+
+\n      如对本指引有任何疑问，您可以通过提供的联系方式18300000@bjtu.edu.cn与我们联系。我们会不时对指引进行修订。当本指引发生变更时，我们会在版本更新后以推送通知、弹窗等形式向您展示变更后的内容。
+
+本指引适用于提供我们的产品和服务（包括移动端、网站、小程序等）的科技有限公司。"
+                    android:textColor="#000000" />
+            </ScrollView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_btn_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center">
+            <Button
+                android:layout_marginBottom="20dp"
+                android:id="@+id/plan_change"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/buttonshape"
+                android:text="我已阅读并确认"
+                android:textColor="@color/colorBgWhite"
+                android:textStyle="bold"
+                android:onClick="onAgree"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

@@ -1,189 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent">
 
+    <TextView
+        android:layout_marginTop="20sp"
+        android:textSize="30sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="设置" />
 
-    <EditText
-        android:id="@+id/editTextTextPersonName17"
-        android:layout_width="136dp"
-        android:layout_height="40dp"
-        android:background="@null"
-        android:ems="10"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingTop="20sp">
 
-        android:inputType="textPersonName"
-        android:text="实物兑换"
-        android:textColor="	#8B7765"
-        android:textSize="30dp"
+        <TextView
+            android:id="@+id/private_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20sp"
+            android:text="隐私政策"
+            android:textSize="28sp" />
 
+        <TextView
+            android:id="@+id/buy_cource_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20sp"
+            android:text="购买课程"
+            android:textSize="28sp" />
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
+        <TextView
+            android:id="@+id/duihuan_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20sp"
+            android:text="实物兑换"
+            android:textSize="28sp" />
 
-    <EditText
-        android:id="@+id/editTextTextPersonName18"
-        android:layout_width="136dp"
-        android:layout_height="40dp"
-        android:background="@null"
-        android:ems="10"
+    </LinearLayout>
 
-        android:inputType="textPersonName"
-        android:text="购买课程"
-        android:textColor="	#8B7765"
-        android:textSize="30dp"
-
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.058"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.626" />
 
     <Button
         android:id="@+id/logout_bt"
-        android:layout_width="272dp"
-        android:layout_height="60dp"
+        android:layout_width="207dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="20sp"
         android:background="@drawable/shape_yellow"
         android:text="退出登录"
-        android:textColor="	#8B7765"
-        android:textSize="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-        app:layout_constraintVertical_bias="0.976" />
-
-    <EditText
-        android:id="@+id/editTextTextPersonName7"
-        android:layout_width="106dp"
-        android:layout_height="38dp"
-        android:background="@null"
-        android:ems="10"
-
-        android:inputType="textPersonName"
-        android:text="设置"
-        android:textColor="	#8B7765"
-        android:textSize="30dp"
-
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.521"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.021" />
-
-    <EditText
-        android:id="@+id/editTextTextPersonName12"
-        android:layout_width="136dp"
-        android:layout_height="40dp"
-        android:background="@null"
-        android:ems="10"
-
-        android:inputType="textPersonName"
-        android:text="自动发音"
-        android:textColor="	#8B7765"
-        android:textSize="30dp"
-
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.052"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.103" />
-
-    <EditText
-        android:id="@+id/editTextTextPersonName15"
-        android:layout_width="136dp"
-        android:layout_height="40dp"
-        android:background="@null"
-        android:ems="10"
-
-        android:inputType="textPersonName"
-        android:text="隐私政策"
-        android:textColor="	#8B7765"
-        android:textSize="30dp"
-
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.37" />
-
-    <EditText
-        android:id="@+id/editTextTextPersonName13"
-        android:layout_width="136dp"
-        android:layout_height="40dp"
-        android:background="@null"
-        android:ems="10"
-
-        android:inputType="textPersonName"
-        android:text="拼写测试"
-        android:textColor="	#8B7765"
-        android:textSize="30dp"
-
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.208" />
-
-    <Switch
-        android:id="@+id/switch1"
-        android:layout_width="121dp"
-        android:layout_height="40dp"
-        android:thumb="@drawable/thumb"
-        android:track="@drawable/track"
-        android:switchMinWidth="20dp"
-        android:textOn="  "
-        android:textOff="  "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.913"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.102" />
-
-    <Switch
-        android:id="@+id/switch2"
-        android:layout_width="122dp"
-        android:layout_height="47dp"
-        android:thumb="@drawable/thumb"
-        android:track="@drawable/track"
-        android:switchMinWidth="20dp"
-        android:textOn="  "
-        android:textOff="  "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.913"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
-
-    <ImageView
-        android:id="@+id/imageView9"
-        android:layout_width="60dp"
-        android:layout_height="32dp"
-
-        android:src="@drawable/back"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:textSize="28sp" />
+</LinearLayout>

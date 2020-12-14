@@ -25,15 +25,38 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import yaobeidanci.view.MainActivity;
+import yaobeidanci.view.R;
 
 /**
  * 网络工具包
  */
 public class MyUtil {
-    public static final String BASE_URL = "http://192.168.43.82:5000";
-//    public static final String BASE_URL = "http://10.0.2.2:5000";
+//    public static final String BASE_URL = "http://192.168.43.82:5000";
+    public static final String BASE_URL = "http://10.0.2.2:5000";
     public static String user_uid;
     enum RESULT {SUCCESS, FAIL}
+
+    public static MediaPlayer yes_player;
+    public static MediaPlayer no_player;
+
+    public static void initPlayer(final Context context){
+//        new AsyncTask<Void, Void, Void>() {
+//            @Override
+//            protected Void doInBackground(Void... voids) {
+//                yes_player = MediaPlayer.create(context, R.raw.yes);
+//                no_player = MediaPlayer.create(context, R.raw.no);
+//
+//                try {
+//                    yes_player.prepare();
+//                    no_player.prepare();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                return null;
+//            }
+//        }.execute();
+    }
 
     public static class Res{
         public Object data;
@@ -231,17 +254,21 @@ public class MyUtil {
 
     public static void playAudio(String url){
         final MediaPlayer player = new MediaPlayer();
-        try {
-            player.setDataSource(url);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        player.prepareAsync();
-        player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                player.start();
+        if (url==null){
+        }else {
+            try {
+                player.setDataSource(url);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
+            player.prepareAsync();
+            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    player.start();
+                }
+            });
+        }
+
     }
 }

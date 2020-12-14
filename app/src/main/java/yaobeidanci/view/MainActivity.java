@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         context = getApplicationContext();
+        MyUtil.initPlayer(context);
 
         // 进入背单词页面
         Button learn_gate = findViewById(R.id.learn_gate);

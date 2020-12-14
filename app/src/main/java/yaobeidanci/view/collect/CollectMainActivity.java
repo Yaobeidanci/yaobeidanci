@@ -34,6 +34,8 @@ import yaobeidanci.view.learn.WordMainActivity;
 
 public class CollectMainActivity extends AppCompatActivity {
 
+    static int ready = 0;
+
     private static List<WordObject> wordList = new ArrayList<>();
     private static List<SentenceObject> sList=new ArrayList<>();
     public SlidingDrawer sd;
@@ -50,6 +52,7 @@ public class CollectMainActivity extends AppCompatActivity {
      * @param src 调用者
      */
     public static void startIt(final Activity src){
+        ready = 0;
         final JSONObject object1 = new JSONObject();
         final JSONObject object2 = new JSONObject();
         try {
@@ -61,8 +64,12 @@ public class CollectMainActivity extends AppCompatActivity {
                         JSONObject res = new JSONObject((String) result.data);
                         String words_json = res.getString("data");
                         wordList = new Gson().fromJson(words_json, new TypeToken<List<WordObject>>(){}.getType());
-                        Intent intent = new Intent(src, CollectMainActivity.class);
-                        src.startActivity(intent);
+                        ready++;
+                        if (ready == 2){
+                            Intent intent = new Intent(src, CollectMainActivity.class);
+                            src.startActivity(intent);
+                        }
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -86,8 +93,11 @@ public class CollectMainActivity extends AppCompatActivity {
                         JSONObject res = new JSONObject((String) result.data);
                         String sentences_json = res.getString("data");
                         sList = new Gson().fromJson(sentences_json, new TypeToken<List<SentenceObject>>(){}.getType());
-                        Intent intent = new Intent(src, CollectMainActivity.class);
-                        src.startActivity(intent);
+                        ready++;
+                        if (ready == 2){
+                            Intent intent = new Intent(src, CollectMainActivity.class);
+                            src.startActivity(intent);
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

@@ -67,7 +67,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.906" />
 
-    <EditText
+    <TextView
         android:id="@+id/editTextTextPersonName4"
         android:layout_width="125dp"
         android:layout_height="55dp"
@@ -86,7 +86,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.519" />
 
-    <EditText
+    <TextView
         android:id="@+id/editTextTextPersonName10"
         android:layout_width="125dp"
         android:layout_height="55dp"
@@ -104,7 +104,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.883" />
 
-    <EditText
+    <TextView
         android:id="@+id/editTextTextPersonName11"
         android:layout_width="125dp"
         android:layout_height="55dp"
@@ -122,13 +122,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.883" />
 
-    <EditText
-        android:id="@+id/editTextTextPersonName9"
+    <TextView
+        android:id="@+id/username"
         android:layout_width="116dp"
         android:layout_height="29dp"
 
         android:background="@null"
         android:ems="10"
+        android:gravity="center"
         android:inputType="textPersonName"
         android:text="15497399"
         android:textColor="	#8B7765"
@@ -140,7 +141,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.257" />
 
-    <EditText
+    <TextView
         android:id="@+id/editTextTextPersonName2"
         android:layout_width="125dp"
         android:layout_height="55dp"

@@ -95,7 +95,7 @@ public class MyCalenderView extends MonthView {
 
             //绘制圆圈
             mSelectedPaint.setColor(Color.rgb(255, 120, 100));
-            canvas.drawCircle(x + mItemWidth - mRadio, y + mItemHeight - mRadio, mRadio, mSelectedPaint);
+            canvas.drawCircle(x + mItemWidth - mRadio - 20, y + mItemHeight - mRadio-60, mRadio, mSelectedPaint);
             //绘制日期
             mSchemeTextPaint.setColor(Color.WHITE);
             canvas.drawText(date, cx, mTextBaseLine + top, mSchemeTextPaint);

@@ -140,9 +140,9 @@ def set_schedule():
     query = db.execute_query("select * from schedule where uid=?", (uid,))
     if len(query) != 0:
         res = db.execute("update schedule set book_id=?, start_date=?, num_daily=?, current_progress=1",
-                         (book_id, "2020-12-13", num_daily))
+                         (book_id, util.get_today(), num_daily))
     else:
-        res = db.execute("insert into schedule values (?,?,?,?,?,?)", (uid, book_id, "2020-12-13", 1, num_daily, 0))
+        res = db.execute("insert into schedule values (?,?,?,?,?,?)", (uid, book_id, util.get_today(), 1, num_daily, 0))
     if res:
         return {
             'status': 200,
@@ -177,7 +177,7 @@ def get_schedule():
     duration = (time_end - time_start).seconds / 60
     r0 = db.execute("update record set time_day=?", (duration,))
     print(duration)
-    res0 = db.execute_query("select * from record where uid=? and cur_date=?", (uid, "2020-12-13"))
+    res0 = db.execute_query("select * from record where uid=? and cur_date=?", (uid, util.get_today()))
     if len(res0) == 0:
         res[0]['learn_day'] = 0
         res[0]['review_day'] = 0
@@ -328,10 +328,10 @@ def set_result():
     db.execute("insert into [" + uid + "_table] values (?,?)", (word_id, "level 5"))
 
     # 更新当天记录
-    res = db.execute_query("select * from record where uid=? and cur_date=?", (uid, "2020-12-13"))
+    res = db.execute_query("select * from record where uid=? and cur_date=?", (uid, util.get_today()))
     if len(res) == 0:
-        db.execute("insert into record values (?,?,?,?,?)", (uid, "2020-12-13", 0, 0, 0))
-    db.execute("update record set learn_day=learn_day+1 where uid=? and cur_date=?", (uid, "2020-12-13"))
+        db.execute("insert into record values (?,?,?,?,?)", (uid, util.get_today(), 0, 0, 0))
+    db.execute("update record set learn_day=learn_day+1 where uid=? and cur_date=?", (uid, util.get_today()))
     return {
         'status': 200,
         'msg': '操作成功'
@@ -342,13 +342,13 @@ def set_result():
 @app.route('/api/mark')
 def mark():
     uid = request.args.get('uid')
-    r0 = db.execute_query("select cur_date from calendar where uid=? and cur_date=?", (uid, "2020-12-13"))
+    r0 = db.execute_query("select cur_date from calendar where uid=? and cur_date=?", (uid, util.get_today()))
     if len(r0) != 0:
         return {
             'status': 404,
             'msg': '已签过到'
         }
-    res = db.execute("insert into calendar values (?,?)", (uid, "2020-12-13"))
+    res = db.execute("insert into calendar values (?,?)", (uid, util.get_today()))
     res0 = db.execute_query("select cur_date from calendar where uid=?", (uid,))
     res0 = [i['cur_date'] for i in res0]
     return {
@@ -390,39 +390,39 @@ def get_learn_data():
         'status': 200,
         'data': [
             {
+                'word_learn': 50,
+                'word_review': 20,
+                'time_learn': 25
+            },
+            {
+                'word_learn': 45,
+                'word_review': 20,
+                'time_learn': 13
+            },
+            {
                 'word_learn': 10,
+                'word_review': 5,
+                'time_learn': 3
+            },
+            {
+                'word_learn': 15,
                 'word_review': 10,
                 'time_learn': 10
             },
             {
-                'word_learn': 10,
-                'word_review': 10,
-                'time_learn': 10
+                'word_learn': 43,
+                'word_review': 7,
+                'time_learn': 13
             },
             {
-                'word_learn': 10,
-                'word_review': 10,
-                'time_learn': 10
+                'word_learn': 26,
+                'word_review': 7,
+                'time_learn': 15
             },
             {
-                'word_learn': 10,
-                'word_review': 10,
-                'time_learn': 10
-            },
-            {
-                'word_learn': 10,
-                'word_review': 10,
-                'time_learn': 10
-            },
-            {
-                'word_learn': 10,
-                'word_review': 10,
-                'time_learn': 10
-            },
-            {
-                'word_learn': 10,
-                'word_review': 10,
-                'time_learn': 10
+                'word_learn': 35,
+                'word_review': 9,
+                'time_learn': 17
             }
         ]
     }
@@ -473,3 +473,5 @@ def get_word_dict():
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
     # app.run()
+    # print(util.get_today())
+

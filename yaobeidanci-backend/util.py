@@ -1,5 +1,6 @@
 import re
 import hashlib
+import time
 
 rule = re.compile('[;\s]')
 
@@ -16,3 +17,7 @@ def get_md5(src):
     x = hashlib.md5()
     x.update(src.encode("utf-8"))
     return x.hexdigest()
+
+
+def get_today():
+    return time.strftime("%Y-%m-%d", time.localtime())

@@ -63,6 +63,9 @@ public class CalenderActivity extends AppCompatActivity {
                     public void onSuccess(MyUtil.Res result) {
                         String res = (String) result.data;
                         Toast.makeText(MainActivity.getContext(), res, Toast.LENGTH_SHORT).show();
+                        AcquireDates();
+//                        InitCalender();
+//                        calendarView.invalidate();
                     }
 
                     @Override
@@ -102,7 +105,7 @@ public class CalenderActivity extends AppCompatActivity {
                         List<String> dates = new ArrayList<>();
 
                         for(int i =0 ;i<jsonArray.length();i++){
-                            dates.add((String) jsonArray.get(i));
+                            dates.add(jsonArray.getString(i));
                         }
 
                         for (int i = 0; i < dates.size(); i++) {
@@ -155,7 +158,7 @@ public class CalenderActivity extends AppCompatActivity {
         });
 
         textView_days_seq.setText(String.valueOf(seq));
-        textView_days_total.setText(String.valueOf(5));
+        textView_days_total.setText(String.valueOf(0));
     }
 
     public void returnStudyPlan(View view) {

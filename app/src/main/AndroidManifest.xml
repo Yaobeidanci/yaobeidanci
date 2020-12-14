@@ -11,9 +11,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".mainpage.PaperActivity"></activity>
+        <activity android:name=".mainpage.PaperActivity"/>
         <activity android:name=".book.SetNumActivity" />
         <activity
             android:name=".login.LoginActivity"
@@ -42,6 +42,9 @@
         <activity android:name=".mainpage.SelfPage" />
         <activity android:name=".mainpage.SettingPage" />
         <activity android:name=".mainpage.MessageActivity" />
+        <activity android:name=".mainpage.PrivacyActivity"/>
+        <activity android:name=".mainpage.ClassActivity"/>
+        <activity android:name=".mainpage.BuyActivity"/>
         <activity
             android:name=".collect.SentenceDetailActivity"
             android:label="句库"

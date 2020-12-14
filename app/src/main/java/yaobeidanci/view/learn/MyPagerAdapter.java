@@ -106,8 +106,10 @@ public class MyPagerAdapter extends PagerAdapter {
             if (selectBt==null){
                 result = 0;
             }else if(selectBt!=correctBt){
+                MyUtil.playAudio("https://downsc.chinaz.net/Files/DownLoad/sound1/201907/11750.mp3");
                 result = 1;
             }else {
+                MyUtil.playAudio("https://downsc.chinaz.net/Files/DownLoad/sound1/202011/13562.mp3");
                 result=1;
             }
 
@@ -135,11 +137,11 @@ public class MyPagerAdapter extends PagerAdapter {
 
             if (selectBt!=null){
                 if (correctBt!=selectBt){
-                    selectBt.setBackgroundColor(Color.RED);
+                    selectBt.setBackgroundColor(Color.rgb(0xff, 0x33, 0x33));
                 }
             }
             if (correctBt!=null){
-                correctBt.setBackgroundColor(Color.GREEN);
+                correctBt.setBackgroundColor(Color.rgb(0x00, 0xff, 0x33));
             }
 
 
@@ -226,7 +228,7 @@ public class MyPagerAdapter extends PagerAdapter {
                     });
 
                     // 星标按钮
-                    ImageView star_bt = viewItem.findViewById(R.id.star_bt);
+                    final ImageView star_bt = viewItem.findViewById(R.id.star_bt);
 
                     star_bt.setOnClickListener(new View.OnClickListener() {
                         @Override
