@@ -21,6 +21,7 @@ import java.util.List;
 
 import yaobeidanci.MyUtil;
 import yaobeidanci.bean.SentenceObject;
+import yaobeidanci.bean.WordObject;
 import yaobeidanci.view.MainActivity;
 import yaobeidanci.view.R;
 

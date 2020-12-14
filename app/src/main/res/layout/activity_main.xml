@@ -148,11 +148,11 @@
         android:src="@drawable/anim"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintHorizontal_bias="0.054"
         app:layout_constraintStart_toStartOf="parent"
 
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.024"></yaobeidanci.view.mainpage.ImageViewPlus>
+        app:layout_constraintVertical_bias="0.975"></yaobeidanci.view.mainpage.ImageViewPlus>
 
     <ImageView
         android:id="@+id/imageView"
@@ -173,22 +173,23 @@
         android:src="@drawable/hat"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.047"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.952" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="77dp"
-        android:layout_height="39dp"
-        android:src="@drawable/headphone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.344"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.952" />
+        app:layout_constraintVertical_bias="0.952"
+        android:onClick="ShowAd"/>
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView4"-->
+<!--        android:layout_width="77dp"-->
+<!--        android:layout_height="39dp"-->
+<!--        android:src="@drawable/headphone"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.344"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.952" />-->
 
     <ImageView
         android:id="@+id/book_bt"

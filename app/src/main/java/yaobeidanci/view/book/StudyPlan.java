@@ -24,7 +24,12 @@ public class StudyPlan extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_book_study_plan);
-        Intent intent=getIntent();
+        //Intent intent=getIntent();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         final TextView dailyplan=(TextView)findViewById(R.id.daily_num);
         final TextView bookname=(TextView)findViewById(R.id.text_plan_name);
         final TextView totalcount=(TextView)findViewById(R.id.total_count);
@@ -38,7 +43,7 @@ public class StudyPlan extends AppCompatActivity {
         final JSONObject object = new JSONObject();
         try {
             object.put("uid", MyUtil.getUid());
-            MyUtil.httpGet(MyUtil.BASE_URL + "/resoucre/schedule", object, new MyUtil.MyCallback() {
+            MyUtil.httpGet(MyUtil.BASE_URL + "/resource/schedule", object, new MyUtil.MyCallback() {
                 @Override
                 public void onSuccess(MyUtil.Res result) {
                     try {
@@ -84,34 +89,8 @@ public class StudyPlan extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        else{
-//            JSONObject object = new JSONObject();
-//            try {
-//                object.put("uid", MyUtil.getUid());
-//                MyUtil.httpGet(MyUtil.BASE_URL + "/resoucre/schedule", object, new MyUtil.MyCallback() {
-//                    @Override
-//                    public void onSuccess(MyUtil.Res result) {
-//                        try {
-//                            JSONObject jsonObject = new JSONObject((String) result.data);
-//                            int code = jsonObject.getInt("status");
-//                            if (code==404){
-//                                Toast.makeText(MainActivity.getContext(), jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
-//                            }
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onError(MyUtil.Res result) {
-//                        Toast.makeText(MainActivity.getContext(), result.msg, Toast.LENGTH_SHORT).show();
-//                    }
-//                }, true);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
     }
+
     public void changeBook(View view) {
         Intent intent=new Intent(StudyPlan.this,ChooseBook.class);
         startActivity(intent);

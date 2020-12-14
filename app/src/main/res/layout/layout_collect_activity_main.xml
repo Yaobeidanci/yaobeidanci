@@ -48,7 +48,7 @@
 
         <LinearLayout
             android:layout_height="180dp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp">
@@ -56,7 +56,35 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/word_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/none_word_tips"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="8dp"
+                android:layout_margin="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="350dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:text="暂时没有收藏的单词哦～"
+                        android:gravity="center"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:textColor="#595656" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
 
         </LinearLayout>
     </HorizontalScrollView>
@@ -114,7 +142,34 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/sentence_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:visibility="gone"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/none_sentence_tips"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="8dp"
+                android:layout_margin="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="350dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:text="暂时没有收藏的句子哦～"
+                        android:gravity="center"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:textColor="#595656" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
 
         </LinearLayout>
     </HorizontalScrollView>

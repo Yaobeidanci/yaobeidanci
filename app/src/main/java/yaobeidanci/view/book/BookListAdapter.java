@@ -52,8 +52,8 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.MyView
                 int position = holder.getAdapterPosition();
                 final BookItemEntity itemWordBook = mItemWordBookList.get(position);
 
-                if(SetNumActivity.bookid!=null && itemWordBook.getBookId()==SetNumActivity.bookid) {
-                    Toast.makeText(MainActivity.getContext(), "已经是"+itemWordBook.getBookId()+":"+itemWordBook.getBookName()+"了哦", Toast.LENGTH_SHORT).show();
+                if(itemWordBook.getBookId().equals(SetNumActivity.bookid)) {
+                    Toast.makeText(MainActivity.getContext(), "已经是"+itemWordBook.getBookName()+"了哦", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     Intent intent = new Intent(MainActivity.getContext(), SetNumActivity.class);

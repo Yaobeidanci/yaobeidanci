@@ -1,6 +1,8 @@
 package yaobeidanci.view.collect;
 
 import android.graphics.Typeface;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +62,7 @@ public class SentenceAdapter extends RecyclerView.Adapter<SentenceAdapter.ViewHo
         SentenceObject s = sList.get(position);
         holder.bg_iv.setImageResource(bg[s.getBackgroundId()]);
         holder.from_tv.setText(s.getOrigin_title());
+        //System.out.println("啦啦啦啦啦"+s.getOrigin_title());
         holder.text_tv.setText(s.getSentence());
         holder.text_tv.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC);
         holder.from_tv.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC);

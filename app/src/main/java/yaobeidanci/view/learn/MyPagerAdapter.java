@@ -217,7 +217,7 @@ public class MyPagerAdapter extends PagerAdapter {
                             JSONObject object = new JSONObject();
                             try {
                                 object.put("uid", MyUtil.getUid());
-                                object.put("word", wordObject.word);
+                                object.put("word_id", wordObject.word_id);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

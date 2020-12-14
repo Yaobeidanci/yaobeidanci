@@ -142,7 +142,7 @@ def get_word_from_db_form(word_obj, db):
     word_obj['phrases_label'] = '短语'
     word_obj['remember_method_label'] = '记忆方法'
 
-    sentences = db.execute_query("select distinct * from sentence where origin_word=?", (word_obj['word'],))
+    sentences = db.execute_query("select * from sentence where origin_word_id=?", (word_obj['word'],))
     word_obj['sentences'] = sentences
     return word_obj
 
@@ -174,15 +174,14 @@ def load_word_list():
                 sentences = word_obj['sentences']
                 for sentence in sentences:
                     db.execute("insert into sentence values (?,?,?,?,?,?,?)",
-                               (sentence['sentence_id'], sentence['sentence'], sentence['translation'],
+                               (None, sentence['sentence'], sentence['translation'],
                                 sentence['origin_word'], random.randint(0, 2), random.randint(0, 2),
                                 origins[random.randint(0, 2)]), commit=False)
                 db.execute("insert into word values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                           (word_obj['word_id'], word_obj['word'], word_obj['category'], word_obj['phonetic_uk'],
+                           (None, word_obj['word'], word_obj['category'], word_obj['phonetic_uk'],
                             word_obj['phonetic_us'], json.dumps(word_obj['relate_words']),
                             json.dumps(word_obj['explains']), json.dumps(word_obj['phrases']),
                             json.dumps(word_obj['remember_method']), json.dumps(word_obj['questions'])), commit=False)
-
             db.commit()
     db.close()
 
@@ -190,7 +189,7 @@ def load_word_list():
 # 背单词状态机，获取用户需要背哪个单词
 def word_generator(uid, db):
     res = db.execute_query("select * from schedule where uid=?", (uid,))
-    book = res[0]['book']
+    book = res[0]['book_id']
     current_progress = res[0]['current_progress']
     return book, current_progress
 

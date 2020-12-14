@@ -63,11 +63,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         JSONObject object = new JSONObject();
         try {
             object.put("uid", MyUtil.getUid());
-            MyUtil.httpGet(MyUtil.BASE_URL + "/resoucre/schedule", object, new MyUtil.MyCallback() {
+            MyUtil.httpGet(MyUtil.BASE_URL + "/resource/schedule", object, new MyUtil.MyCallback() {
                 @Override
                 public void onSuccess(MyUtil.Res result) {
                     try {
@@ -96,12 +100,15 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     public void onclick(View view){
         Intent intent=new Intent(MainActivity.this, SelfPage.class);
         startActivity(intent);
+    }
+
+    public void ShowAd(View view){
+        Toast.makeText(MainActivity.getContext(), "商城功能暂未开发，敬请期待~", Toast.LENGTH_SHORT).show();
     }
 
     public static Context getContext() {

@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import yaobeidanci.MyUtil;
 import yaobeidanci.view.MainActivity;
 import yaobeidanci.view.R;
+import yaobeidanci.view.mainpage.SelfPage;
 
 public class SetNumActivity extends AppCompatActivity {
     public static String bookid;//当前书籍id
@@ -58,6 +59,10 @@ public class SetNumActivity extends AppCompatActivity {
             }
         }, true);
         Intent intent=new Intent(SetNumActivity.this,StudyPlan.class);
+        startActivity(intent);
+    }
+    public void backchoice(View view){
+        Intent intent=new Intent(SetNumActivity.this, ChooseBook.class);
         startActivity(intent);
     }
 }

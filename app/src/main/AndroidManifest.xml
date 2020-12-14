@@ -13,14 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".book.SetNumActivity"></activity>
+        <activity android:name=".book.SetNumActivity"/>
         <activity android:name=".login.LoginActivity"
             android:launchMode="singleTask"/>
         <activity android:name=".login.PhoneLoginActivity" />
         <activity android:name=".login.UsernameActivity" />
         <activity android:name=".login.RegisterActivity" />
-        <activity android:name=".book.ChooseBook" />
-        <activity android:name=".book.StudyPlan" />
+        <activity android:name=".book.ChooseBook"  android:launchMode="singleTask"/>
+        <activity android:name=".book.StudyPlan"  android:launchMode="singleTask"/>
         <activity android:name=".welcome.Welcome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity" android:launchMode="singleTask"/>
         <activity android:name=".learn.WordMainActivity" />
         <activity android:name=".collect.CollectMainActivity" />
         <activity android:name=".mainpage.SelfPage" />

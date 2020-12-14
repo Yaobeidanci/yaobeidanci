@@ -78,12 +78,14 @@ def register():
         res = db.execute_query("select * from user where username=?", (username,))
         if len(res) == 0:
             # uid其实就是username的hash
+            uid = util.get_md5(username)
             res = db.execute("insert into user values (?, ?, ?, ?, ?, ?, ?)",
-                             (username, password, util.get_md5(username), phone, '', '', 0))
-            res1 = db.execute("create table " + username + "_table" + " (" +
+                             (username, password, uid, phone, '', '', 0))
+            # 每个用户自己的单词表
+            res1 = db.execute("create table [" + uid + "_table]" + " (" +
                               "word integer," +
                               "level integer)", ())
-            res1 = True
+            # res1 = True
             if res and res1:
                 return {
                     'status': 200,
@@ -110,11 +112,18 @@ def register():
 @app.route('/api/setSchedule')
 def set_schedule():
     uid = request.args.get('uid')
+    user = db.execute_query("select * from user where uid=?", (uid,))
+    if len(user) == 0:
+        return {
+            'status': 404,
+            'msg': '用户不存在'
+        }
     book_id = request.args.get('book_id')
     num_daily = request.args.get('num_daily')
     query = db.execute_query("select * from schedule where uid=?", (uid,))
     if len(query) != 0:
-        res = db.execute("update schedule set book=?, start_date=?, current_progress=1", (book_id, "2020-12-13"))
+        res = db.execute("update schedule set book_id=?, start_date=?, num_daily=?, current_progress=1",
+                         (book_id, "2020-12-13", num_daily))
     else:
         res = db.execute("insert into schedule values (?,?,?,?,?,?)", (uid, book_id, "2020-12-13", 1, num_daily, 0))
     if res:
@@ -130,7 +139,7 @@ def set_schedule():
 
 
 # 获取计划信息
-@app.route('/resoucre/schedule')
+@app.route('/resource/schedule')
 def get_schedule():
     uid = request.args.get('uid')
     res = db.execute_query("select * from schedule where uid=?", (uid,))
@@ -164,12 +173,12 @@ def get_schedule():
     }
 
 
-# 添加单词收藏，字段为uid、word
+# 添加单词收藏，字段为uid、word_id
 @app.route('/api/addStarWord')
 def add_star_word():
     uid = request.args.get('uid')
-    word = request.args.get('word')
-    res = db.execute("insert into star_word values (?,?)", (uid, word))
+    word_id = request.args.get('word_id', type=int)
+    res = db.execute("insert into star_word values (?,?)", (uid, word_id))
     if res:
         return {
             'status': 200,
@@ -186,7 +195,7 @@ def add_star_word():
 @app.route('/api/addStarSentence')
 def add_star_sentence():
     uid = request.args.get('uid')
-    sentence_id = request.args.get('sentence_id')
+    sentence_id = request.args.get('sentence_id', type=int)
     res = db.execute("insert into star_sentence values (?,?)", (uid, sentence_id))
     if res:
         return {
@@ -232,7 +241,8 @@ def get_user():
 @app.route('/resource/starWords')
 def get_star_words():
     uid = request.args.get('uid')
-    res = db.execute_query("select * from word where word in (select word from star_word where uid=?)", (uid,))
+    print('query star word ...')
+    res = db.execute_query("select * from word where word_id in (select word_id from star_word where uid=?)", (uid,))
     res = [data_manager.get_word_from_db_form(i, db) for i in res]
     print(res)
     return {
@@ -245,6 +255,7 @@ def get_star_words():
 @app.route('/resource/starSentences')
 def get_star_sentences():
     uid = request.args.get('uid')
+    print('query star sentence ...')
     res = db.execute_query(
         "select * from sentence where sentence_id in (select sentence_id from star_sentence where uid=?)", (uid,))
     print(res)
@@ -257,6 +268,7 @@ def get_star_sentences():
 # 获取单词书列表
 @app.route('/resource/bookList')
 def get_book_list():
+    print('query book list ...')
     res = db.execute_query("select * from book", ())
     return {
         'status': 200,
@@ -264,60 +276,43 @@ def get_book_list():
     }
 
 
-# 获取单词列表，total为单词个数
-@app.route('/resource/wordList')
-def get_word_list():
-    try:
-        book_id = request.args.get('book_id')
-        total = int(request.args.get('total'))
-        res = db.execute_query("select * from word where category=? limit ?", (book_id, total))
-        res = [data_manager.get_word_from_db_form(i, db) for i in res]
-
-        return {
-            'status': 200,
-            'data': res
-        }
-    except Exception as ex:
-        print(ex)
-        return {
-            'status': 404
-        }
-
-
 # 获取要背的单词，传入uid
 @app.route('/resource/word')
 def get_current_word():
-    # try:
+    try:
         uid = request.args.get('uid')
         book, next_word_index = data_manager.word_generator(uid, db)
-        res = db.execute_query("select * from word where category=? and word_id=?", (book, next_word_index))
+        res = db.execute_query("select * from word where word_id=?", (next_word_index,))
         res = data_manager.get_word_from_db_form(res[0], db)
-        db.execute("update schedule set current_progress=current_progress + 1 where uid=?", (uid,))
         return {
             'status': 200,
             'data': res
         }
-    # except Exception as ex:
-    #     print(ex)
-    #     return {
-    #         'status': 404
-    #     }
+    except:
+        return {
+            'status': 404,
+            'msg': '未知错误'
+        }
 
 
 # 接受用户点击结果，参数为uid、word_id、mode、result
 @app.route('/api/setResult')
 def set_result():
     uid = request.args.get('uid')
-    word_id = request.args.get('word_id')
+    word_id = request.args.get('word_id', type=int)
     mode = request.args.get('mode')
     result = request.args.get('result')
     print(uid, word_id, mode, result)
-    username = db.execute_query("select username from user where uid=?", (uid,))[0]['username']
-    res4 = db.execute("insert into " + username + "_table values (?,?)", (word_id, "level 5"))
+    # 设置总进度
+    db.execute("update schedule set current_progress=current_progress + 1 where uid=?", (uid,))
+    # 记录用户学习的单词
+    db.execute("insert into [" + uid + "_table] values (?,?)", (word_id, "level 5"))
+
+    # 更新当天记录
     res = db.execute_query("select * from record where uid=? and cur_date=?", (uid, "2020-12-13"))
     if len(res) == 0:
-        res1 = db.execute("insert into record values (?,?,?,?,?)", (uid, "2020-12-13", 0, 0, 0))
-    res2 = db.execute("update record set learn_day=learn_day+1 where uid=? and cur_date=?", (uid, "2020-12-13"))
+        db.execute("insert into record values (?,?,?,?,?)", (uid, "2020-12-13", 0, 0, 0))
+    db.execute("update record set learn_day=learn_day+1 where uid=? and cur_date=?", (uid, "2020-12-13"))
     return {
         'status': 200,
         'msg': '操作成功'
@@ -360,17 +355,15 @@ def get_mark():
 @app.route('/resource/oldWord')
 def get_old_word():
     uid = request.args.get('uid')
-    username = db.execute_query("select username from user where uid=?", (uid,))[0]['username']
-    res = db.execute_query("select * from word where word_id in (select word from " + username + "_table)", ())
+    res = db.execute_query("select * from word where word_id in (select word_id from [" + uid + "_table])", ())
     res = [data_manager.get_word_from_db_form(i, db) for i in res]
-    # res = db.execute_query("select word from " + username + "_table", ())
     return {
         'status': 200,
         'data': res
     }
 
 
-#
+# 学习数据，传入uid
 @app.route('/resource/learnData')
 def get_learn_data():
     uid = request.args.get('uid')

@@ -20,10 +20,10 @@ CREATE TABLE book (
 
 DROP TABLE IF EXISTS sentence;
 CREATE TABLE sentence (
-    sentence_id varchar(50),
+    sentence_id integer primary key autoincrement,
     sentence varchar(255),
     translation varchar(255),
-    origin_word varchar(50),
+    origin_word_id integer,
     from_background_id integer,
     from_image_id integer,
     from_title varchar(50)
@@ -31,7 +31,7 @@ CREATE TABLE sentence (
 
 DROP TABLE IF EXISTS word;
 CREATE TABLE word (
-    word_id integer,
+    word_id integer primary key autoincrement,
     word varchar(50),
     category varchar(50),
     phonetic_uk varchar(50),
@@ -62,7 +62,7 @@ CREATE TABLE star_sentence (
 DROP TABLE IF EXISTS star_word;
 CREATE TABLE star_word (
     uid varchar(50),
-    word varchar(50)
+    word_id integer
 );
 
 DROP TABLE IF EXISTS record;

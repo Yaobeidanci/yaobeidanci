@@ -9,7 +9,7 @@ public class SentenceObject{
     public String origin_title;
     public int backgroundId;
     public int fromImageId;
-    public String sentence_id;
+    public int sentence_id;
 
 
     public String getSentence(){
@@ -17,7 +17,7 @@ public class SentenceObject{
     }
 
     public String getSentence_id(){
-        return sentence_id;
+        return ""+sentence_id;
     }
 
     public String getOrigin_title(){
@@ -36,7 +36,7 @@ public class SentenceObject{
         sentence = "";
         translation = "";
         origin_title = "";
-        sentence_id = "";
+        sentence_id = 0;
     }
 }
 
