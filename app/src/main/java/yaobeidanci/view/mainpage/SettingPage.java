@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import yaobeidanci.MyUtil;
@@ -26,6 +27,15 @@ public class SettingPage extends AppCompatActivity {
             public void onClick(View v) {
                 MyUtil.setUid("");
                 Intent intent = new Intent(SettingPage.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        EditText editTextTextPersonName15 = findViewById(R.id.editTextTextPersonName15);
+        editTextTextPersonName15.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingPage.this, PaperActivity.class);
                 startActivity(intent);
             }
         });

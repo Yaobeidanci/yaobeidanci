@@ -59,6 +59,22 @@ def login():
         }
 
 
+@app.route('/api/search', methods=['POST'])
+def search():
+    username = request.args.get('username')
+    res = db.execute_query("select * from user where username=?", (username,))
+    if len(res) == 0:
+        return {
+            'status': 200,
+            'msg': '创建成功'
+        }
+    else:
+        return{
+            'status': 401,
+            'msg': res[0]['uid']
+        }
+
+
 @app.route('/api/logout')
 def logout():
     uid = request.args.get('uid')
@@ -89,7 +105,8 @@ def register():
             if res and res1:
                 return {
                     'status': 200,
-                    'msg': '注册成功'
+                    'msg': '注册成功',
+                    'uid': uid
                 }
             else:
                 return {
@@ -143,6 +160,7 @@ def set_schedule():
 def get_schedule():
     uid = request.args.get('uid')
     res = db.execute_query("select * from schedule where uid=?", (uid,))
+    print(uid, res)
     if len(res) == 0:
         return {
             'status': 404,
@@ -153,7 +171,8 @@ def get_schedule():
     res[0]['num'] = res1[0]['num']
 
     global time_start
-    # time_start = datetime.datetime.now()
+    if time_start is None:
+        time_start = datetime.datetime.now()
     time_end = datetime.datetime.now()
     duration = (time_end - time_start).seconds / 60
     r0 = db.execute("update record set time_day=?", (duration,))
