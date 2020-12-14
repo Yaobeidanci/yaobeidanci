@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 进入计划统计页面
         ImageView book_bt = findViewById(R.id.book_bt);
         book_bt.setOnClickListener(new View.OnClickListener() {
             @Override

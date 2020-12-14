@@ -63,9 +63,9 @@ def register():
             # uid其实就是username的hash
             res = db.execute("insert into user values (?, ?, ?, ?, ?, ?)",
                              (username, password, util.get_md5(username), phone, '', ''))
-            # res1 = db.execute("create table ? (" +
-            #                   "word varchar(50)," +
-            #                   "level integer)", (username+"_table",))
+            res1 = db.execute("create table " + username + "_table" + " (" +
+                              "word integer," +
+                              "level integer)", ())
             res1 = True
             if res and res1:
                 return {
@@ -95,7 +95,11 @@ def set_schedule():
     uid = request.args.get('uid')
     book_id = request.args.get('book_id')
     num_daily = request.args.get('num_daily')
-    res = db.execute("insert into schedule values (?,?,?,?,?)", (uid, book_id, "2020-12-13", 1, num_daily))
+    query = db.execute_query("select * from schedule where uid=?", (uid,))
+    if len(query) != 0:
+        res = db.execute("update schedule set book=?, start_date=?, current_progress=1", (book_id, "2020-12-13"))
+    else:
+        res = db.execute("insert into schedule values (?,?,?,?,?,?)", (uid, book_id, "2020-12-13", 1, num_daily, 0))
     if res:
         return {
             'status': 200,
@@ -118,6 +122,15 @@ def get_schedule():
             'status': 404,
             'msg': '未添加计划'
         }
+    res0 = db.execute_query("select * from record where uid=? and cur_date=?", (uid, "2020-12-13"))
+    if len(res0) == 0:
+        res[0]['learn_day'] = 0
+        res[0]['review_day'] = 0
+        res[0]['time_day'] = 0
+    else:
+        res[0]['learn_day'] = res0[0]['learn_day']
+        res[0]['review_day'] = res0[0]['review_day']
+        res[0]['time_day'] = res0[0]['time_day']
     return {
         'status': 200,
         'data': res[0]
@@ -252,7 +265,7 @@ def get_current_word():
         book, next_word_index = data_manager.word_generator(uid, db)
         res = db.execute_query("select * from word where category=? and word_id=?", (book, next_word_index))
         res = data_manager.get_word_from_db_form(res[0], db)
-        db.execute("update schedule set current_progress=current_progress + 1", ())
+        db.execute("update schedule set current_progress=current_progress + 1 where uid=?", (uid,))
         return {
             'status': 200,
             'data': res
@@ -264,7 +277,7 @@ def get_current_word():
     #     }
 
 
-# 接受用户点击结果
+# 接受用户点击结果，参数为uid、word_id、mode、result
 @app.route('/api/setResult')
 def set_result():
     uid = request.args.get('uid')
@@ -272,9 +285,59 @@ def set_result():
     mode = request.args.get('mode')
     result = request.args.get('result')
     print(uid, word_id, mode, result)
+    username = db.execute_query("select username from user where uid=?", (uid,))[0]['username']
+    res4 = db.execute("insert into " + username + "_table values (?,?)", (word_id, "level 5"))
+    res = db.execute_query("select * from record where uid=? and cur_date=?", (uid, "2020-12-13"))
+    if len(res) == 0:
+        res1 = db.execute("insert into record values (?,?,?,?,?)", (uid, "2020-12-13", 0, 0, 0))
+    res2 = db.execute("update record set learn_day=learn_day+1 where uid=? and cur_date=?", (uid, "2020-12-13"))
     return {
         'status': 200,
         'msg': '操作成功'
+    }
+
+
+# 签到，参数为uid
+@app.route('/api/mark')
+def mark():
+    uid = request.args.get('uid')
+    r0 = db.execute_query("select cur_date from calendar where uid=? and cur_date=?", (uid, "2020-12-13"))
+    if len(r0) != 0:
+        return {
+            'status': 404,
+            'msg': '已签过到'
+        }
+    res = db.execute("insert into calender values (?,?)", (uid, "2020-12-13"))
+    res0 = db.execute_query("select cur_date from calendar where uid=?", (uid,))
+    return {
+        'status': 200,
+        'msg': '签到成功',
+        'data': res0
+    }
+
+
+# 获取签到记录，参数为uid
+@app.route('/resource/mark')
+def get_mark():
+    uid = request.args.get('uid')
+    res = db.execute_query("select cur_date from calendar where uid=?", (uid,))
+    return {
+        'status': 200,
+        'data': res
+    }
+
+
+# 获取学过单词，参数为uid
+@app.route('/resource/oldWord')
+def get_old_word():
+    uid = request.args.get('uid')
+    username = db.execute_query("select username from user where uid=?", (uid,))[0]['username']
+    res = db.execute_query("select * from word where word_id in (select word from " + username + "_table)", ())
+    res = [data_manager.get_word_from_db_form(i, db) for i in res]
+    # res = db.execute_query("select word from " + username + "_table", ())
+    return {
+        'status': 200,
+        'data': res
     }
 
 
@@ -322,3 +385,4 @@ def get_word_dict():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
+    # app.run()

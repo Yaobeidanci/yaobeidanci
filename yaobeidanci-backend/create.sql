@@ -48,7 +48,8 @@ CREATE TABLE schedule (
     book varchar(50),
     start_date varchar(50),
     current_progress integer,
-    num_daily integer
+    num_daily integer,
+    time_progress integer
 );
 
 DROP TABLE IF EXISTS star_sentence;
@@ -61,4 +62,19 @@ DROP TABLE IF EXISTS star_word;
 CREATE TABLE star_word (
     uid varchar(50),
     word varchar(50)
+);
+
+DROP TABLE IF EXISTS record;
+CREATE TABLE record (
+    uid varchar(50),
+    cur_date varchar(50),
+    learn_day integer,
+    review_day integer,
+    time_day integer
+);
+
+DROP TABLE IF EXISTS calendar;
+CREATE TABLE calendar (
+    uid varchar(50),
+    cur_date varchar(50)
 );
