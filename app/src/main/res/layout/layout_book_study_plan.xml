@@ -194,7 +194,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginBottom="10dp">
+                        android:layout_marginBottom="10dp"
+                        android:onClick="toOverview">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -393,7 +394,8 @@
                         android:background="@drawable/buttonshape"
                         android:text="学习记录"
                         android:textColor="@color/colorBgWhite"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        android:onClick="toOverview"/>
 
                 </LinearLayout>
 
@@ -406,7 +408,8 @@
                 android:layout_marginTop="15dp"
                 app:cardBackgroundColor="@color/colorBgWhite"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="0dp">
+                app:cardElevation="0dp"
+                android:onClick="toCalender">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

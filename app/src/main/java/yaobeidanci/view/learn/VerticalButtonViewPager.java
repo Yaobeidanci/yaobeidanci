@@ -102,8 +102,8 @@ public class VerticalButtonViewPager extends VerticalViewPager {
                         }
                     });
 
-                     showTheAns = view.findViewById(R.id.showTheAns);
-                      afterAns = view.findViewById(R.id.afterAns);
+                    showTheAns = view.findViewById(R.id.showTheAns);
+                    afterAns = view.findViewById(R.id.afterAns);
                     showTheAns.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {

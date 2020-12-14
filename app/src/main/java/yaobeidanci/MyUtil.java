@@ -28,6 +28,7 @@ import okhttp3.Response;
  * 网络工具包
  */
 public class MyUtil {
+//    public static final String BASE_URL = "http://192.168.43.82:5000";
     public static final String BASE_URL = "http://10.0.2.2:5000";
     /**
      * 回调函数

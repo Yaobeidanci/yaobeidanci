@@ -21,7 +21,8 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="15dp"
             android:background="@drawable/ic_return"
-            android:layout_marginLeft="20dp" />
+            android:layout_marginLeft="20dp"
+            android:onClick="returnStudyPlan"/>
 
         <TextView
             android:id="@+id/button_reviewing"
