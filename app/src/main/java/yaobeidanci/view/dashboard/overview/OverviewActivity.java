@@ -31,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import yaobeidanci.view.R;
 import yaobeidanci.view.book.StudyPlan;
@@ -60,7 +61,7 @@ public class OverviewActivity extends AppCompatActivity {
         InitLineCharts();
     }
 
-    private void FindViews(){
+    private void FindViews() {
         button_return = findViewById(R.id.button_return);
         radioGroup_amount = findViewById(R.id.radioGroup_amount);
         radioGroup_time = findViewById(R.id.radioGroup_time);
@@ -79,7 +80,7 @@ public class OverviewActivity extends AppCompatActivity {
         textView_learn_time_hint = findViewById(R.id.textView_learn_time_hint);
     }
 
-    private void SetListeners(){
+    private void SetListeners() {
         button_return.setOnClickListener(onClickListener);
         radioGroup_amount.setOnCheckedChangeListener(onCheckedChangeListener);
         radioGroup_time.setOnCheckedChangeListener(onCheckedChangeListener);
@@ -87,9 +88,9 @@ public class OverviewActivity extends AppCompatActivity {
         lineChart[0].setOnChartValueSelectedListener(onLineChartValueSelectedListener);
     }
 
-    private void InitBarCharts(){
+    private void InitBarCharts() {
         //堆叠条形图
-        for(int i = 0; i < 2; i++){
+        for (int i = 0; i < 2; i++) {
             barChart[i].setDescription("");                  //不描述
             barChart[i].setDoubleTapToZoomEnabled(false);    //取消双击放大
             barChart[i].setPinchZoom(false);
@@ -109,7 +110,7 @@ public class OverviewActivity extends AppCompatActivity {
         xLabels.setValueFormatter(new AxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                final SimpleDateFormat formatter= new SimpleDateFormat("MM-dd");
+                final SimpleDateFormat formatter = new SimpleDateFormat("MM-dd");
                 final ArrayList<Date> datesFinal = GetLastWeekDate();
                 int val = (int) value;
                 if (val == 6) {
@@ -136,16 +137,17 @@ public class OverviewActivity extends AppCompatActivity {
         l.setFormToTextSpace(4f);   //图标与文字间距
         l.setXEntrySpace(6f);       //标签之间的间距
         l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART_INSIDE);
-        SetData();
+        SetBarChartData();
     }
 
-    private void SetData(){
+    private void SetBarChartData() {
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
+        List<List<Integer>> values = AcquireAmountData();
+        //获取数据
         for (int i = 0; i < 7; i++) {
-            int mult = 7;
-            int val1 =  (int)(Math.random() * mult)+2;
-            int val2 =  (int)(Math.random() * mult)+2;
+            int val1 = values.get(0).get(i);
+            int val2 = values.get(1).get(i);
             yVals1.add(new BarEntry(i, new float[]{val1, val2}));
         }
 
@@ -177,13 +179,13 @@ public class OverviewActivity extends AppCompatActivity {
 
     private int[] getColors() {
         int[] colors = new int[2];
-        colors[0] = Color.rgb(255,102,0);
-        colors[1] = Color.rgb(200,70,200);
+        colors[0] = Color.rgb(255, 102, 0);
+        colors[1] = Color.rgb(200, 70, 200);
         return colors;
     }
 
-    private void InitLineCharts(){
-        for(int i = 0; i<2;i++){
+    private void InitLineCharts() {
+        for (int i = 0; i < 2; i++) {
             //后台绘制
             lineChart[0].setDrawGridBackground(false);
             lineChart[0].setDescription("");
@@ -213,7 +215,7 @@ public class OverviewActivity extends AppCompatActivity {
         xAxis.setValueFormatter(new AxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                final SimpleDateFormat formatter= new SimpleDateFormat("MM-dd");
+                final SimpleDateFormat formatter = new SimpleDateFormat("MM-dd");
                 final ArrayList<Date> datesFinal = GetLastWeekDate();
                 int val = (int) value;
                 if (val == 6) {
@@ -229,18 +231,12 @@ public class OverviewActivity extends AppCompatActivity {
         });
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAxisLineColor(Color.WHITE);
-        //这里我模拟一些数据
-        ArrayList<Entry> values = new ArrayList<Entry>();
-        values.add(new Entry(0, 50));
-        values.add(new Entry(1, 66));
-        values.add(new Entry(2, 40));
-        values.add(new Entry(3, 30));
-        values.add(new Entry(4, 20));
-        values.add(new Entry(5, 50));
-        values.add(new Entry(6, 30));
+
+        //数据
+        ArrayList<Entry> values = AcquireTimeData();
 
         //设置数据
-        setData(values);
+        SetLineChartData(values);
 
         //默认动画
         lineChart[0].animateX(2000);
@@ -248,8 +244,34 @@ public class OverviewActivity extends AppCompatActivity {
         //mChart.invalidate();
 
     }
+
+    public List<List<Integer>> AcquireAmountData() {
+        List<List<Integer>> values = new ArrayList<>();
+
+        for (int i = 0; i < 2; i++) {
+            List<Integer> value = new ArrayList<>();
+            for (int j = 0; j < 7; j++) {
+                value.add(5);
+            }
+            values.add(value);
+        }
+
+        return values;
+    }
+
+    public ArrayList<Entry> AcquireTimeData() {
+        ArrayList<Entry> values = new ArrayList<>();
+
+        List<Integer> minutes = new ArrayList<>();      //请求
+        for (int i = 0; i < 7; i++) {
+            values.add(new Entry(i, minutes.get(i)));
+        }
+
+        return values;
+    }
+
     //传递数据集
-    private void setData(ArrayList<Entry> values) {
+    private void SetLineChartData(ArrayList<Entry> values) {
         LineDataSet set1;
         if (lineChart[0].getData() != null && lineChart[0].getData().getDataSetCount() > 0) {
             set1 = (LineDataSet) lineChart[0].getData().getDataSetByIndex(0);
@@ -280,12 +302,13 @@ public class OverviewActivity extends AppCompatActivity {
             lineChart[0].setData(data);
         }
     }
-    private ArrayList<Date> GetLastWeekDate(){
+
+    private ArrayList<Date> GetLastWeekDate() {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
         c.add(Calendar.DATE, -6);
-        ArrayList<Date> dates= new ArrayList<Date>(6);
-        for(int i = 0 ; i < 6; i++){
+        ArrayList<Date> dates = new ArrayList<Date>(6);
+        for (int i = 0; i < 6; i++) {
             dates.add(c.getTime());
             c.add(Calendar.DATE, 1);
         }
@@ -296,7 +319,7 @@ public class OverviewActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Intent intent;
-            switch(view.getId()){
+            switch (view.getId()) {
                 case R.id.button_return:
                     finish();
                     break;
@@ -311,22 +334,22 @@ public class OverviewActivity extends AppCompatActivity {
 
         @Override
         public void onCheckedChanged(RadioGroup radioGroup, int i) {
-            if(i == R.id.radioButton_last_week_1){
+            if (i == R.id.radioButton_last_week_1) {
                 barChart[0].setVisibility(View.VISIBLE);
                 barChart[1].setVisibility(View.INVISIBLE);
                 textView_learn_amount_hint.setText("当日学习");
                 textView_review_amount_hint.setText("当日复习");
-            }else if(i == R.id.radioButton_month_1){
+            } else if (i == R.id.radioButton_month_1) {
                 barChart[1].setVisibility(View.VISIBLE);
                 barChart[0].setVisibility(View.INVISIBLE);
                 textView_learn_amount_hint.setText("当月学习");
                 textView_review_amount_hint.setText("当月复习");
-            }else if(i == R.id.radioButton_last_week_2){
+            } else if (i == R.id.radioButton_last_week_2) {
                 lineChart[0].setVisibility(View.VISIBLE);
                 lineChart[1].setVisibility(View.INVISIBLE);
                 textView_learn_time_hint.setText("当日学习");
 //                textView_total_time.setText(lineChart[0].getLineData().getDataSets().get(0).);
-            }else if(i == R.id.radioButton_month_2){
+            } else if (i == R.id.radioButton_month_2) {
                 lineChart[1].setVisibility(View.VISIBLE);
                 lineChart[0].setVisibility(View.INVISIBLE);
                 textView_learn_time_hint.setText("当月学习");
@@ -338,8 +361,8 @@ public class OverviewActivity extends AppCompatActivity {
         @Override
         public void onValueSelected(Entry e, Highlight h) {
 
-            textView_learn_amount.setText(String.valueOf((int)((BarEntry)e).getYVals()[0]));
-            textView_review_amount.setText(String.valueOf((int)((BarEntry)e).getYVals()[1]));
+            textView_learn_amount.setText(String.valueOf((int) ((BarEntry) e).getYVals()[0]));
+            textView_review_amount.setText(String.valueOf((int) ((BarEntry) e).getYVals()[1]));
 //            Log.d("POSITION", "onValueSelected: " + ((BarEntry)e).;
         }
 
@@ -354,7 +377,7 @@ public class OverviewActivity extends AppCompatActivity {
     private OnChartValueSelectedListener onLineChartValueSelectedListener = new OnChartValueSelectedListener() {
         @Override
         public void onValueSelected(Entry e, Highlight h) {
-            textView_learn_time.setText(String.valueOf((int)e.getY()));
+            textView_learn_time.setText(String.valueOf((int) e.getY()));
 //            Log.d("POSITION", "onValueSelected: " + ((BarEntry)e).;
         }
 
@@ -365,8 +388,9 @@ public class OverviewActivity extends AppCompatActivity {
 //            textView_review_amount.setText(String.valueOf((int)((BarEntry)e).getYVals()[1]));
         }
     };
-    public void toStudyPlan(View view){
-        Intent intent=new Intent(OverviewActivity.this, StudyPlan.class);
+
+    public void toStudyPlan(View view) {
+        Intent intent = new Intent(OverviewActivity.this, StudyPlan.class);
         startActivity(intent);
     }
 }

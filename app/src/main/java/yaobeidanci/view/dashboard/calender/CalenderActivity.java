@@ -14,6 +14,10 @@ import yaobeidanci.view.book.StudyPlan;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
 
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
 public class CalenderActivity extends AppCompatActivity {
     private CalendarView calendarView;
     private TextView textView_days_seq;
@@ -37,24 +41,42 @@ public class CalenderActivity extends AppCompatActivity {
     }
 
     private void InitCalender() {
-        textView_days_seq.setText(String.valueOf(2));
-        textView_days_total.setText(String.valueOf(5));
         MarkDays();
     }
 
-    private void MarkDays() {
-        Calendar c = new Calendar();
-        c.setYear(2020);
-        c.setMonth(11);
-        c.setDay(30);
-        calendarView.addSchemeDate(c);
-        for (int i = 0; i < 3; i++) {
+    private List<Calendar> AcquireDates() {
+        List<Calendar> calendars = new ArrayList<>();
+
+        List<String> dates = new ArrayList<>(); //此处请求并得到数据
+
+        for (int i = 0; i < dates.size(); i++) {
+            String[] date = dates.get(i).split("-");
             Calendar calendar = new Calendar();
-            calendar.setYear(2020);
-            calendar.setMonth(12);
-            calendar.setDay(5 - i * 2);
-            calendarView.addSchemeDate(calendar);
+            calendar.setYear(Integer.parseInt(date[0]));
+            calendar.setMonth(Integer.parseInt(date[1]));
+            calendar.setDay(Integer.parseInt(date[2]));
+            calendars.add(calendar);
         }
+
+        return calendars;
+    }
+
+    private void MarkDays() {
+        int seq = 0;
+
+        List<Calendar> calendars = AcquireDates();
+        for (int i = 0; i < calendars.size(); i++) {
+            Calendar calendar = calendars.get(i);
+            calendarView.addSchemeDate(calendar);
+
+            // 计算连续签到天数
+            if (calendar.differ(calendars.get(i - 1)) == 1) {
+                seq += 1;
+            } else {
+                seq = 0;
+            }
+        }
+
         calendarView.setMonthView(MyCalenderView.class);
 
         calendarView.setOnMonthChangeListener(new CalendarView.OnMonthChangeListener() {
@@ -64,6 +86,8 @@ public class CalenderActivity extends AppCompatActivity {
             }
         });
 
+        textView_days_seq.setText(String.valueOf(seq));
+        textView_days_total.setText(String.valueOf(5));
     }
 
     public void returnStudyPlan(View view) {
