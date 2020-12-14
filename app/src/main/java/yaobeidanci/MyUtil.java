@@ -31,6 +31,13 @@ public class MyUtil {
 //    public static final String BASE_URL = "http://192.168.43.82:5000";
     public static final String BASE_URL = "http://10.0.2.2:5000";
     public static String user_uid;
+    enum RESULT {SUCCESS, FAIL}
+
+    public static class Res{
+        Object data;
+        RESULT result;
+        String msg;
+    }
     /**
      * 回调函数
      */
@@ -39,99 +46,18 @@ public class MyUtil {
          * 请求成功时
          * @param result 请求结果
          */
-        void onSuccess(Object result);
+        void onSuccess(Res result);
 
         /**
-         * 请求失败时，没想好怎么用，暂时不要用
-         * @param result
+         * 请求失败时
+         * @param result 请求结果
          */
-        void onError(Object result);
+        void onError(Res result);
     }
 
     public static final MediaType JSON_TYPE
             = MediaType.get("application/json; charset=utf-8");
     static OkHttpClient client = new OkHttpClient();
-
-    // 异步，但是应该是无法更新UI线程，因此不使用
-    public static void httpGetAsync(String url, JSONObject json, final MyCallback callback, final boolean isString) {
-        String result = null;
-        HttpUrl.Builder url_builder = HttpUrl.parse(url).newBuilder();
-        try {
-
-            for (Iterator<String> it = json.keys(); it.hasNext(); ) {
-                String key = it.next();
-                url_builder.addQueryParameter(key, json.getString(key));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        Request request = new Request.Builder()
-                .url(url_builder.build())
-                .build();
-
-        Response response = null;
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Log.d("http-get", "onFailure: ");
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (callback != null) {
-                    if (isString) {
-                        callback.onSuccess(response.body().string());
-                    } else {
-                        byte[] bytes = response.body().bytes();
-                        callback.onSuccess(bytes);
-                    }
-
-                }
-            }
-        });
-    }
-
-    // 异步，但是应该是无法更新UI线程，因此不使用
-    public static void httpPostAsync(final String url, JSONObject json, final boolean isForm, final MyCallback callback) {
-        try {
-            Request request;
-            if (isForm) {
-                FormBody.Builder form_builder = new FormBody.Builder();
-                for (Iterator<String> it = json.keys(); it.hasNext(); ) {
-                    String key = it.next();
-                    form_builder.add(key, json.getString(key));
-                }
-                FormBody formBody = form_builder.build();
-                request = new Request.Builder()
-                        .url(url)
-                        .post(formBody)
-                        .build();
-            } else {
-                RequestBody requestBody = RequestBody.create(json.toString(), JSON_TYPE);
-                request = new Request.Builder()
-                        .url(url)
-                        .post(requestBody)
-                        .build();
-            }
-
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                    Log.d("http-post", "onFailure: ");
-                }
-
-                @Override
-                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                    if (callback != null) {
-                        callback.onSuccess(response.body().string());
-                    }
-                }
-            });
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * 使用okhttp和AsyncTask封装的http-get异步请求
@@ -142,18 +68,25 @@ public class MyUtil {
      * @param isString 返回是否为字符串，如果是，则返回字符串，否则返回字节数组
      */
     public static void httpGet(final String url, final JSONObject json, final MyCallback callback, final boolean isString) {
-        new AsyncTask<Void, Void, Object>() {
+        new AsyncTask<Void, Void, Res>() {
 
             @Override
-            protected void onPostExecute(Object s) {
+            protected void onPostExecute(Res s) {
                 if (callback != null) {
-                    callback.onSuccess(s);
+                    switch (s.result){
+                        case SUCCESS:
+                            callback.onSuccess(s);
+                            break;
+                        case FAIL:
+                            callback.onError(s);
+                            break;
+                    }
                 }
             }
 
             @Override
-            protected Object doInBackground(Void... voids) {
-                Object result = null;
+            protected Res doInBackground(Void... voids) {
+                Res result = new Res();
                 // 拼接url
                 HttpUrl.Builder url_builder = HttpUrl.parse(url).newBuilder();
                 try {
@@ -161,24 +94,27 @@ public class MyUtil {
                         String key = it.next();
                         url_builder.addQueryParameter(key, json.getString(key));
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                // okhttp请求
-                Request request = new Request.Builder()
-                        .url(url_builder.build())
-                        .build();
+                    // okhttp请求
+                    Request request = new Request.Builder()
+                            .url(url_builder.build())
+                            .build();
 
-                Response response = null;
-                try {
+                    Response response;
                     response = client.newCall(request).execute();
                     if (isString) {
-                        result = response.body().string();
+                        result.data = response.body().string();
                     } else {
-                        result = response.body().bytes();
+                        result.data = response.body().bytes();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    result.result = RESULT.SUCCESS;
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                    result.result = RESULT.FAIL;
+                    result.msg = "网络异常";
+                }catch (JSONException e2){
+                    e2.printStackTrace();
+                    result.result = RESULT.FAIL;
+                    result.msg = "JSON错误";
                 }
                 return result;
             }
@@ -194,18 +130,25 @@ public class MyUtil {
      * @param callback 回调，返回字符串
      */
     public static void httpPost(final String url, final JSONObject json, final boolean isForm, final MyCallback callback) {
-        new AsyncTask<Void, Void, String>() {
+        new AsyncTask<Void, Void, Res>() {
 
             @Override
-            protected void onPostExecute(String s) {
+            protected void onPostExecute(Res s) {
                 if (callback != null) {
-                    callback.onSuccess(s);
+                    switch (s.result){
+                        case SUCCESS:
+                            callback.onSuccess(s);
+                            break;
+                        case FAIL:
+                            callback.onError(s);
+                            break;
+                    }
                 }
             }
 
             @Override
-            protected String doInBackground(Void... voids) {
-                String result = null;
+            protected Res doInBackground(Void... voids) {
+                Res result = new Res();
                 try {
                     Request request;
                     // 加载数据
@@ -230,9 +173,16 @@ public class MyUtil {
                     // okhttp请求
                     Response response = client.newCall(request).execute();
                     byte[] bytes = response.body().bytes();
-                    result = new String(bytes, "utf-8");
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
+                    result.data = new String(bytes, "utf-8");
+                    result.result = RESULT.SUCCESS;
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                    result.result = RESULT.FAIL;
+                    result.msg = "网络异常";
+                }catch (JSONException e2){
+                    e2.printStackTrace();
+                    result.result = RESULT.FAIL;
+                    result.msg = "JSON错误";
                 }
                 return result;
             }

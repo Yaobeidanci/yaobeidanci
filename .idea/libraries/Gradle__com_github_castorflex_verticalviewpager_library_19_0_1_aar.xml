@@ -1,15 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.castorflex.verticalviewpager:library:19.0.1@aar">
     <CLASSES>
-<<<<<<< HEAD
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5b9781106ad964fa8b34486abc5d9c59/jetified-library-19.0.1/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5b9781106ad964fa8b34486abc5d9c59/jetified-library-19.0.1/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5b9781106ad964fa8b34486abc5d9c59/jetified-library-19.0.1/res" />
-=======
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cdedd86b61614f549b2f596a9cb5e44b/jetified-library-19.0.1/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cdedd86b61614f549b2f596a9cb5e44b/jetified-library-19.0.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cdedd86b61614f549b2f596a9cb5e44b/jetified-library-19.0.1/res" />
->>>>>>> 4d23b0dbe9ff62ea6f8390db0616696dd3ce7ee3
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.castorflex.verticalviewpager/library/19.0.1/a8384fd923fc06b744ade999ec126ebf8194e80d/library-19.0.1-javadoc.jar!/" />
