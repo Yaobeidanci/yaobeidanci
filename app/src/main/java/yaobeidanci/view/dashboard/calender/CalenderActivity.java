@@ -52,7 +52,7 @@ public class CalenderActivity extends AppCompatActivity {
 
 
         // 请求近两个月的签到信息
-        // 返回签到日期（String）数组
+        // 返回签到日期（String）数组 dates
 
         List<String> dates = new ArrayList<>();
 

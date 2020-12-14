@@ -270,11 +270,11 @@ public class OverviewActivity extends AppCompatActivity {
         ArrayList<Entry> values = new ArrayList<>();
 
         // 请求过去一周的学习时间信息
-        // 返回一个大小为7的数组
+        // 返回一个大小为7的数组minutes
 
-        List<Integer> minutes = new ArrayList<>();      //请求
+        List<String> minutes = new ArrayList<>();      //请求
         for (int i = 0; i < 7; i++) {
-            values.add(new Entry(i, minutes.get(i)));
+            values.add(new Entry(i, Integer.parseInt(minutes.get(i))));
         }
 
         return values;
