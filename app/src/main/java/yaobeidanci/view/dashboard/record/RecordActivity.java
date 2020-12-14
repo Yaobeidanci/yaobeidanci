@@ -16,7 +16,9 @@ import java.util.Date;
 import java.util.List;
 
 import yaobeidanci.view.R;
-
+/**
+ * 74行，95行
+ */
 public class RecordActivity extends AppCompatActivity {
     private static final String TAG = "MESSAGE";
     private Button button_return = null;
