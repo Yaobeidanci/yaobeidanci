@@ -44,6 +44,16 @@
         android:background="@color/white"
         android:layout_marginTop="75dp">
 
+        <TextView
+            android:id="@+id/tv_year_month"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="#000"
+            android:textSize="20sp"
+            android:text="11月"/>
+
         <com.haibin.calendarview.CalendarLayout
             android:layout_marginTop="50dp"
             android:layout_width="320dp"
@@ -62,7 +72,7 @@
                 app:current_month_lunar_text_color="#CFCFCF"
                 app:min_year="2020"
                 app:min_year_month="11"
-                app:max_year_month="12"
+                app:max_year_month="202012"
                 app:max_year="2020"
                 app:lunar_text_size="0dp"
                 app:other_month_text_color="#fff"
@@ -83,6 +93,14 @@
                 android:orientation="vertical"
                 tools:ignore="KeyboardInaccessibleWidget"/>
         </com.haibin.calendarview.CalendarLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="签到"
+            android:background="@drawable/frame"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="400dp" />
 
         <View
             android:layout_width="match_parent"
