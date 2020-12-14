@@ -7,15 +7,28 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import yaobeidanci.MyUtil;
+import yaobeidanci.view.MainActivity;
 import yaobeidanci.view.R;
 
+/**
+ * 74行，95行
+ */
 public class RecordActivity extends AppCompatActivity {
     private static final String TAG = "MESSAGE";
     private Button button_return = null;
@@ -34,13 +47,13 @@ public class RecordActivity extends AppCompatActivity {
         InitFragments();
     }
 
-    private void FindViews(){
+    private void FindViews() {
         button_return = findViewById(R.id.button_return);
         button_edit = findViewById(R.id.button_edit);
         radioGroup = findViewById(R.id.radioGroup);
     }
 
-    private void SetListeners(){
+    private void SetListeners() {
         button_return.setOnClickListener(onClickListener);
         button_edit.setOnClickListener(onClickListener);
         radioGroup.setOnCheckedChangeListener(onCheckedChangeListener);
@@ -49,14 +62,14 @@ public class RecordActivity extends AppCompatActivity {
     /**
      * @description: 初始化碎片，并显示复习中的单词列表碎片
      */
-    private void InitFragments(){
+    private void InitFragments() {
         List<List<DailyList>> lists = AcquireLists();
 
         reviewingWordListFragment = new ReviewingWordListFragment(lists.get(0));
-        masteredWordListFragment = new MasteredWordListFragment(lists.get(1),lists.get(2),lists.get(3));
+        masteredWordListFragment = new MasteredWordListFragment(lists.get(1), lists.get(2), lists.get(3));
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_list, reviewingWordListFragment,"ONE");
+        fragmentTransaction.add(R.id.fragment_list, reviewingWordListFragment, "ONE");
         fragmentTransaction.commit();
     }
 
@@ -65,59 +78,130 @@ public class RecordActivity extends AppCompatActivity {
      * @param:
      * @return: 四个单词列表
      */
-    private  List<List<DailyList>> AcquireLists(){
-        //自编数据
-        List<List<DailyList>> lists = new ArrayList<>();
+    private List<List<DailyList>> AcquireLists() {
 
-        List<DailyList> list0 = new ArrayList<>();
-        DailyList dailyList0 = new DailyList("今天");
-        dailyList0.addItem("apple");
-        dailyList0.addItem("banana");
-        dailyList0.addItem("cat");
-        dailyList0.addItem("dog");
-        dailyList0.addItem("eggplant");
-        list0.add(dailyList0);
-        DailyList type = new DailyList("昨天");
-        type.addItem("abandon");
-        type.addItem("abolish");
-        type.addItem("aboard");
-        type.addItem("abroad");
-        list0.add(type);
-        lists.add(list0);
+        final List<List<DailyList>> lists = new ArrayList<>();
 
-        List<DailyList> list1 = new ArrayList<>();
-        DailyList dailyList1 = new DailyList("昨天");
-        dailyList1.addItem("excellent");
-        dailyList1.addItem("awesome");
-        dailyList1.addItem("unbelievable");
-        dailyList1.addItem("incredible");
-        dailyList1.addItem("fantastic");
-        list1.add(dailyList1);
-        lists.add(list1);
+        final JSONObject object1 = new JSONObject();
+        try {
+            object1.put("uid", MyUtil.getUid());
+            MyUtil.httpGet(MyUtil.BASE_URL + "", object1, new MyUtil.MyCallback() {
+                @Override
+                public void onSuccess(MyUtil.Res result) {
+                    try {
+                        JSONObject res = new JSONObject((String) result.data);
+                        // 请求复习中的单词列表
+                        // 返回具体的单词和复习的日期
+                        JSONArray jsonArray_word = res.getJSONArray("words");
+                        JSONArray jsonArray_date = res.getJSONArray("dates");
 
-        List<DailyList> list2 = new ArrayList<>();
-        DailyList dailyList2 = new DailyList("昨天");
-        dailyList2.addItem("unbelievable");
-        dailyList2.addItem("incredible");
-        dailyList2.addItem("fantastic");
-        list2.add(dailyList2);
-        lists.add(list2);
+                        Date date = new Date();
+                        DailyList dailyList = null;
+                        List<DailyList> list_study = new ArrayList<>();
+                        for (int i = 0; i < jsonArray_word.length(); i++) {
 
-        List<DailyList> list3 = new ArrayList<>();
-        DailyList dailyList3 = new DailyList("昨天");
-        dailyList3.addItem("excellent");
-        dailyList3.addItem("awesome");
-        list3.add(dailyList3);
-        lists.add(list3);
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");//注意月份是MM
+                            date = simpleDateFormat.parse((String) jsonArray_date.get(i));
+
+                            String word = (String) jsonArray_word.get(i);
+
+                            if (dailyList == null || !dailyList.getDate().equals(date)) {
+                                if (dailyList != null) {
+                                    list_study.add(dailyList);
+                                }
+                                dailyList = new DailyList(getTimeTag(date), date);
+
+                            }
+                            dailyList.addItem(word);
+                        }
+                        lists.add(list_study);
+                    } catch (JSONException | ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(MyUtil.Res result) {
+                    Toast.makeText(MainActivity.getContext(), result.msg, Toast.LENGTH_SHORT).show();
+                }
+            }, true);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        //请求已掌握的单词列表
+        //返回具体的单词、掌握的日期、标记的类型（系统判定/手动标记）
+
+        Date date = new Date();
+        DailyList dailyList_mastered = null;
+        List<DailyList> list_mastered = new ArrayList<>();
+        DailyList dailyList_sys = null;
+        List<DailyList> list_sys = new ArrayList<>();
+        DailyList dailyList_manual = null;
+        List<DailyList> list_manual = new ArrayList<>();
+        String word = "";
+        boolean flag = true;
+        for (int i = 0; i < 5; i++) {
+//            date = ;
+            word = "";
+            flag = !flag;
+            if (dailyList_mastered == null || !dailyList_mastered.getDate().equals(date)) {
+                if (dailyList_mastered != null) {
+                    // 添加列表
+                    list_mastered.add(dailyList_mastered);
+                    if (list_sys.size() != 0) {
+                        list_sys.add(dailyList_sys);
+                    }
+                    if (list_manual.size() != 0) {
+                        list_manual.add(dailyList_manual);
+                    }
+
+                }
+                dailyList_mastered = new DailyList(getTimeTag(date), date);
+                dailyList_sys = new DailyList(getTimeTag(date), date);
+                dailyList_manual = new DailyList(getTimeTag(date), date);
+            }
+            dailyList_mastered.addItem(word);
+            if (flag) {
+                dailyList_sys.addItem(word);
+            } else {
+                dailyList_manual.addItem(word);
+            }
+        }
+
+        lists.add(list_mastered);
+        lists.add(list_sys);
+        lists.add(list_manual);
 
         return lists;
-    };
+    }
+
+    private String getTimeTag(Date date) {
+        Date curDate;
+        String timeTag;
+        switch (1) {
+            case 0:
+                timeTag = "今天";
+                break;
+            case 1:
+                timeTag = "昨天";
+                break;
+            case 2:
+                timeTag = "前天";
+                break;
+            default:
+                timeTag = "";
+                break;
+        }
+        return timeTag;
+    }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Intent intent;
-            switch(view.getId()){
+            switch (view.getId()) {
                 case R.id.button_return:
                     finish();
                     break;
@@ -137,11 +221,11 @@ public class RecordActivity extends AppCompatActivity {
             /**
              * @description: 根据选项显示/隐藏对应的碎片
              */
-            if(i == R.id.radioButton_reviewing){
-                fragmentTransaction.replace(R.id.fragment_list, reviewingWordListFragment,"ONE");
+            if (i == R.id.radioButton_reviewing) {
+                fragmentTransaction.replace(R.id.fragment_list, reviewingWordListFragment, "ONE");
 //                Log.d(TAG, "onCheckedChanged: reviewing");
-            }else if(i == R.id.radioButton_mastered){
-                fragmentTransaction.replace(R.id.fragment_list, masteredWordListFragment,"TWO");
+            } else if (i == R.id.radioButton_mastered) {
+                fragmentTransaction.replace(R.id.fragment_list, masteredWordListFragment, "TWO");
 //                Log.d(TAG, "onCheckedChanged: mastered");
             }
             fragmentTransaction.commit();

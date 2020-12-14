@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,14 +28,24 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+import yaobeidanci.MyUtil;
+import yaobeidanci.view.MainActivity;
 import yaobeidanci.view.R;
 import yaobeidanci.view.book.StudyPlan;
 
+/**
+ * 255行，272行
+ */
 public class OverviewActivity extends AppCompatActivity {
     private Button button_return;
     private RadioGroup radioGroup_amount = null;
@@ -48,6 +59,8 @@ public class OverviewActivity extends AppCompatActivity {
     private TextView textView_learn_time = null;
     private TextView textView_total_time = null;
     private TextView textView_learn_time_hint = null;
+    private final List<List<Integer>> word_amount = new ArrayList<>();
+    private final ArrayList<Entry> time = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +69,12 @@ public class OverviewActivity extends AppCompatActivity {
 
         FindViews();
         SetListeners();
+        AcquireData();
         InitBarCharts();
         InitLineCharts();
     }
 
-    private void FindViews(){
+    private void FindViews() {
         button_return = findViewById(R.id.button_return);
         radioGroup_amount = findViewById(R.id.radioGroup_amount);
         radioGroup_time = findViewById(R.id.radioGroup_time);
@@ -79,7 +93,7 @@ public class OverviewActivity extends AppCompatActivity {
         textView_learn_time_hint = findViewById(R.id.textView_learn_time_hint);
     }
 
-    private void SetListeners(){
+    private void SetListeners() {
         button_return.setOnClickListener(onClickListener);
         radioGroup_amount.setOnCheckedChangeListener(onCheckedChangeListener);
         radioGroup_time.setOnCheckedChangeListener(onCheckedChangeListener);
@@ -87,9 +101,9 @@ public class OverviewActivity extends AppCompatActivity {
         lineChart[0].setOnChartValueSelectedListener(onLineChartValueSelectedListener);
     }
 
-    private void InitBarCharts(){
+    private void InitBarCharts() {
         //堆叠条形图
-        for(int i = 0; i < 2; i++){
+        for (int i = 0; i < 2; i++) {
             barChart[i].setDescription("");                  //不描述
             barChart[i].setDoubleTapToZoomEnabled(false);    //取消双击放大
             barChart[i].setPinchZoom(false);
@@ -109,7 +123,7 @@ public class OverviewActivity extends AppCompatActivity {
         xLabels.setValueFormatter(new AxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                final SimpleDateFormat formatter= new SimpleDateFormat("MM-dd");
+                final SimpleDateFormat formatter = new SimpleDateFormat("MM-dd");
                 final ArrayList<Date> datesFinal = GetLastWeekDate();
                 int val = (int) value;
                 if (val == 6) {
@@ -136,16 +150,16 @@ public class OverviewActivity extends AppCompatActivity {
         l.setFormToTextSpace(4f);   //图标与文字间距
         l.setXEntrySpace(6f);       //标签之间的间距
         l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART_INSIDE);
-        SetData();
+        SetBarChartData();
     }
 
-    private void SetData(){
+    private void SetBarChartData() {
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
+        //获取数据
         for (int i = 0; i < 7; i++) {
-            int mult = 7;
-            int val1 =  (int)(Math.random() * mult)+2;
-            int val2 =  (int)(Math.random() * mult)+2;
+            int val1 = word_amount.get(0).get(i);
+            int val2 = word_amount.get(1).get(i);
             yVals1.add(new BarEntry(i, new float[]{val1, val2}));
         }
 
@@ -177,13 +191,13 @@ public class OverviewActivity extends AppCompatActivity {
 
     private int[] getColors() {
         int[] colors = new int[2];
-        colors[0] = Color.rgb(255,102,0);
-        colors[1] = Color.rgb(200,70,200);
+        colors[0] = Color.rgb(255, 102, 0);
+        colors[1] = Color.rgb(200, 70, 200);
         return colors;
     }
 
-    private void InitLineCharts(){
-        for(int i = 0; i<2;i++){
+    private void InitLineCharts() {
+        for (int i = 0; i < 2; i++) {
             //后台绘制
             lineChart[0].setDrawGridBackground(false);
             lineChart[0].setDescription("");
@@ -213,7 +227,7 @@ public class OverviewActivity extends AppCompatActivity {
         xAxis.setValueFormatter(new AxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                final SimpleDateFormat formatter= new SimpleDateFormat("MM-dd");
+                final SimpleDateFormat formatter = new SimpleDateFormat("MM-dd");
                 final ArrayList<Date> datesFinal = GetLastWeekDate();
                 int val = (int) value;
                 if (val == 6) {
@@ -229,18 +243,9 @@ public class OverviewActivity extends AppCompatActivity {
         });
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAxisLineColor(Color.WHITE);
-        //这里我模拟一些数据
-        ArrayList<Entry> values = new ArrayList<Entry>();
-        values.add(new Entry(0, 50));
-        values.add(new Entry(1, 66));
-        values.add(new Entry(2, 40));
-        values.add(new Entry(3, 30));
-        values.add(new Entry(4, 20));
-        values.add(new Entry(5, 50));
-        values.add(new Entry(6, 30));
 
         //设置数据
-        setData(values);
+        SetLineChartData(time);
 
         //默认动画
         lineChart[0].animateX(2000);
@@ -248,8 +253,55 @@ public class OverviewActivity extends AppCompatActivity {
         //mChart.invalidate();
 
     }
+
+    public void AcquireData() {
+        final JSONObject object1 = new JSONObject();
+        try {
+            object1.put("uid", MyUtil.getUid());
+            MyUtil.httpGet(MyUtil.BASE_URL + "/resource/learnData", object1, new MyUtil.MyCallback() {
+                @Override
+                public void onSuccess(MyUtil.Res result) {
+                    try {
+                        JSONObject res = new JSONObject((String) result.data);
+                        JSONArray jsonArray = res.getJSONArray("data");
+
+                        List<Integer> value1 = new ArrayList<>();
+                        List<Integer> value2 = new ArrayList<>();
+                        for (int j = 0; j < 7; j++) {
+                            value1.add(((JSONObject) jsonArray.get(j)).getInt("word_learn"));
+                            value2.add(((JSONObject) jsonArray.get(j)).getInt("word_review"));
+                        }
+                        word_amount.add(value1);
+                        word_amount.add(value2);
+
+                        List<Integer> minutes = new ArrayList<>();      //请求
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            minutes.add(((JSONObject) jsonArray.get(i)).getInt("learn_time"));
+                        }
+
+                        for (int i = 0; i < 7; i++) {
+                            time.add(new Entry(i, minutes.get(i)));
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(MyUtil.Res result) {
+                    Toast.makeText(MainActivity.getContext(), result.msg, Toast.LENGTH_SHORT).show();
+                }
+            }, true);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     //传递数据集
-    private void setData(ArrayList<Entry> values) {
+    private void SetLineChartData(ArrayList<Entry> values) {
         LineDataSet set1;
         if (lineChart[0].getData() != null && lineChart[0].getData().getDataSetCount() > 0) {
             set1 = (LineDataSet) lineChart[0].getData().getDataSetByIndex(0);
@@ -280,12 +332,13 @@ public class OverviewActivity extends AppCompatActivity {
             lineChart[0].setData(data);
         }
     }
-    private ArrayList<Date> GetLastWeekDate(){
+
+    private ArrayList<Date> GetLastWeekDate() {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
         c.add(Calendar.DATE, -6);
-        ArrayList<Date> dates= new ArrayList<Date>(6);
-        for(int i = 0 ; i < 6; i++){
+        ArrayList<Date> dates = new ArrayList<Date>(6);
+        for (int i = 0; i < 6; i++) {
             dates.add(c.getTime());
             c.add(Calendar.DATE, 1);
         }
@@ -296,7 +349,7 @@ public class OverviewActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Intent intent;
-            switch(view.getId()){
+            switch (view.getId()) {
                 case R.id.button_return:
                     finish();
                     break;
@@ -311,22 +364,22 @@ public class OverviewActivity extends AppCompatActivity {
 
         @Override
         public void onCheckedChanged(RadioGroup radioGroup, int i) {
-            if(i == R.id.radioButton_last_week_1){
+            if (i == R.id.radioButton_last_week_1) {
                 barChart[0].setVisibility(View.VISIBLE);
                 barChart[1].setVisibility(View.INVISIBLE);
                 textView_learn_amount_hint.setText("当日学习");
                 textView_review_amount_hint.setText("当日复习");
-            }else if(i == R.id.radioButton_month_1){
+            } else if (i == R.id.radioButton_month_1) {
                 barChart[1].setVisibility(View.VISIBLE);
                 barChart[0].setVisibility(View.INVISIBLE);
                 textView_learn_amount_hint.setText("当月学习");
                 textView_review_amount_hint.setText("当月复习");
-            }else if(i == R.id.radioButton_last_week_2){
+            } else if (i == R.id.radioButton_last_week_2) {
                 lineChart[0].setVisibility(View.VISIBLE);
                 lineChart[1].setVisibility(View.INVISIBLE);
                 textView_learn_time_hint.setText("当日学习");
 //                textView_total_time.setText(lineChart[0].getLineData().getDataSets().get(0).);
-            }else if(i == R.id.radioButton_month_2){
+            } else if (i == R.id.radioButton_month_2) {
                 lineChart[1].setVisibility(View.VISIBLE);
                 lineChart[0].setVisibility(View.INVISIBLE);
                 textView_learn_time_hint.setText("当月学习");
@@ -338,8 +391,8 @@ public class OverviewActivity extends AppCompatActivity {
         @Override
         public void onValueSelected(Entry e, Highlight h) {
 
-            textView_learn_amount.setText(String.valueOf((int)((BarEntry)e).getYVals()[0]));
-            textView_review_amount.setText(String.valueOf((int)((BarEntry)e).getYVals()[1]));
+            textView_learn_amount.setText(String.valueOf((int) ((BarEntry) e).getYVals()[0]));
+            textView_review_amount.setText(String.valueOf((int) ((BarEntry) e).getYVals()[1]));
 //            Log.d("POSITION", "onValueSelected: " + ((BarEntry)e).;
         }
 
@@ -354,7 +407,7 @@ public class OverviewActivity extends AppCompatActivity {
     private OnChartValueSelectedListener onLineChartValueSelectedListener = new OnChartValueSelectedListener() {
         @Override
         public void onValueSelected(Entry e, Highlight h) {
-            textView_learn_time.setText(String.valueOf((int)e.getY()));
+            textView_learn_time.setText(String.valueOf((int) e.getY()));
 //            Log.d("POSITION", "onValueSelected: " + ((BarEntry)e).;
         }
 
@@ -365,8 +418,9 @@ public class OverviewActivity extends AppCompatActivity {
 //            textView_review_amount.setText(String.valueOf((int)((BarEntry)e).getYVals()[1]));
         }
     };
-    public void toStudyPlan(View view){
-        Intent intent=new Intent(OverviewActivity.this, StudyPlan.class);
+
+    public void toStudyPlan(View view) {
+        Intent intent = new Intent(OverviewActivity.this, StudyPlan.class);
         startActivity(intent);
     }
 }

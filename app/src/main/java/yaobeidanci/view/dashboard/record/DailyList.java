@@ -1,6 +1,7 @@
 package yaobeidanci.view.dashboard.record;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,13 +14,15 @@ import java.util.List;
  **/
 public class DailyList {
     private String timeTag;
+    private Date date;
     private List<String> wordList;
     /**
      * @description: 构造函数
      * @param: timeTag
      */
-    public DailyList(String timeTag){
+    public DailyList(String timeTag,Date date){
         this.timeTag = timeTag;
+        this.date = date;
         wordList = new ArrayList<>();
     }
     /**
@@ -41,6 +44,10 @@ public class DailyList {
         } else {
             return wordList.get(position - 1);
         }
+    }
+
+    public Date getDate(){
+        return date;
     }
 
     /**
